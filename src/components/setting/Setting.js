@@ -1,0 +1,63 @@
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Tabs, Card, } from '@shopify/polaris';
+import { settingOperations } from "../../state/modules/setting";
+import Loading from '../.././components/plugins/Loading';
+import General from '../.././components/setting/General';
+import DiscountFeature from '../.././components/setting/DiscountFeature';
+import LimitPurchaseFeaure from '../.././components/setting/LimitPurchaseFeaure';
+import { setSelectedTab } from '../../state/modules/setting/actions';
+import '../../assets/css/setting.css'
+const tabs = [
+  {
+    id: 'general',
+    content: 'General'
+  },
+  {
+    id: 'discountfeature',
+    content: 'Discount feature'
+  },
+  {
+    id: 'limitpurchasefeature',
+    content: 'Limit purchase feature'
+  }
+]
+function Setting() {
+  const dispatch = useDispatch();
+  const settingState = useSelector((state) => state.setting);
+  useEffect(() => {
+    dispatch(settingOperations.fetchSetting());
+
+  }, [dispatch]);
+  let content = <Loading></Loading>;
+  switch (settingState.ListSetting.selectedTab) {
+    case 0:
+      content = <General></General>;
+      break;
+    case 1:
+      content = <DiscountFeature></DiscountFeature>;
+      break;
+    case 2:
+      content = <LimitPurchaseFeaure></LimitPurchaseFeaure>;
+      break;
+    default:
+      content = <General></General>;
+      break;
+  }
+  return (
+    settingState.IsLoadingPage ? <Loading></Loading> :
+    <Tabs
+      tabs={tabs}
+      selected={settingState.ListSetting.selectedTab}
+      onSelect={(selected) => dispatch(setSelectedTab(selected))}
+    >
+      <>
+        <div className='setting'>
+          {content}
+        </div>
+        </>
+      </Tabs>
+  )
+}
+
+export default Setting;
