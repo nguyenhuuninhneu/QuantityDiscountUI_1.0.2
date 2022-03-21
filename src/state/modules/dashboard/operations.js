@@ -8,6 +8,7 @@ export const fetchDashboard = (start,end) => {
     axios.get(config.rootLink + '/FrontEnd/Dashboard', {
       params: {
         shopID: getState().app.Shop?.ID,
+        shop: getState().app.Shop?.Domain,
         startDate: start,
         endDate: end
       }

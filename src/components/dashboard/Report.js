@@ -450,6 +450,7 @@ const Report = (props) => {
 
 
                                     </Card>
+                                <p className="time-zone-note">*Timezone is set according to your store’s timezone</p>
                                     {
                                         reportState.Paginate.CurrentItems !== undefined && reportState.Paginate.CurrentItems !== null && reportState.Paginate.CurrentItems.length > 0 ? <>
                                             <div className='paging-area'>

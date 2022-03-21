@@ -34,6 +34,7 @@ export const getProcess = (type) => {
       axios.get(config.rootLink + '/FrontEnd/GetProcess', {
           params: {
               shopID: getState().app.Shop?.ID,
+              shop: getState().app.Shop?.Domain,
               type: type
           }
       })

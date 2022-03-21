@@ -445,6 +445,17 @@
 .ml-10 {
     margin-left: 10px;
 }
+.ml-20 {
+    margin-left: 20px;
+}
+
+.mr-5 {
+    margin-right: 5px;
+}
+
+.mr-10 {
+    margin-right: 10px;
+}
 
 .ptb8 {
     padding: 8px 0;
@@ -1417,7 +1428,14 @@ input.active+.slider .off {
     padding-bottom: 2px;
     background-color: #fff;
 }
-
+.time-zone-note{
+    font-size: 14px;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 /* .search-relative .selected-item{
     position: absolute;
     top: 3px;

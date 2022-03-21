@@ -8,6 +8,7 @@ export const fetchList = (start, end) => {
     axios.get(config.rootLink + '/FrontEnd/GetReports', {
       params: {
         shopID: getState().app.Shop?.ID,
+        shop: getState().app.Shop?.Domain,
         startDate: start,
         endDate: end
       }
@@ -30,6 +31,7 @@ export const reportDetail = (campaignid) => {
     axios.get(config.rootLink + '/FrontEnd/ReportDetail', {
       params: {
         shopID: getState().app.Shop?.ID,
+        shop: getState().app.Shop?.Domain,
         campaignID: campaignid
       }
     })

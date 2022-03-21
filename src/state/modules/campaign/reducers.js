@@ -45,7 +45,7 @@ const INITIAL_STATE = {
       ListProducts: [],
       ListProductsPost: [],
       ListCollects: [],
-      ListVariantsProduct: [],
+      ListVariants: [],
       StartDateStr: '',
       EndDateStr: '',
       IsSpecificCollect: false,

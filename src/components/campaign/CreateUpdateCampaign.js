@@ -81,7 +81,7 @@ const CreateUpdateCampaign = (props) => {
                             campaign:
                             {
                                 ...campaign,
-                                ListVariantsProduct: campaignVariants,
+                                ListVariants: campaignVariants,
                             },
                             SelectOptionProducts: res.data.listOptionProduct,
                         }));
@@ -103,7 +103,8 @@ const CreateUpdateCampaign = (props) => {
     const getSettingOne = async () => {
         await axios.get(config.rootLink + '/FrontEnd/GetSettingOne', {
             params: {
-                shopID: appState?.Shop.ID
+                shopID: appState?.Shop?.ID,
+                shop: config.shop,
             }
         })
             .then((res) => {
@@ -326,7 +327,7 @@ const CreateUpdateCampaign = (props) => {
                 CheckTypeDiscountProductValidation: ""
             }))
         }
-        if (campaign.IsVariantProduct && campaign.ListVariantsProduct !== undefined && campaign.ListVariantsProduct !== null && campaign.ListVariantsProduct.length === 0) {
+        if (campaign.IsVariantProduct && campaign.ListVariants !== undefined && campaign.ListVariants !== null && campaign.ListVariants.length === 0) {
             dispatch(setCreateUpdateCampaign({
                 ...campaignState,
                 IsOpenSaveToolbar: false,
@@ -356,8 +357,8 @@ const CreateUpdateCampaign = (props) => {
                 CheckTypeDiscountVariantValidation: ""
             }))
         }
-        if (campaign.IsVariantProduct && campaign.ListVariantsProduct != undefined && campaign.ListVariantsProduct != null && campaign.ListVariantsProduct.length > 0) {
-            var checkVariantsProduct = campaign.ListVariantsProduct.filter(p => p.ListVariantSelected.length === 0).length > 0 ? false : true;
+        if (campaign.IsVariantProduct && campaign.ListVariants != undefined && campaign.ListVariants != null && campaign.ListVariants.length > 0) {
+            var checkVariantsProduct = campaign.ListVariants.filter(p => p.ListVariantSelected.length === 0).length > 0 ? false : true;
             if (!checkVariantsProduct) {
                 dispatch(setCreateUpdateCampaign({
                     ...campaignState,
@@ -369,7 +370,7 @@ const CreateUpdateCampaign = (props) => {
             }
             let isDuplicate = false;
             // call some function with callback function as argument
-            var listProductVariants = campaign.ListVariantsProduct.map(p => p.ProductID)
+            var listProductVariants = campaign.ListVariants.map(p => p.ProductID)
             isDuplicate = listProductVariants.some((element, index) => {
                 return listProductVariants.indexOf(element) !== index
             });
@@ -383,7 +384,7 @@ const CreateUpdateCampaign = (props) => {
                 return false;
             }
         }
-        if (campaign.IsVariantProduct && (campaign.ListVariantsProduct == undefined || campaign.ListVariantsProduct == null)) {
+        if (campaign.IsVariantProduct && (campaign.ListVariants == undefined || campaign.ListVariants == null)) {
             dispatch(setCreateUpdateCampaign({
                 ...campaignState,
                 IsOpenSaveToolbar: false,
@@ -522,7 +523,7 @@ const CreateUpdateCampaign = (props) => {
             }));
     }
     const AddProduct = () => {
-        var listOld = campaign.ListVariantsProduct !== undefined && campaign.ListVariantsProduct !== null ? campaign.ListVariantsProduct : [];
+        var listOld = campaign.ListVariants !== undefined && campaign.ListVariants !== null ? campaign.ListVariants : [];
         var firstProduct = campaignState.SelectOptionProducts;
         var listVariant = firstProduct !== undefined ? firstProduct.map(m => m.ListVariant)[0] : [];
         var item = {
@@ -537,7 +538,7 @@ const CreateUpdateCampaign = (props) => {
             ...campaignState,
             campaign: {
                 ...campaign,
-                ListVariantsProduct: listOld
+                ListVariants: listOld
             }
         }));
     }
@@ -549,7 +550,7 @@ const CreateUpdateCampaign = (props) => {
             ...campaignState,
             campaign: {
                 ...campaign,
-                ListVariantsProduct: campaign.ListVariantsProduct.map((p, i) => (i == index ? {
+                ListVariants: campaign.ListVariants.map((p, i) => (i == index ? {
                     ...p,
                     ProductID: item.value,
                     ListVariant: listVariant
@@ -568,7 +569,7 @@ const CreateUpdateCampaign = (props) => {
             ...campaignState,
             campaign: {
                 ...campaign,
-                ListVariantsProduct: campaign.ListVariantsProduct.map((p, i) => (p.ProductID == productID ? {
+                ListVariants: campaign.ListVariants.map((p, i) => (p.ProductID == productID ? {
                     ...p,
                     ListVariantSelected: item
                 } : p))
@@ -579,14 +580,14 @@ const CreateUpdateCampaign = (props) => {
     }
 
     const RemoveVariantsProduct = (id) => {
-        var arrPro = campaign.ListVariantsProduct.filter(p => p.ID != id);
+        var arrPro = campaign.ListVariants.filter(p => p.ID != id);
         dispatch(setCreateUpdateCampaign(
             {
                 ...campaignState,
                 campaign:
                 {
                     ...campaign,
-                    ListVariantsProduct: arrPro
+                    ListVariants: arrPro
                 },
                 IsOpenSaveToolbar: true
             }));
@@ -1065,7 +1066,7 @@ const CreateUpdateCampaign = (props) => {
                                                                     <>
                                                                         <div className='variant-product'>
                                                                             <div className='timeline'>
-                                                                                {campaign.ListVariantsProduct !== undefined && campaign.ListVariantsProduct !== null && campaign.ListVariantsProduct
+                                                                                {campaign.ListVariants !== undefined && campaign.ListVariants !== null && campaign.ListVariants
                                                                                     .map(
                                                                                         ({ ID, ProductID, VariantID, ListVariant, ListVariantSelected }, index) => (
                                                                                             <div className='node'>
@@ -1087,7 +1088,6 @@ const CreateUpdateCampaign = (props) => {
                                                                                                                     /> */}
                                                                                                                 <Select
                                                                                                                     name="form-field-name"
-                                                                                                                    value="one"
                                                                                                                     loadOptions={getOptions}
                                                                                                                     options={campaignState.SelectOptionProducts}
                                                                                                                     onChange={(value) => {
@@ -1306,6 +1306,7 @@ const CreateUpdateCampaign = (props) => {
                                                                             />
                                                                         </div>
                                                                     </div>
+                                                                    <p className="time-zone-note ml-20">*Timezone is set according to your store’s timezone</p>
                                                                 </div>
 
                                                             </div>

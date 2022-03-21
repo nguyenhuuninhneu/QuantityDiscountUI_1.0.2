@@ -28,6 +28,7 @@ export const Upgrade = () => {
     dispatch(actions.setIsLoadingPage(true));
     axios.post(config.rootLink + '/FrontEnd/Upgrade', {
       shopID: getState().app.Shop?.ID,
+      shop: getState().app.Shop?.Domain,
     })
       .then(function (response) {
 
@@ -55,6 +56,7 @@ export const Downgrade = () => {
     dispatch(actions.setIsLoadingPage(true));
     axios.post(config.rootLink + '/FrontEnd/Downgrade', {
       shopID: getState().app.Shop?.ID,
+      shop: getState().app.Shop?.Domain,
     })
       .then(function (response) {
 
@@ -79,6 +81,7 @@ export const StartFreeTrial = () => {
     dispatch(actions.setIsLoadingPage(true));
     axios.post(config.rootLink + '/FrontEnd/StartFreeTrial', {
       shopID: getState().app.Shop?.ID,
+      shop: getState().app.Shop?.Domain,
     })
       .then(function (response) {
 

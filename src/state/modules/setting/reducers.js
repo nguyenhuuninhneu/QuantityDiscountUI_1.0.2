@@ -56,6 +56,8 @@ const INITIAL_STATE = {
       CustomCssAlert: "15",
       CustomJsAlert: "15"
     },
+    TotalDiscountCode: 0,
+    DiscountDetail: null,
     IsInstall: true,
     IsLoadNewProduct: false,
     ListTheme: [],
@@ -91,7 +93,9 @@ const reducer = (state = INITIAL_STATE, action) => {
           ListCampaign: action.payload.listCampaign,
           ListProduct: action.payload.listProduct,
           CampaignID: action.payload.listCampaign.length > 0 ? action.payload.listCampaign[0]?.ID : 0,
-          ProductID: action.payload.listProduct.length > 0 ? action.payload.listProduct[0]?.ProductCode : 0
+          ProductID: action.payload.listProduct.length > 0 ? action.payload.listProduct[0]?.ProductCode : 0,
+          DiscountDetail: action.payload.discountDetail,
+          TotalDiscountCode: action.payload.discountDetail.length,
         }
       };
 

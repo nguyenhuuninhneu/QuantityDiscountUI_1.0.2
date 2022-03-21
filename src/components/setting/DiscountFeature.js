@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { PageActions, Card, Layout, Heading, TextStyle, Button, ButtonGroup, TextField, Toast, Icon, DataTable, Stack, Checkbox, ContextualSaveBar } from '@shopify/polaris';
+import { PageActions, Card, Layout, Heading, TextStyle, Button, ButtonGroup, TextField, Toast, Icon, DataTable, Stack, Checkbox, ContextualSaveBar, Modal } from '@shopify/polaris';
 import { DeleteMinor, QuestionMarkMajor, CircleInformationMajor, CircleRightMajor, ViewMinor, ConfettiMajor } from '@shopify/polaris-icons';
 import Loading from '../../components/plugins/Loading';
 import { setSetting } from '../../state/modules/setting/actions';
@@ -21,6 +21,7 @@ function DiscountFeature() {
     ['5', '20', '350']
   ]
   const [rowsPreview, setRowPreview] = useState(dataRowPreview);
+  const [isOpenDiscountCode, setIsOpenDiscountCode] = useState(false);
 
 
   const validateNumber = (e) => {
@@ -594,6 +595,13 @@ function DiscountFeature() {
 
                               }}>Sync discounts from Shopify</Button>
                               <div className="break-line"></div>
+                              <div className="flex flex-align-center">
+                                <span className="mr-10"> Total: {settingState.TotalDiscountCode} discount codes</span> <Button onClick={() => {
+                                  setIsOpenDiscountCode(true);
+
+                                }}>Detail</Button>
+                              </div>
+                              <div className="break-line"></div>
                               <p className='only-text'>Discount code prefix</p>
                               <TextField
                                 placeholder=''
@@ -829,60 +837,128 @@ function DiscountFeature() {
             </div>
           </>
       }
+      <>
+        <div className='modal-order-detail item-center'>
+          <Modal
+            open={isOpenDiscountCode}
+            onClose={() => {
+              setIsOpenDiscountCode(false)
+            }}
+            title="Discount codes from Shopify"
+            secondaryActions={[
+              {
+                content: 'Close',
+                onAction: () => {
+                  setIsOpenDiscountCode(false)
+                },
+              },
+            ]}
+          >
+            <Modal.Section>
+              <>
+                <div className='order-detail item-center'>
+                  <DataTable
+                    columnContentTypes={[
+                      'text',
+                      'text',
+                      'text',
+                      'text',
+                    ]}
+                    headings={[
+                      'Discount code',
+                      'Discount type',
+                      'Discount value',
+                      'Minimum requirement',
+                    ]}
+                    // footerContent={`Showing ${currentItems.length} of ${reportState..length} results`}
+                    rows={settingState.DiscountDetail != null && settingState.DiscountDetail.length > 0 ? settingState.DiscountDetail.map((discount, index) => {
+                      return [
+                        discount.DiscountCode,
+                        discount.DiscountType,
+                        discount.Value,
+                        discount.MinimumOrderAmount
 
-      {settingState.IsOpenSaveToolbar ?
-        <div className='head'>
-          <ContextualSaveBar
-            message="Unsaved changes"
-            saveAction={{
-              content: "Save settings",
+                      ];
+                    }) : []}
+                  />
+                  {
+                    settingState.TotalDiscountCode === 0 ? <>
+                      <div class="Polaris-Card">
+                        <div class="Polaris-IndexTable">
+                          <div class="Polaris-IndexTable__EmptySearchResultWrapper">
+                            <div class="Polaris-Stack Polaris-Stack--vertical Polaris-Stack--alignmentCenter">
+                              <div class="Polaris-Stack__Item"><span class="Polaris-TextStyle--variationSubdued"><p>There is no discount code</p></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </> : <></>
+                  }
+                </div>
+              </>
+            </Modal.Section>
+          </Modal>
+        </div>
+      </>
+      {
+        settingState.IsOpenSaveToolbar ?
+          <div className='head'>
+            <ContextualSaveBar
+              message="Unsaved changes"
+              saveAction={{
+                content: "Save settings",
+                onAction: () => {
+                  dispatch(saveSetting())
+                },
+                loading: settingState.IsSaveLoading,
+              }}
+              discardAction={{
+                content: "Discard",
+                onAction: () => {
+                  dispatch(setSetting({
+                    ...settingState,
+                    IsOpenSaveToolbar: false
+                  }))
+                },
+              }}
+            />
+          </div>
+          : <></>
+      }
+      {
+        settingState.IsOpenSaveToolbar ? <>
+          <PageActions
+            primaryAction={{
+              content: 'Save settings',
               onAction: () => {
                 dispatch(saveSetting())
               },
-              loading: settingState.IsSaveLoading,
+              loading: settingState.IsSaveLoading
             }}
-            discardAction={{
-              content: "Discard",
-              onAction: () => {
-                dispatch(setSetting({
-                  ...settingState,
-                  IsOpenSaveToolbar: false
-                }))
+            secondaryActions={[
+              {
+                content: 'Discard',
+                onAction: () => {
+                  dispatch(setSetting({
+                    ...settingState,
+                    IsOpenSaveToolbar: false
+                  }))
+                },
               },
-            }}
+            ]}
           />
-        </div>
-        : <></>}
-      {settingState.IsOpenSaveToolbar ? <>
-        <PageActions
-          primaryAction={{
-            content: 'Save settings',
-            onAction: () => {
-              dispatch(saveSetting())
-            },
-            loading: settingState.IsSaveLoading
-          }}
-          secondaryActions={[
-            {
-              content: 'Discard',
-              onAction: () => {
-                dispatch(setSetting({
-                  ...settingState,
-                  IsOpenSaveToolbar: false
-                }))
-              },
-            },
-          ]}
-        />
-      </> :
-        <></>
+        </> :
+          <></>
       }
-      {settingState.IsOpenSaveResult ? <Toast content={settingState.MessageSaveResult} duration={4000} onDismiss={() => {
-        dispatch(setSetting({
-          ...settingState,
-          IsOpenSaveResult: null
-        }))
-      }} /> : null}
+      {
+        settingState.IsOpenSaveResult ? <Toast content={settingState.MessageSaveResult} duration={4000} onDismiss={() => {
+          dispatch(setSetting({
+            ...settingState,
+            IsOpenSaveResult: null
+          }))
+        }} /> : null
+      }
 
     </>
   )

@@ -56,7 +56,7 @@ export const createCampaign = () => {
             ],
           ListProducts: [],
           ListCollects: [],
-          // ListVariantsProduct: getState().campaign.CreateUpdateCampaign.campaign.ListVariantsProduct,
+          // ListVariants: getState().campaign.CreateUpdateCampaign.campaign.ListVariants,
           StartDate: '',
           EndDate: '',
           StartDateEdit: '',

@@ -5,7 +5,6 @@ import { setCreateUpdateCampaign } from '../../state/modules/campaign/actions';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import config from '../../config/config';
-import { StickyContainer, Sticky } from 'react-sticky';
 
 function TableCollection(props) {
   const dispatch = useDispatch();
@@ -41,7 +40,8 @@ function TableCollection(props) {
     // setSelectedRows(props.ItemSelected)
     axios.get(config.rootLink + '/FrontEnd/GetCollect', {
       params: {
-        shopID: campaign.ShopID
+        shopID: campaign.ShopID,
+        shop: config.shop,
       }
     })
       .then(function (response) {

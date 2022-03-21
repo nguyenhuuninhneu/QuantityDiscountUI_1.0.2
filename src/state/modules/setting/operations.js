@@ -81,7 +81,6 @@ export const saveSetting = () => {
             shop: getState().app.Shop?.Domain
         })
             .then(function (response) {
-
                 const result = response?.data;
                 if (result.IsSuccess) {
                     dispatch(actions.saveSettingCompleted(result));
@@ -155,7 +154,8 @@ export const loadProductByCampaign = (id) => {
     return (dispatch, getState) => {
         axios.get(config.rootLink + '/FrontEnd/GetListProductByCampaign', {
             params: {
-                id: id
+                id: id,
+                shop: getState().app.Shop?.Domain,
             }
         })
             .then(function (response) {
@@ -174,7 +174,8 @@ export const synchronizeData = () => {
     return (dispatch, getState) => {
         axios.get(config.rootLink + '/FrontEnd/SynchronizeData', {
             params: {
-                shopID: getState().app.Shop?.ID
+                shopID: getState().app.Shop?.ID,
+                shop: getState().app.Shop?.Domain
             }
         })
             .then(function (response) {
@@ -195,6 +196,7 @@ export const getProcess = (type) => {
         axios.get(config.rootLink + '/FrontEnd/GetProcess', {
             params: {
                 shopID: getState().app.Shop?.ID,
+                shop: getState().app.Shop?.Domain,
                 type: type
             }
         })

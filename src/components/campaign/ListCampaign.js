@@ -29,7 +29,7 @@ const ListCampaign = (props) => {
         //         campaign:
         //         {
         //             ...campaignCreateState.campaign,
-        //             ListVariantsProduct: []
+        //             ListVariants: []
         //         }
         //     }));
         // Fetch items from another resources.

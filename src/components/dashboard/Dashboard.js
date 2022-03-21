@@ -483,6 +483,7 @@ function Dashboard() {
                 options={options}
               ></Line>
             </div>
+            <p className="time-zone-note">*Timezone is set according to your store’s timezone</p>
           </>
       }
 

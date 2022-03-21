@@ -43,6 +43,7 @@ function TableProduct(props) {
             params: {
                 search: textSearch,
                 shopID: appState.Shop?.ID,
+                shop: appState?.Shop.Domain,
                 page: 1,
                 pagezise: 10
             }
@@ -70,6 +71,7 @@ function TableProduct(props) {
             params: {
                 search: e,
                 shopID: appState.Shop?.ID,
+                shop: appState?.Shop.Domain,
                 page: 1,
                 pagezise: 10
             }
@@ -131,6 +133,7 @@ function TableProduct(props) {
                 params: {
                     search: textSearch,
                     shopID: appState.Shop?.ID,
+                    shop: appState?.Shop.Domain,
                     page: nextPage,
                     pagezise: 10
                 }
