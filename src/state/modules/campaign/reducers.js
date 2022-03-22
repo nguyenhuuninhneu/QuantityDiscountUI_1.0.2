@@ -12,7 +12,7 @@ const INITIAL_STATE = {
     campaigns: null,
     TextSearch: null,
     DiscountType: 0,
-    DiscountTypeSelected: {lable: 'Discount based on' ,value : 0},
+    DiscountTypeSelected: { lable: 'Discount based on', value: 0 },
     listLoading: false,
     Paginate: {
       CurrentItems: [],
@@ -41,7 +41,18 @@ const INITIAL_STATE = {
       PriceType: 1,
       AllProducts: false,
       Active: true,
-      ListDetails: [],
+      ListDetails: [
+        {
+          ID: Math.floor(100000000 + Math.random() * 900000000),
+          Quantity: 0,
+          PercentOrPrice: 0
+        },
+        {
+          ID: Math.floor(100000000 + Math.random() * 900000000),
+          Quantity: 0,
+          PercentOrPrice: 0
+        }
+      ],
       ListProducts: [],
       ListProductsPost: [],
       ListCollects: [],
@@ -183,14 +194,14 @@ const reducer = (state = INITIAL_STATE, action) => {
           IsSaveLoading: action.payload,
         }
       };
-      case types.SET_SETTING:
-        return {
-          ...state,
-          CreateUpdateCampaign: {
-            ...state.CreateUpdateCampaign,
-            Setting: action.payload.setting,
-          }
-        };
+    case types.SET_SETTING:
+      return {
+        ...state,
+        CreateUpdateCampaign: {
+          ...state.CreateUpdateCampaign,
+          Setting: action.payload.setting,
+        }
+      };
     case types.SET_LOADING_PAGE:
       return {
         ...state,

@@ -93,6 +93,7 @@ const CreateUpdateCampaign = (props) => {
                             SelectOptionProducts: res.data.listOptionProduct,
                         }));
                 }
+                getSettingOne();
 
 
             })
@@ -116,7 +117,6 @@ const CreateUpdateCampaign = (props) => {
     const [rowsPreview, setRowPreview] = useState([]);
 
     useEffect(() => {
-        getSettingOne();
         setRowPreview(campaign.ListDetails);
         getOptions('');
     }, []);
@@ -854,12 +854,12 @@ const CreateUpdateCampaign = (props) => {
                                                                                 handleSelectChangeDiscountType(value);
                                                                                 // if (value !== null && value !== undefined && value !== '') {
                                                                                 //     dispatch(setSetting({
-                                                                                //         ...settingState,
+                                                                                //         ...campaignState,
                                                                                 //         TitleValidationTheme: ''
                                                                                 //     }))
                                                                                 // } else {
                                                                                 //     dispatch(setSetting({
-                                                                                //         ...settingState,
+                                                                                //         ...campaignState,
                                                                                 //         TitleValidationTheme: moreAppConfig.SettingValidationSelectTheme
                                                                                 //     }))
                                                                                 // }
@@ -878,12 +878,12 @@ const CreateUpdateCampaign = (props) => {
                                                                                 handleSelectChangePriceType(value);
                                                                                 // if (value !== null && value !== undefined && value !== '') {
                                                                                 //     dispatch(setSetting({
-                                                                                //         ...settingState,
+                                                                                //         ...campaignState,
                                                                                 //         TitleValidationTheme: ''
                                                                                 //     }))
                                                                                 // } else {
                                                                                 //     dispatch(setSetting({
-                                                                                //         ...settingState,
+                                                                                //         ...campaignState,
                                                                                 //         TitleValidationTheme: moreAppConfig.SettingValidationSelectTheme
                                                                                 //     }))
                                                                                 // }
@@ -1029,7 +1029,7 @@ const CreateUpdateCampaign = (props) => {
                                                                         </div>
                                                                         {
                                                                             campaign.ListProducts != null && campaign.ListProducts != undefined && campaign.ListProducts.length > 0 ?
-                                                                            <div className={campaign.ListProducts.length > 10 ? "tags-input-wrapper tags-input-wrapper-scroll" : "tags-input-wrapper"}>
+                                                                                <div className={campaign.ListProducts.length > 10 ? "tags-input-wrapper tags-input-wrapper-scroll" : "tags-input-wrapper"}>
                                                                                     {
                                                                                         campaign.ListProducts.map((item, index) => {
                                                                                             return (
@@ -1330,46 +1330,64 @@ const CreateUpdateCampaign = (props) => {
                                                         <Card>
                                                             <div className='item-center'>
                                                                 {campaignState.Setting.LayoutInProductPage === 4 ? <>
-                                                                    <DataTable
-                                                                        columnContentTypes={[
-                                                                            'text',
-                                                                            (campaign.PriceType !== 3 ? 'text' : <></>),
-                                                                            'text',
-                                                                        ]}
-                                                                        headings={[
-                                                                            'Quantity',
-                                                                            (campaign.PriceType !== 3 ? 'Discount' : <></>),
-                                                                            'Discounted Price'
-                                                                        ]}
-                                                                        rows={
-                                                                            rowsPreview.map((item, index) => {
-                                                                                return (
-                                                                                    ['Buy ' + item.Quantity + '+',
-                                                                                    (campaign.PriceType === 1 ? item.PercentOrPrice + '%' : campaign.PriceType === 2 ? item.PercentOrPrice + '$' : <></>),
-                                                                                    item.PercentOrPrice === 0 ? 0 : (campaign.PriceType === 1 ? Math.floor(100 * (1 - (item.PercentOrPrice / 100)), 2) : campaign.PriceType === 2 ? 100 - item.PercentOrPrice : campaign.PriceType === 3 ? item.PercentOrPrice : 0) + '$']
-                                                                                )
-                                                                            })
-                                                                        }
-                                                                    />
+                                                                    <div className=""><div className="Polaris-DataTable__Navigation">
+                                                                        <button className="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" aria-label="" type="button" disabled=""><span className="Polaris-Button__Content">
+                                                                            <span className="Polaris-Button__Icon"><span className="Polaris-Icon"><svg viewBox="0 0 20 20" className="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16z"></path></svg></span></span></span></button><button className="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="" type="button"><span className="Polaris-Button__Content"><span className="Polaris-Button__Icon"><span className="Polaris-Icon"><svg viewBox="0 0 20 20" className="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16z"></path></svg></span></span></span></button></div><div className="Polaris-DataTable"><div className="Polaris-DataTable__ScrollContainer">
+                                                                                <table className="Polaris-DataTable__Table" style={{ padding: campaignState.Setting.TablePadding + 'px', border: campaignState.Setting.TableBorderSize + 'px solid #fff' }}>
+                                                                                    <thead style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px' }}>
+                                                                                        <tr>
+                                                                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header" scope="col">{campaignState.Setting.TextQuantity}</th>
+                                                                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header" scope="col">{campaignState.Setting.TextDiscount}</th>
+
+                                                                                            {
+                                                                                                campaignState.Setting.ShowDiscountedPrice ? <>
+                                                                                                    <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header" scope="col">{campaignState.Setting.TextDiscountPrice}</th>
+                                                                                                </> : <></>
+                                                                                            }
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        {
+                                                                                            rowsPreview.map((item, index) => {
+                                                                                                return (
+                                                                                                    <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable">
+                                                                                                        <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row">{campaignState.Setting.TextBuy + ' ' + item.Quantity + campaignState.Setting.TextPlus}</th>
+                                                                                                        <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">{(campaign.PriceType === 1 ? item.PercentOrPrice + '%' : campaign.PriceType === 2 ? item.PercentOrPrice + '$' : <></>)}</td>
+                                                                                                        {
+                                                                                                            campaignState.Setting.ShowDiscountedPrice ? <>
+                                                                                                                <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">{item.PercentOrPrice === 0 ? 0 : (campaign.PriceType === 1 ? Math.floor(100 * (1 - (item.PercentOrPrice / 100)), 2) : campaign.PriceType === 2 ? 100 - item.PercentOrPrice : campaign.PriceType === 3 ? item.PercentOrPrice : 0) + '$'}</td>
+                                                                                                            </> : <></>
+                                                                                                        }
+
+                                                                                                    </tr>
+                                                                                                )
+                                                                                            })
+                                                                                        }
+
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
                                                                 </> : campaignState.Setting.LayoutInProductPage === 1 ? <>
                                                                     <div className=""><div className="Polaris-DataTable__Navigation">
                                                                         <button className="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" aria-label="" type="button" disabled=""><span className="Polaris-Button__Content">
                                                                             <span className="Polaris-Button__Icon"><span className="Polaris-Icon"><svg viewBox="0 0 20 20" className="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16z"></path></svg></span></span></span></button><button className="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="" type="button"><span className="Polaris-Button__Content"><span className="Polaris-Button__Icon"><span className="Polaris-Icon"><svg viewBox="0 0 20 20" className="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16z"></path></svg></span></span></span></button></div><div className="Polaris-DataTable"><div className="Polaris-DataTable__ScrollContainer">
-                                                                                <table className="Polaris-DataTable__Table" >
-                                                                                    {/* style={{ padding: settingState.Setting.TablePadding + 'px', border: settingState.Setting.TableBorderSize + 'px solid #fff' }} */}
+                                                                                <table className="Polaris-DataTable__Table"
+                                                                                    style={{ padding: campaignState.Setting.TablePadding + 'px', border: campaignState.Setting.TableBorderSize + 'px solid #fff' }}>
                                                                                     <tbody>
-                                                                                        <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable">
-                                                                                            {/* style={{ fontSize: settingState.Setting.TableFontSizeHeading + 'px' }} */}
+                                                                                        <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable"
+                                                                                            style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px' }}>
                                                                                             <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col">
-                                                                                                {/* {settingState.Setting.TextQuantity} */}
-                                                                                                Quantity
+                                                                                                {campaignState.Setting.TextQuantity}
                                                                                             </th>
                                                                                             {
                                                                                                 rowsPreview.map((item, index) => {
                                                                                                     return (
                                                                                                         <>
                                                                                                             <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
-                                                                                                                Buy {item.Quantity}+
+                                                                                                                {campaignState.Setting.TextBuy + ' ' + item.Quantity + campaignState.Setting.TextPlus}
                                                                                                             </td>
                                                                                                         </>
                                                                                                     )
@@ -1377,11 +1395,11 @@ const CreateUpdateCampaign = (props) => {
                                                                                             }
 
                                                                                         </tr>
-                                                                                        <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable">
-                                                                                            {/* style={{ fontSize: settingState.Setting.TableFontSizeHeading + 'px' }} */}
+                                                                                        <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable"
+                                                                                            style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px' }}
+                                                                                        >
                                                                                             <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col">
-                                                                                                Discount
-                                                                                                {/* {settingState.Setting.TextDiscount} */}
+                                                                                                {campaignState.Setting.TextDiscount}
                                                                                             </th>
                                                                                             {
                                                                                                 rowsPreview.map((item, index) => {
@@ -1395,24 +1413,29 @@ const CreateUpdateCampaign = (props) => {
                                                                                                 })
                                                                                             }
                                                                                         </tr>
-                                                                                        <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable">
-                                                                                            {/* style={{ fontSize: settingState.Setting.TableFontSizeHeading + 'px' }} */}
-                                                                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col">
-                                                                                                Discounted price
-                                                                                                {/* {settingState.Setting.TextDiscountPrice} */}
-                                                                                            </th>
-                                                                                            {
-                                                                                                rowsPreview.map((item, index) => {
-                                                                                                    return (
-                                                                                                        <>
-                                                                                                            <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
-                                                                                                                {item.PercentOrPrice === 0 ? 0 : (campaign.PriceType === 1 ? Math.floor(100 * (1 - (item.PercentOrPrice / 100)), 2) : campaign.PriceType === 2 ? 100 - item.PercentOrPrice : campaign.PriceType === 3 ? item.PercentOrPrice : 0) + '$'}
-                                                                                                            </td>
-                                                                                                        </>
-                                                                                                    )
-                                                                                                })
-                                                                                            }
-                                                                                        </tr>
+                                                                                        {
+                                                                                            campaignState.Setting.ShowDiscountedPrice ? <>
+                                                                                                <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable" style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px' }}>
+
+                                                                                                    <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col">
+                                                                                                        {campaignState.Setting.TextDiscountPrice}
+                                                                                                    </th>
+                                                                                                    {
+                                                                                                        rowsPreview.map((item, index) => {
+                                                                                                            return (
+                                                                                                                <>
+                                                                                                                    <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
+                                                                                                                        {item.PercentOrPrice === 0 ? 0 : (campaign.PriceType === 1 ? Math.floor(100 * (1 - (item.PercentOrPrice / 100)), 2) : campaign.PriceType === 2 ? 100 - item.PercentOrPrice : campaign.PriceType === 3 ? item.PercentOrPrice : 0) + '$'}
+                                                                                                                    </td>
+                                                                                                                </>
+                                                                                                            )
+                                                                                                        })
+                                                                                                    }
+                                                                                                </tr>
+                                                                                            </> : <></>
+                                                                                        }
+
+
 
 
                                                                                     </tbody>

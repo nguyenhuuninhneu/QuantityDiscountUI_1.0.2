@@ -37,6 +37,9 @@ const AppFrame = () => {
     dispatch(setIsEditCampaign(false))
     if (menu !== moreAppConfig.Menu.CREATECAMPAIGN) {
       dispatch(setNoCallTwices(false));
+      if (campaignListState.campaigns.length > 0) {
+        dispatch(setIsNoCampaign(false))
+      }
     }
   }
   let content = <Loading></Loading>;

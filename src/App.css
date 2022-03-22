@@ -1368,6 +1368,8 @@ input.active+.slider .off {
 }
 .card-orange{
     width: calc((100% - 60px)/3); 
+    height: 79;
+    background-color:#E48227;
     position: relative;
     margin-right: 10px;
     color: #fff;
@@ -1375,10 +1377,12 @@ input.active+.slider .off {
     text-align: center;
     margin-bottom: 10px;
 }
-
+.card-orange img{
+    width:100%;
+}
 .card-orange .buy{
     position: absolute;
-    top: 6px;
+    top: 10%;
     left:50%;
     transform:translateX(-50%);
     color: inherit;
@@ -1387,7 +1391,7 @@ input.active+.slider .off {
 
 .card-orange .get{
     position: absolute;
-    top: 23px;
+    top: 34%;
     left:50%;
     transform:translateX(-50%);
     color: inherit;
@@ -1396,7 +1400,7 @@ input.active+.slider .off {
 
 .card-orange .off{
     position: absolute;
-    top: 41px;
+    top: 63%;
     left:50%;
     transform:translateX(-50%);
     color: inherit;
@@ -1446,3 +1450,8 @@ input.active+.slider .off {
     background: #fff;
     font-style: italic;
 } */
+
+.discount-feature .colRight{
+    position: sticky;
+    top: 0;
+}
