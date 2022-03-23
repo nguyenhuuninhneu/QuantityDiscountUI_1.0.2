@@ -8,6 +8,10 @@ import DiscountFeature from '../.././components/setting/DiscountFeature';
 import LimitPurchaseFeaure from '../.././components/setting/LimitPurchaseFeaure';
 import { setSelectedTab } from '../../state/modules/setting/actions';
 import '../../assets/css/setting.css'
+import { getProcess } from '../../state/modules/setting/operations';
+import Process from '../../components/plugins/Process';
+import ReactInterval from 'react-interval';
+
 const tabs = [
   {
     id: 'general',
@@ -46,17 +50,26 @@ function Setting() {
   }
   return (
     settingState.IsLoadingPage ? <Loading></Loading> :
-    <Tabs
-      tabs={tabs}
-      selected={settingState.ListSetting.selectedTab}
-      onSelect={(selected) => dispatch(setSelectedTab(selected))}
-    >
       <>
-        <div className='setting'>
-          {content}
-        </div>
-        </>
-      </Tabs>
+        <ReactInterval timeout={500} enabled={settingState.ListSetting.DisplayProcess}
+          callback={() => { dispatch(getProcess("Update")) }} />
+        {
+          settingState.ListSetting.DisplayProcess ? <Process Process={settingState.ListSetting.Process}></Process> : null
+        }
+        <Tabs
+          tabs={tabs}
+          selected={settingState.ListSetting.selectedTab}
+          onSelect={(selected) => dispatch(setSelectedTab(selected))}
+        >
+          <>
+
+            <div className='setting'>
+              {content}
+            </div>
+          </>
+        </Tabs>
+      </>
+
   )
 }
 

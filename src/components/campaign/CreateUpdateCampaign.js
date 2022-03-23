@@ -232,9 +232,9 @@ const CreateUpdateCampaign = (props) => {
             campaign: {
                 ...campaign,
                 IsVariantProduct: value,
-                AllProducts: false,
-                IsSpecificProduct: false,
-                IsSpecificCollect: false,
+                // AllProducts: false,
+                // IsSpecificProduct: false,
+                // IsSpecificCollect: false,
             },
             CheckTypeDiscountVariantValidation: "",
             CheckTypeDiscountCollectValidation: "",
@@ -281,24 +281,24 @@ const CreateUpdateCampaign = (props) => {
         }
 
 
-        var justOneDiscountType = (campaign.AllProducts && !campaign.IsVariantProduct && !campaign.IsSpecificCollect && !campaign.IsSpecificProduct)
-            || (campaign.IsVariantProduct && !campaign.AllProducts && !campaign.IsSpecificCollect && !campaign.IsSpecificProduct)
-            || ((campaign.IsSpecificCollect || campaign.IsSpecificProduct) && !campaign.IsVariantProduct && !campaign.AllProducts);
-        if (!justOneDiscountType) {
-            dispatch(setCreateUpdateCampaign({
-                ...campaignState,
-                IsOpenSaveToolbar: false,
-                CheckTypeDiscountVariantValidation: "Just choose at least one type of discount"
-            }))
-            scrollToCampaignType();
-            return false;
-        }
-        else {
-            dispatch(setCreateUpdateCampaign({
-                ...campaignState,
-                CheckTypeDiscountVariantValidation: ""
-            }))
-        }
+        // var justOneDiscountType = (campaign.AllProducts && !campaign.IsVariantProduct && !campaign.IsSpecificCollect && !campaign.IsSpecificProduct)
+        //     || (campaign.IsVariantProduct && !campaign.AllProducts && !campaign.IsSpecificCollect && !campaign.IsSpecificProduct)
+        //     || ((campaign.IsSpecificCollect || campaign.IsSpecificProduct) && !campaign.IsVariantProduct && !campaign.AllProducts);
+        // if (!justOneDiscountType) {
+        //     dispatch(setCreateUpdateCampaign({
+        //         ...campaignState,
+        //         IsOpenSaveToolbar: false,
+        //         CheckTypeDiscountVariantValidation: "Just choose at least one type of discount"
+        //     }))
+        //     scrollToCampaignType();
+        //     return false;
+        // }
+        // else {
+        //     dispatch(setCreateUpdateCampaign({
+        //         ...campaignState,
+        //         CheckTypeDiscountVariantValidation: ""
+        //     }))
+        // }
         if (campaign.IsSpecificCollect && campaign.ListCollects.length === 0) {
             dispatch(setCreateUpdateCampaign({
                 ...campaignState,
@@ -950,7 +950,7 @@ const CreateUpdateCampaign = (props) => {
                                                                 </div>
                                                                 <Stack>
                                                                     <Checkbox
-                                                                        disabled={campaign.IsVariantProduct}
+                                                                        // disabled={campaign.IsVariantProduct}
                                                                         label="Apply the discounts across all products"
                                                                         checked={campaign.AllProducts}
                                                                         onChange={(e) => { handleChangeAcrossAllProduct(e) }}
@@ -961,7 +961,7 @@ const CreateUpdateCampaign = (props) => {
                                                                 </div>
                                                                 <Stack>
                                                                     <Checkbox
-                                                                        disabled={campaign.IsVariantProduct}
+                                                                        // disabled={campaign.IsVariantProduct}
                                                                         label="Apply the discounts to specific collections"
                                                                         checked={campaign.IsSpecificCollect}
                                                                         onChange={(e) => { handleChangeSpecificCollection(e) }}
@@ -1010,7 +1010,7 @@ const CreateUpdateCampaign = (props) => {
                                                                 <InlineError message={campaignState.CheckTypeDiscountCollectValidation} fieldID="collect" />
                                                                 <Stack>
                                                                     <Checkbox
-                                                                        disabled={campaign.IsVariantProduct}
+                                                                        // disabled={campaign.IsVariantProduct}
                                                                         label="Apply the discounts to specific products"
                                                                         checked={campaign.IsSpecificProduct}
                                                                         onChange={(e) => { handleChangeSpecificProduct(e) }}
@@ -1057,7 +1057,7 @@ const CreateUpdateCampaign = (props) => {
                                                                     <Checkbox
                                                                         label="Apply the discounts to specific variants"
                                                                         checked={campaign.IsVariantProduct}
-                                                                        disabled={campaign.ID > 0 ? true : false}
+                                                                        // disabled={campaign.ID > 0 ? true : false}
                                                                         onChange={(e) => { handleChangeSpecificVariants(e) }}
                                                                     />
 
@@ -1461,7 +1461,6 @@ const CreateUpdateCampaign = (props) => {
                                                                             rowsPreview.map((item, index) => {
                                                                                 return (
                                                                                     <>
-
                                                                                         <div className='card-orange'>
                                                                                             <img src={CardOrange} alt="" style={{ marginLeft: '0' }} className="Polaris-CalloutCard__Image" />
                                                                                             <p className="buy">Buy {item.Quantity}+</p>
