@@ -54,7 +54,20 @@ const INITIAL_STATE = {
       TextDiscountedPrice: "Discounted price",
       TextUpdateCart: "Update Cart",
       CustomCssAlert: "15",
-      CustomJsAlert: "15"
+      CustomJsAlert: "15",
+      FontSizeDiscountTitle: "15",
+      TextColorDiscountTitle: "#000000",
+      TextColorHeading: "#000000",
+      BackgroundColorHeading: "#FFFFFF",
+      CardTheme: 0,
+      FontSizeItemInTable: "15",
+      TextColorItemInTable: "#000000",
+      BackgroundColorItemInTable: "#FFFFFF",
+      TextGet: "get",
+      TextOff: "off",
+      FontSizeCard: "15",
+      TextColorCard: "#000000",
+      BackgroundColorCard: "#FFFFFF",
     },
     TotalDiscountCode: 0,
     DiscountDetail: null,
@@ -94,8 +107,8 @@ const reducer = (state = INITIAL_STATE, action) => {
           ListProduct: action.payload.listProduct,
           CampaignID: action.payload.listCampaign.length > 0 ? action.payload.listCampaign[0]?.ID : 0,
           ProductID: action.payload.listProduct.length > 0 ? action.payload.listProduct[0]?.ProductCode : 0,
-          DiscountDetail: action.payload.discountDetail,
-          TotalDiscountCode: action.payload.discountDetail.length,
+          // DiscountDetail: action.payload.discountDetail,
+          // TotalDiscountCode: action.payload.discountDetail.length,
         }
       };
 

@@ -1367,9 +1367,7 @@ input.active+.slider .off {
     display: flex;
 }
 .card-orange{
-    width: calc((100% - 60px)/3); 
     height: 79;
-    background-color:#E48227;
     position: relative;
     margin-right: 10px;
     color: #fff;
@@ -1377,9 +1375,7 @@ input.active+.slider .off {
     text-align: center;
     margin-bottom: 10px;
 }
-.card-orange img{
-    width:100%;
-}
+
 .card-orange .buy{
     position: absolute;
     top: 10%;
@@ -1455,3 +1451,42 @@ input.active+.slider .off {
     position: sticky;
     top: 0;
 }
+
+input[type="color"] {
+	-webkit-appearance: none;
+	border: none;
+	width: 35px;
+	height: 35px;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+	border: none;
+}
+
+.w90pt{
+    width: 90%;
+}
+
+.group-card-theme .item-card-theme {
+    float: left;
+    margin-right: 15px;
+}
+
+.group-card-theme .item-card-theme:hover .Polaris-Button,
+.group-card-theme .item-card-theme.active .Polaris-Button {
+    border: 3px solid #008060;
+    background-color: none;
+}
+
+.group-card-theme .item-card-theme .Polaris-Button {
+    box-sizing: border-box;
+    box-shadow: none;
+    padding: 10px;
+    border: 3px solid #DADADA;
+    border-radius: 4px;
+}
+
+
+

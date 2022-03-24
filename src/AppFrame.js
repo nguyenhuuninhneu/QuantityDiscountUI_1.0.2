@@ -37,7 +37,7 @@ const AppFrame = () => {
     dispatch(setIsEditCampaign(false))
     if (menu !== moreAppConfig.Menu.CREATECAMPAIGN) {
       dispatch(setNoCallTwices(false));
-      if (campaignListState.campaigns.length > 0) {
+      if (campaignListState.campaigns != null && campaignListState.campaigns != undefined && campaignListState.campaigns.length > 0) {
         dispatch(setIsNoCampaign(false))
       }
     }
@@ -83,7 +83,7 @@ const AppFrame = () => {
             <ul className="Polaris-Navigation__Section">
               <li className="Polaris-Navigation__ListItem">
                 <div className="Polaris-Navigation__ItemWrapper">
-                  <a className="Polaris-Navigation__Item Polaris-Navigation--subNavigationActive" tabindex="0" aria-expanded="true" aria-controls="PolarisSecondaryNavigation1" onClick={() => { setActiveMenu(moreAppConfig.Menu.DASHBOARD) }} data-polaris-unstyled="true">
+                  <a className="Polaris-Navigation__Item Polaris-Navigation--subNavigationActive" aria-expanded="true" aria-controls="PolarisSecondaryNavigation1" onClick={() => { setActiveMenu(moreAppConfig.Menu.DASHBOARD) }} data-polaris-unstyled="true">
                     <div className="Polaris-Navigation__Icon">
                       <img src={IconAnalyticsMajor} alt="" />
                     </div>
@@ -94,10 +94,10 @@ const AppFrame = () => {
                   <div id="PolarisSecondaryNavigation1" className="Polaris-Collapsible" aria-expanded="true" style={{ transitionDuration: '0ms', transitionTimingFunction: 'linear', maxHeight: 'none', overflow: 'visible' }}>
                     <ul className="Polaris-Navigation__List">
                       <li className="Polaris-Navigation__ListItem">
-                        <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.DASHBOARD ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} tabindex="0" aria-disabled="false" onClick={() => { setActiveMenu(moreAppConfig.Menu.DASHBOARD) }} data-polaris-unstyled="true"><span className="Polaris-Navigation__Text">Dashboard</span></a></div>
+                        <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.DASHBOARD ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} aria-disabled="false" onClick={() => { setActiveMenu(moreAppConfig.Menu.DASHBOARD) }} data-polaris-unstyled="true"><span className="Polaris-Navigation__Text">Dashboard</span></a></div>
                       </li>
                       <li className="Polaris-Navigation__ListItem">
-                        <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.REPORT ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} tabindex="0" aria-disabled="false" onClick={() => { setActiveMenu(moreAppConfig.Menu.REPORT) }} data-polaris-unstyled="true"><span className="Polaris-Navigation__Text">Report</span></a></div>
+                        <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.REPORT ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} aria-disabled="false" onClick={() => { setActiveMenu(moreAppConfig.Menu.REPORT) }} data-polaris-unstyled="true"><span className="Polaris-Navigation__Text">Report</span></a></div>
                       </li>
                     </ul>
                   </div>
@@ -105,12 +105,12 @@ const AppFrame = () => {
               </li>
               <li className="Polaris-Navigation__ListItem">
                 <div className="Polaris-Navigation__ItemWrapper">
-                  <a className="Polaris-Navigation__Item Polaris-Navigation--subNavigationActive" tabindex="0" onClick={() => { 
+                  <a className="Polaris-Navigation__Item Polaris-Navigation--subNavigationActive" onClick={() => { 
                     if (appState.NoCallTwiceTime == false) {
                       dispatch(setNoCallTwices(true));
                       setActiveMenu(moreAppConfig.Menu.CREATECAMPAIGN)
                     }
-                     }} tabindex="0" aria-expanded="true" aria-controls="PolarisSecondaryNavigation5" data-polaris-unstyled="true">
+                     }} aria-expanded="true" aria-controls="PolarisSecondaryNavigation5" data-polaris-unstyled="true">
                     <div className="Polaris-Navigation__Icon">
                       <img src={IconDiscountCodeMajor} alt="" />
                     </div>
@@ -121,7 +121,7 @@ const AppFrame = () => {
                   <div id="PolarisSecondaryNavigation5" className="Polaris-Collapsible" aria-expanded="true" style={{ transitionDuration: '0ms', transitionTimingFunction: 'linear', maxHeight: 'none', overflow: 'visible' }}>
                     <ul className="Polaris-Navigation__List">
                       <li className="Polaris-Navigation__ListItem">
-                        <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.CREATECAMPAIGN ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} tabindex="0" onClick={() => {
+                        <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.CREATECAMPAIGN ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} onClick={() => {
                           if (appState.NoCallTwiceTime == false) {
                             if (campaignListState.TotalCampaign === 0) {
                               dispatch(setIsNoCampaign(true))
@@ -136,7 +136,7 @@ const AppFrame = () => {
                       </li>
                       <li className="Polaris-Navigation__ListItem">
                         <div className="Polaris-Navigation__ItemWrapper">
-                          <a className={appState.Menu === moreAppConfig.Menu.MANAGECAMPAIGN ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} tabindex="0" onClick={() => {
+                          <a className={appState.Menu === moreAppConfig.Menu.MANAGECAMPAIGN ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} onClick={() => {
                             // if (campaignListState.TotalCampaign === 0) {
                             //   dispatch(setIsNoCampaign(true));
                             //   dispatch(setIsCreatingCampaign(true));
@@ -159,7 +159,7 @@ const AppFrame = () => {
               </li>
               <li className="Polaris-Navigation__ListItem">
                 <div className="Polaris-Navigation__ItemWrapper">
-                  <a className={appState.Menu === moreAppConfig.Menu.LIMITPURCHASECAMPAIGN ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} tabindex="0" onClick={() => { setActiveMenu(moreAppConfig.Menu.LIMITPURCHASECAMPAIGN) }} data-polaris-unstyled="true">
+                  <a className={appState.Menu === moreAppConfig.Menu.LIMITPURCHASECAMPAIGN ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} onClick={() => { setActiveMenu(moreAppConfig.Menu.LIMITPURCHASECAMPAIGN) }} data-polaris-unstyled="true">
                     <div className="Polaris-Navigation__Icon">
                       <img src={IconLimitPurchaseMajor} alt="" />
                     </div>
@@ -169,7 +169,7 @@ const AppFrame = () => {
               </li>
               <li className="Polaris-Navigation__ListItem">
                 <div className="Polaris-Navigation__ItemWrapper">
-                  <a className={appState.Menu === moreAppConfig.Menu.PLAN ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} tabindex="0" onClick={() => { setActiveMenu(moreAppConfig.Menu.PLAN) }} data-polaris-unstyled="true">
+                  <a className={appState.Menu === moreAppConfig.Menu.PLAN ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} onClick={() => { setActiveMenu(moreAppConfig.Menu.PLAN) }} data-polaris-unstyled="true">
                     <div className="Polaris-Navigation__Icon">
                       <img src={IconImagesMajor} alt="" />
                     </div>
@@ -179,7 +179,7 @@ const AppFrame = () => {
               </li>
               <li className="Polaris-Navigation__ListItem">
                 <div className="Polaris-Navigation__ItemWrapper">
-                  <a className={appState.Menu === moreAppConfig.Menu.SETTING ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} tabindex="0" onClick={() => { setActiveMenu(moreAppConfig.Menu.SETTING) }} data-polaris-unstyled="true">
+                  <a className={appState.Menu === moreAppConfig.Menu.SETTING ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} onClick={() => { setActiveMenu(moreAppConfig.Menu.SETTING) }} data-polaris-unstyled="true">
                     <div className="Polaris-Navigation__Icon">
                       <img src={IconSettingsMajor} alt="" />
                     </div>

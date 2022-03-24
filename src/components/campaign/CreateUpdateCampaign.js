@@ -21,7 +21,9 @@ import TableProduct from './TableProduct';
 import Select from 'react-select';
 import axios from 'axios';
 import CardOrange from '../../assets/images/card-orange.svg';
-
+import CardOrange2 from '../../assets/images/card-orange-2.svg';
+import CardOrange3 from '../../assets/images/card-orange-3.svg';
+import { hexToCSSFilter } from 'hex-to-css-filter';
 
 
 const CreateUpdateCampaign = (props) => {
@@ -1323,7 +1325,7 @@ const CreateUpdateCampaign = (props) => {
                                                 </h2>
                                                 <div className='bg-bound'>
                                                     <div className='preview-table'>
-                                                        <h2 className="Polaris-Heading Heading-Bottom-10 Heading-Icon-Right"> {campaignState.Setting.TextQuantityBreaks}
+                                                        <h2 className="Polaris-Heading Heading-Bottom-10 Heading-Icon-Right" style={{ fontSize: campaignState.Setting2.FontSizeDiscountTitle + 'px', color: campaignState.Setting2.TextColorDiscountTitle }}> {campaignState.Setting.TextQuantityBreaks}
                                                             {/* <Icon source={ConfettiMajor} color='base'></Icon> */}
 
                                                         </h2>
@@ -1336,12 +1338,12 @@ const CreateUpdateCampaign = (props) => {
                                                                                 <table className="Polaris-DataTable__Table" style={{ padding: campaignState.Setting.TablePadding + 'px', border: campaignState.Setting.TableBorderSize + 'px solid #fff' }}>
                                                                                     <thead style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px' }}>
                                                                                         <tr>
-                                                                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header" scope="col">{campaignState.Setting.TextQuantity}</th>
-                                                                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header" scope="col">{campaignState.Setting.TextDiscount}</th>
+                                                                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header" scope="col" style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px', color: campaignState.Setting2.TextColorHeading, backgroundColor: campaignState.Setting2.BackgroundColorHeading }}>{campaignState.Setting.TextQuantity}</th>
+                                                                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header" scope="col" style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px', color: campaignState.Setting2.TextColorHeading, backgroundColor: campaignState.Setting2.BackgroundColorHeading }}>{campaignState.Setting.TextDiscount}</th>
 
                                                                                             {
                                                                                                 campaignState.Setting.ShowDiscountedPrice ? <>
-                                                                                                    <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header" scope="col">{campaignState.Setting.TextDiscountPrice}</th>
+                                                                                                    <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header" scope="col" style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px', color: campaignState.Setting2.TextColorHeading, backgroundColor: campaignState.Setting2.BackgroundColorHeading }}>{campaignState.Setting.TextDiscountPrice}</th>
                                                                                                 </> : <></>
                                                                                             }
                                                                                         </tr>
@@ -1351,11 +1353,11 @@ const CreateUpdateCampaign = (props) => {
                                                                                             rowsPreview.map((item, index) => {
                                                                                                 return (
                                                                                                     <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable">
-                                                                                                        <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row">{campaignState.Setting.TextBuy + ' ' + item.Quantity + campaignState.Setting.TextPlus}</th>
-                                                                                                        <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">{(campaign.PriceType === 1 ? item.PercentOrPrice + '%' : campaign.PriceType === 2 ? item.PercentOrPrice + '$' : <></>)}</td>
+                                                                                                        <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row" style={{ fontSize: campaignState.Setting2.FontSizeItemInTable + 'px', color: campaignState.Setting2.TextColorItemInTable, backgroundColor: campaignState.Setting2.BackgroundColorItemInTable }}>{campaignState.Setting.TextBuy + ' ' + item.Quantity + campaignState.Setting.TextPlus}</th>
+                                                                                                        <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: campaignState.Setting2.FontSizeItemInTable + 'px', color: campaignState.Setting2.TextColorItemInTable, backgroundColor: campaignState.Setting2.BackgroundColorItemInTable }}>{(campaign.PriceType === 1 ? item.PercentOrPrice + '%' : campaign.PriceType === 2 ? item.PercentOrPrice + '$' : <></>)}</td>
                                                                                                         {
                                                                                                             campaignState.Setting.ShowDiscountedPrice ? <>
-                                                                                                                <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">{item.PercentOrPrice === 0 ? 0 : (campaign.PriceType === 1 ? Math.floor(100 * (1 - (item.PercentOrPrice / 100)), 2) : campaign.PriceType === 2 ? 100 - item.PercentOrPrice : campaign.PriceType === 3 ? item.PercentOrPrice : 0) + '$'}</td>
+                                                                                                                <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: campaignState.Setting2.FontSizeItemInTable + 'px', color: campaignState.Setting2.TextColorItemInTable, backgroundColor: campaignState.Setting2.BackgroundColorItemInTable }}>{item.PercentOrPrice === 0 ? 0 : (campaign.PriceType === 1 ? Math.floor(100 * (1 - (item.PercentOrPrice / 100)), 2) : campaign.PriceType === 2 ? 100 - item.PercentOrPrice : campaign.PriceType === 3 ? item.PercentOrPrice : 0) + '$'}</td>
                                                                                                             </> : <></>
                                                                                                         }
 
@@ -1379,14 +1381,14 @@ const CreateUpdateCampaign = (props) => {
                                                                                     <tbody>
                                                                                         <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable"
                                                                                             style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px' }}>
-                                                                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col">
+                                                                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col" style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px', color: campaignState.Setting2.TextColorHeading, backgroundColor: campaignState.Setting2.BackgroundColorHeading }}>
                                                                                                 {campaignState.Setting.TextQuantity}
                                                                                             </th>
                                                                                             {
                                                                                                 rowsPreview.map((item, index) => {
                                                                                                     return (
                                                                                                         <>
-                                                                                                            <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
+                                                                                                            <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: campaignState.Setting2.FontSizeItemInTable + 'px', color: campaignState.Setting2.TextColorItemInTable, backgroundColor: campaignState.Setting2.BackgroundColorItemInTable }}>
                                                                                                                 {campaignState.Setting.TextBuy + ' ' + item.Quantity + campaignState.Setting.TextPlus}
                                                                                                             </td>
                                                                                                         </>
@@ -1398,14 +1400,14 @@ const CreateUpdateCampaign = (props) => {
                                                                                         <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable"
                                                                                             style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px' }}
                                                                                         >
-                                                                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col">
+                                                                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col" style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px', color: campaignState.Setting2.TextColorHeading, backgroundColor: campaignState.Setting2.BackgroundColorHeading }}>
                                                                                                 {campaignState.Setting.TextDiscount}
                                                                                             </th>
                                                                                             {
                                                                                                 rowsPreview.map((item, index) => {
                                                                                                     return (
                                                                                                         <>
-                                                                                                            <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
+                                                                                                            <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: campaignState.Setting2.FontSizeItemInTable + 'px', color: campaignState.Setting2.TextColorItemInTable, backgroundColor: campaignState.Setting2.BackgroundColorItemInTable }}>
                                                                                                                 {(campaign.PriceType === 1 ? item.PercentOrPrice + '%' : campaign.PriceType === 2 ? item.PercentOrPrice + '$' : <></>)}
                                                                                                             </td>
                                                                                                         </>
@@ -1417,14 +1419,14 @@ const CreateUpdateCampaign = (props) => {
                                                                                             campaignState.Setting.ShowDiscountedPrice ? <>
                                                                                                 <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable" style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px' }}>
 
-                                                                                                    <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col">
+                                                                                                    <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col" style={{ fontSize: campaignState.Setting.TableFontSizeHeading + 'px', color: campaignState.Setting2.TextColorHeading, backgroundColor: campaignState.Setting2.BackgroundColorHeading }}>
                                                                                                         {campaignState.Setting.TextDiscountPrice}
                                                                                                     </th>
                                                                                                     {
                                                                                                         rowsPreview.map((item, index) => {
                                                                                                             return (
                                                                                                                 <>
-                                                                                                                    <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
+                                                                                                                    <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: campaignState.Setting2.FontSizeItemInTable + 'px', color: campaignState.Setting2.TextColorItemInTable, backgroundColor: campaignState.Setting2.BackgroundColorItemInTable }}>
                                                                                                                         {item.PercentOrPrice === 0 ? 0 : (campaign.PriceType === 1 ? Math.floor(100 * (1 - (item.PercentOrPrice / 100)), 2) : campaign.PriceType === 2 ? 100 - item.PercentOrPrice : campaign.PriceType === 3 ? item.PercentOrPrice : 0) + '$'}
                                                                                                                     </td>
                                                                                                                 </>
@@ -1461,17 +1463,12 @@ const CreateUpdateCampaign = (props) => {
                                                                             rowsPreview.map((item, index) => {
                                                                                 return (
                                                                                     <>
-                                                                                        <div className='card-orange'>
-                                                                                            <img src={CardOrange} alt="" style={{ marginLeft: '0' }} className="Polaris-CalloutCard__Image" />
-                                                                                            <p className="buy">Buy {item.Quantity}+</p>
-                                                                                            <p className="get">get</p>
-                                                                                            <p className="off">{item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'} off</p>
+                                                                                        <div className='card-orange' style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>
+                                                                                            <img src={campaignState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: hexToCSSFilter(campaignState.Setting2.BackgroundColorCard).filter.replace(';', '') }} className="Polaris-CalloutCard__Image" />
+                                                                                            <p className="buy">{campaignState.Setting.TextBuy} {item.Quantity}{campaignState.Setting.TextPLus}</p>
+                                                                                            <p className="get" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{campaignState.Setting2.TextGet}</p>
+                                                                                            <p className="off" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'} {campaignState.Setting2.TextOff}</p>
                                                                                         </div>
-                                                                                        {/* {
-                                                                                        (index + 1) % 3 === 0 ? <>
-                                                                                            <div className="cb"></div>
-                                                                                        </> : <></>
-                                                                                    }       */}
 
                                                                                     </>
                                                                                 )

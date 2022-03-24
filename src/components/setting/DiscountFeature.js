@@ -6,8 +6,11 @@ import Loading from '../../components/plugins/Loading';
 import { setSetting } from '../../state/modules/setting/actions';
 import { saveSetting, fetchSetting } from '../../state/modules/setting/operations';
 import Select from 'react-select';
-import CardOrange from '../../assets/images/card-orange.svg';
-
+import CardOrange2 from '../../assets/images/card-orange-2.svg';
+import CardOrange3 from '../../assets/images/card-orange-3.svg';
+import { hexToCSSFilter } from 'hex-to-css-filter';
+import config from '../../config/config';
+import axios from 'axios';
 
 
 function DiscountFeature() {
@@ -22,8 +25,28 @@ function DiscountFeature() {
   ]
   const [rowsPreview, setRowPreview] = useState(dataRowPreview);
   const [isOpenDiscountCode, setIsOpenDiscountCode] = useState(false);
+  const [filterBackgroundColorCard, setFilterBackgroundColorCard] = useState(hexToCSSFilter(settingState.Setting2.BackgroundColorCard).filter);
+  const getDiscountCode = async () => {
+    await axios.get(config.rootLink + '/FrontEnd/GetDiscountCode', {
+      params: {
+        shopID: appState?.Shop?.ID,
+        shop: config.shop,
+      }
+    })
+      .then((res) => {
+        const result = res?.data;
+        dispatch(setSetting({
+          ...settingState,
+          DiscountDetail: result.discountDetail,
+          TotalDiscountCode: result.discountDetail.length,
+        }))
 
-
+      })
+      .catch(err => console.log(err))
+  }
+  useEffect(() => {
+    getDiscountCode();
+  }, []);
   const validateNumber = (e) => {
     if (isNaN(e)) {
       return false;
@@ -59,6 +82,7 @@ function DiscountFeature() {
                             <div className="break-line"></div>
                             <Stack>
                               <Checkbox
+                                id='ShowDiscountProductPage'
                                 label="Show discount in product page"
                                 checked={settingState.Setting.ShowDiscountProductPage}
                                 onChange={(e) => {
@@ -77,6 +101,7 @@ function DiscountFeature() {
                             <div className="break-line"></div>
                             <Stack>
                               <Checkbox
+                                id='ShowDescription'
                                 label="Show description"
                                 checked={settingState.Setting.ShowDescription}
                                 onChange={(e) => {
@@ -92,46 +117,14 @@ function DiscountFeature() {
                                 }}
                               />
                             </Stack>
-                            <p className='only-text'>Layout in product page</p>
-                            <Select
-                              // label="Discount based on"
-                              options={settingState.ListLayout}
-                              onChange={(value) => {
 
-                                handleSelectLayoutType(value);
-                              }}
-                              isSearchable={false}
-                              value={settingState.ListLayout.filter(p => p.value == settingState.Setting.LayoutInProductPage)[0] || settingState.ListLayout[0]}
-                            />
+                          </div>
 
-                            <div className="break-line"></div>
-                            {
-                              settingState.Setting.LayoutInProductPage === 3 ? <>
-
-                              </>
-                                : <>
-                                  <Stack>
-                                    <Checkbox
-                                      label={"Show " + (settingState.Setting.LayoutInProductPage === 1 ? 'row' : 'column') + " “Discounted price”"}
-                                      checked={settingState.Setting.ShowDiscountedPrice}
-                                      onChange={(e) => {
-                                        dispatch(setSetting({
-                                          ...settingState,
-                                          Setting: {
-                                            ...settingState.Setting,
-                                            ShowDiscountedPrice: e,
-                                          },
-                                          IsOpenSaveToolbar: true
-                                        }))
-
-                                      }}
-                                    />
-                                  </Stack>
-                                </>
-                            }
-
-                            <p className='only-text'>Replace the default text:</p>
-
+                        </Card.Section>
+                        {/* Custome discount title */}
+                        <Card.Section>
+                          <div className='element-general'>
+                            <p className='only-text'>Customize discount title</p>
                             <div className='group-fill-text'>
                               <div className='item'>
                                 <div className='col col1'>
@@ -144,6 +137,7 @@ function DiscountFeature() {
                                 </div>
                                 <div className='col col3'>
                                   <TextField
+                                    id='TextQuantityBreaks'
                                     placeholder='🔥 Buy more, save more! 🔥'
                                     value={settingState.Setting.TextQuantityBreaks}
                                     onChange={(e) => {
@@ -162,67 +156,358 @@ function DiscountFeature() {
                                 <div className='cb'>
                                 </div>
                               </div>
+                            </div>
+                            <div className='group-col-half'>
                               <div className='item'>
-                                <div className='col col1'>
-                                  “Quantity”
-                                </div>
-                                <div className='col col2'>
-                                  <Icon
-                                    source={CircleRightMajor}
-                                    color="base" />
-                                </div>
-                                <div className='col col3'>
+                                <div className='itemLeft'>
+                                  <p className='title'>Font size</p>
                                   <TextField
-                                    placeholder='Quantity'
-                                    value={settingState.Setting.TextQuantity}
+                                    id='FontSizeDiscountTitle'
+                                    placeholder='Font size'
+                                    value={settingState.Setting2.FontSizeDiscountTitle}
                                     onChange={(e) => {
                                       dispatch(setSetting({
                                         ...settingState,
-                                        Setting: {
-                                          ...settingState.Setting,
-                                          TextQuantity: e,
+                                        Setting2: {
+                                          ...settingState.Setting2,
+                                          FontSizeDiscountTitle: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
                                         },
                                         IsOpenSaveToolbar: true
                                       }))
                                     }}
-                                    type="text"
+                                    type="number"
+                                    min={0}
                                   />
                                 </div>
-                                <div className='cb'>
-                                </div>
-                              </div>
-                              <div className='item'>
-                                <div className='col col1'>
-                                  “Discount”
-                                </div>
-                                <div className='col col2'>
-                                  <Icon
-                                    source={CircleRightMajor}
-                                    color="base" />
-                                </div>
-                                <div className='col col3'>
-                                  <TextField
-                                    placeholder='Discount'
-                                    value={settingState.Setting.TextDiscount}
-                                    onChange={(e) => {
+                                <div className='itemRight'>
+                                  <p className='title'>Text color</p>
+                                  <div className='flex flex-align-center'>
+                                    <div className='w90pt'>
+                                      <TextField
+                                        id='TextColorDiscountTitle'
+                                        placeholder='Text color'
+                                        value={settingState.Setting2.TextColorDiscountTitle}
+                                        onChange={(e) => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              TextColorDiscountTitle: e == '' ? '#FFFFFF' : e.trim(),
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }}
+                                      />
+                                    </div>
+                                    <input type="color" value={settingState.Setting2.TextColorDiscountTitle} onChange={e => {
                                       dispatch(setSetting({
                                         ...settingState,
-                                        Setting: {
-                                          ...settingState.Setting,
-                                          TextDiscount: e,
+                                        Setting2: {
+                                          ...settingState.Setting2,
+                                          TextColorDiscountTitle: e.target.value == '' ? '#FFFFFF' : e.target.value.toUpperCase(),
                                         },
                                         IsOpenSaveToolbar: true
                                       }))
-                                    }}
-                                    type="text"
-                                  />
+                                    }} />
+                                  </div>
+
                                 </div>
                                 <div className='cb'>
+
                                 </div>
                               </div>
+
+                            </div>
+                          </div>
+                        </Card.Section>
+                        {/* Layout in Page */}
+                        <Card.Section>
+                          <div className='element-general'>
+                            <p className='only-text'>Layout in product page</p>
+                            <Select
+                              id='LayoutInProductPage'
+                              // label="Discount based on"
+                              options={settingState.ListLayout}
+                              onChange={(value) => {
+
+                                handleSelectLayoutType(value);
+                              }}
+                              isSearchable={false}
+                              value={settingState.ListLayout.filter(p => p.value == settingState.Setting.LayoutInProductPage)[0] || settingState.ListLayout[0]}
+                            />
+                            <div className="break-line"></div>
+                            <p className='only-text'>Select card theme</p>
+                            {
+                              settingState.Setting.LayoutInProductPage === 3 ? <>
+                                <div className='group-card-theme'>
+                                  <div className={settingState.Setting2.CardTheme == 0 ? 'item-card-theme active' : 'item-card-theme'}>
+                                    <Button onClick={() => {
+
+                                      dispatch(setSetting({
+                                        ...settingState,
+                                        Setting2: {
+                                          ...settingState.Setting2,
+                                          CardTheme: 0,
+                                        },
+                                        IsOpenSaveToolbar: true
+                                      }))
+                                    }}>
+                                      <img src={CardOrange2} alt="" style={{ filter: filterBackgroundColorCard.replace(';', '') }} />
+                                    </Button>
+                                  </div>
+                                  <div className={settingState.Setting2.CardTheme == 1 ? 'item-card-theme active' : 'item-card-theme'}>
+                                    <Button onClick={() => {
+                                      dispatch(setSetting({
+                                        ...settingState,
+                                        Setting2: {
+                                          ...settingState.Setting2,
+                                          CardTheme: 1,
+                                        },
+                                        IsOpenSaveToolbar: true
+                                      }))
+                                    }}>
+                                      <img src={CardOrange3} style={{ filter: filterBackgroundColorCard.replace(';', '') }} alt="" />
+                                    </Button>
+                                  </div>
+                                  <div className='cb'></div>
+                                </div>
+                              </>
+                                : <>
+                                  <Stack>
+                                    <Checkbox
+                                      id='ShowDiscountedPrice'
+                                      label={"Show " + (settingState.Setting.LayoutInProductPage === 1 ? 'row' : 'column') + " “Discounted price”"}
+                                      checked={settingState.Setting.ShowDiscountedPrice}
+                                      onChange={(e) => {
+                                        dispatch(setSetting({
+                                          ...settingState,
+                                          Setting: {
+                                            ...settingState.Setting,
+                                            ShowDiscountedPrice: e,
+                                          },
+                                          IsOpenSaveToolbar: true
+                                        }))
+
+                                      }}
+                                    />
+                                  </Stack>
+                                </>
+                            }
+                          </div>
+
+                        </Card.Section>
+                        {/* Custom first table row */}
+                        {
+                          settingState.Setting.LayoutInProductPage === 3 ? <></> : <>
+                            <Card.Section>
+                              <div className='element-general'>
+                                <p className='only-text'>{settingState.Setting.LayoutInProductPage === 1 ? 'Customize first table column' : settingState.Setting.LayoutInProductPage === 3 ? 'Customize card' : 'Customize first table row'}</p>
+                                <div className='group-fill-text'>
+                                  <div className='item'>
+                                    <div className='col col1'>
+                                      “Quantity”
+                                    </div>
+                                    <div className='col col2'>
+                                      <Icon
+                                        source={CircleRightMajor}
+                                        color="base" />
+                                    </div>
+                                    <div className='col col3'>
+                                      <TextField
+                                        id='TextQuantity'
+                                        placeholder='Quantity'
+                                        value={settingState.Setting.TextQuantity}
+                                        onChange={(e) => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting: {
+                                              ...settingState.Setting,
+                                              TextQuantity: e,
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }}
+                                        type="text"
+                                      />
+                                    </div>
+                                    <div className='cb'>
+                                    </div>
+                                  </div>
+                                  <div className='item'>
+                                    <div className='col col1'>
+                                      “Discount”
+                                    </div>
+                                    <div className='col col2'>
+                                      <Icon
+                                        source={CircleRightMajor}
+                                        color="base" />
+                                    </div>
+                                    <div className='col col3'>
+                                      <TextField
+                                        id='TextDiscount'
+                                        placeholder='Discount'
+                                        value={settingState.Setting.TextDiscount}
+                                        onChange={(e) => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting: {
+                                              ...settingState.Setting,
+                                              TextDiscount: e,
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }}
+                                        type="text"
+                                      />
+                                    </div>
+                                    <div className='cb'>
+                                    </div>
+                                  </div>
+                                  <div className='item'>
+                                    <div className='col col1'>
+                                      “Discounted price”
+                                    </div>
+                                    <div className='col col2'>
+                                      <Icon
+                                        source={CircleRightMajor}
+                                        color="base" />
+                                    </div>
+                                    <div className='col col3'>
+                                      <TextField
+                                        id='TextDiscountPrice'
+                                        placeholder='Discounted price'
+                                        value={settingState.Setting.TextDiscountPrice}
+                                        onChange={(e) => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting: {
+                                              ...settingState.Setting,
+                                              TextDiscountPrice: e,
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }}
+                                        type="text"
+                                      />
+                                    </div>
+                                    <div className='cb'>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className='group-col-half'>
+                                  <div className='item'>
+                                    <div className='itemLeft'>
+                                      <p className='title'>Font size</p>
+                                      <TextField
+                                        id='TableFontSizeHeading'
+                                        placeholder='Font size'
+                                        value={settingState.Setting.TableFontSizeHeading}
+                                        onChange={(e) => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting: {
+                                              ...settingState.Setting,
+                                              TableFontSizeHeading: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }}
+                                        type="number"
+                                        min={0}
+                                      />
+                                    </div>
+                                    <div className='cb'>
+
+                                    </div>
+                                  </div>
+                                  <div className='item'>
+                                    <div className='itemLeft'>
+                                      <p className='title'>Text color</p>
+                                      <div className='flex flex-align-center'>
+                                        <div className='w90pt'>
+                                          <TextField
+                                            id='TextColorHeading'
+                                            placeholder='Text color'
+                                            value={settingState.Setting2.TextColorHeading}
+                                            onChange={(e) => {
+                                              dispatch(setSetting({
+                                                ...settingState,
+                                                Setting2: {
+                                                  ...settingState.Setting2,
+                                                  TextColorHeading: e == '' ? '#000000' : e,
+                                                },
+                                                IsOpenSaveToolbar: true
+                                              }))
+                                            }}
+                                          />
+                                        </div>
+                                        <input type="color" value={settingState.Setting2.TextColorHeading} onChange={e => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              TextColorHeading: e.target.value == '' ? '#000000' : e.target.value.toUpperCase(),
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }} />
+                                      </div>
+
+                                    </div>
+                                    <div className='itemRight'>
+                                      <p className='title'>Background color</p>
+                                      <div className='flex flex-align-center'>
+                                        <div className='w90pt'>
+                                          <TextField
+                                            id='BackgroundColorHeading'
+                                            placeholder='Background color'
+                                            value={settingState.Setting2.BackgroundColorHeading}
+                                            onChange={(e) => {
+                                              dispatch(setSetting({
+                                                ...settingState,
+                                                Setting2: {
+                                                  ...settingState.Setting2,
+                                                  BackgroundColorHeading: e == '' ? '#FFFFFF' : e.trim(),
+                                                },
+                                                IsOpenSaveToolbar: true
+                                              }))
+                                            }}
+                                          />
+
+                                        </div>
+                                        <input type="color" value={settingState.Setting2.BackgroundColorHeading} onChange={e => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              BackgroundColorHeading: e.target.value == '' ? '#FFFFFF' : e.target.value.toUpperCase(),
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }} />
+                                      </div>
+
+                                    </div>
+                                    <div className='cb'>
+
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </Card.Section>
+                          </>
+                        }
+
+                        {/* Custom table */}
+                        <Card.Section>
+                          <div className='element-general'>
+                            <p className='only-text'>{settingState.Setting.LayoutInProductPage === 3 ? 'Customize card' : 'Customize table'}</p>
+
+                            <div className='group-fill-text'>
+
                               <div className='item'>
                                 <div className='col col1'>
-                                  “Discounted price”
+                                  “Buy”
                                 </div>
                                 <div className='col col2'>
                                   <Icon
@@ -231,14 +516,15 @@ function DiscountFeature() {
                                 </div>
                                 <div className='col col3'>
                                   <TextField
-                                    placeholder='Discounted price'
-                                    value={settingState.Setting.TextDiscountPrice}
+                                    id='TextBuy'
+                                    placeholder='Buy'
+                                    value={settingState.Setting.TextBuy}
                                     onChange={(e) => {
                                       dispatch(setSetting({
                                         ...settingState,
                                         Setting: {
                                           ...settingState.Setting,
-                                          TextDiscountPrice: e,
+                                          TextBuy: e,
                                         },
                                         IsOpenSaveToolbar: true
                                       }))
@@ -260,6 +546,7 @@ function DiscountFeature() {
                                 </div>
                                 <div className='col col3'>
                                   <TextField
+                                    id='TextPlus'
                                     placeholder='+'
                                     value={settingState.Setting.TextPlus}
                                     onChange={(e) => {
@@ -278,110 +565,87 @@ function DiscountFeature() {
                                 <div className='cb'>
                                 </div>
                               </div>
-                              <div className='item'>
-                                <div className='col col1'>
-                                  “price”
-                                </div>
-                                <div className='col col2'>
-                                  <Icon
-                                    source={CircleRightMajor}
-                                    color="base" />
-                                </div>
-                                <div className='col col3'>
-                                  <TextField
-                                    placeholder='price'
-                                    value={settingState.Setting.TextPrice}
-                                    onChange={(e) => {
-                                      dispatch(setSetting({
-                                        ...settingState,
-                                        Setting: {
-                                          ...settingState.Setting,
-                                          TextPrice: e,
-                                        },
-                                        IsOpenSaveToolbar: true
-                                      }))
-                                    }}
-                                    type="text"
-                                  />
-                                </div>
-                                <div className='cb'>
-                                </div>
-                              </div>
-                              <div className='item'>
-                                <div className='col col1'>
-                                  “Buy”
-                                </div>
-                                <div className='col col2'>
-                                  <Icon
-                                    source={CircleRightMajor}
-                                    color="base" />
-                                </div>
-                                <div className='col col3'>
-                                  <TextField
-                                    placeholder='Buy'
-                                    value={settingState.Setting.TextBuy}
-                                    onChange={(e) => {
-                                      dispatch(setSetting({
-                                        ...settingState,
-                                        Setting: {
-                                          ...settingState.Setting,
-                                          TextBuy: e,
-                                        },
-                                        IsOpenSaveToolbar: true
-                                      }))
-                                    }}
-                                    type="text"
-                                  />
-                                </div>
-                                <div className='cb'>
-                                </div>
-                              </div>
-                              <div className='item'>
-                                <div className='col col1'>
-                                  “Each”
-                                </div>
-                                <div className='col col2'>
-                                  <Icon
-                                    source={CircleRightMajor}
-                                    color="base" />
-                                </div>
-                                <div className='col col3'>
-                                  <TextField
-                                    placeholder='Each'
-                                    value={settingState.Setting.TextEach}
-                                    onChange={(e) => {
-                                      dispatch(setSetting({
-                                        ...settingState,
-                                        Setting: {
-                                          ...settingState.Setting,
-                                          TextEach: e,
-                                        },
-                                        IsOpenSaveToolbar: true
-                                      }))
-                                    }}
-                                    type="text"
-                                  />
-                                </div>
-                                <div className='cb'>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className='group-col-half'>
                               {
-                                settingState.Setting.LayoutInProductPage === 3 ? <></> : <>
+                                settingState.Setting.LayoutInProductPage === 3 ? <>
                                   <div className='item'>
-                                    <div className='itemLeft'>
-                                      <p className='title'>Font size discount title</p>
+                                    <div className='col col1'>
+                                      “get”
+                                    </div>
+                                    <div className='col col2'>
+                                      <Icon
+                                        source={CircleRightMajor}
+                                        color="base" />
+                                    </div>
+                                    <div className='col col3'>
                                       <TextField
-                                        placeholder='Font size heading table'
-                                        value={settingState.Setting.TableFontSizeHeading.toString()}
+                                        id='TextGet'
+                                        placeholder='get'
+                                        value={settingState.Setting2.TextGet}
                                         onChange={(e) => {
                                           dispatch(setSetting({
                                             ...settingState,
-                                            Setting: {
-                                              ...settingState.Setting,
-                                              TableFontSizeHeading: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              TextGet: e,
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }}
+                                        type="text"
+                                      />
+                                    </div>
+                                    <div className='cb'>
+                                    </div>
+                                  </div>
+                                  <div className='item'>
+                                    <div className='col col1'>
+                                      “off”
+                                    </div>
+                                    <div className='col col2'>
+                                      <Icon
+                                        source={CircleRightMajor}
+                                        color="base" />
+                                    </div>
+                                    <div className='col col3'>
+                                      <TextField
+                                        id='TextOff'
+                                        placeholder='off'
+                                        value={settingState.Setting2.TextOff}
+                                        onChange={(e) => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              TextOff: e,
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }}
+                                        type="text"
+                                      />
+                                    </div>
+                                    <div className='cb'>
+                                    </div>
+                                  </div>
+                                </> :
+                                  <></>}
+                            </div>
+                            {
+                              settingState.Setting.LayoutInProductPage === 3 ? <>
+                                <div className='group-col-half'>
+                                  <div className='item'>
+                                    <div className='itemLeft'>
+                                      <p className='title'>Font size</p>
+                                      <TextField
+                                        id='FontSizeCard'
+                                        placeholder='Font size'
+                                        value={settingState.Setting2.FontSizeCard}
+                                        onChange={(e) => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              FontSizeCard: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
                                             },
                                             IsOpenSaveToolbar: true
                                           }))
@@ -390,41 +654,104 @@ function DiscountFeature() {
                                         min={0}
                                       />
                                     </div>
-                                    {/* <div className='itemRight'>
-                                  <p className='title'>Width layout</p>
-                                  <TextField
-                                    placeholder='Width layout'
-                                    value={settingState.Setting.WidthLayout.toString()}
-                                    onChange={(e) => {
-                                      dispatch(setSetting({
-                                        ...settingState,
-                                        Setting: {
-                                          ...settingState.Setting,
-                                          WidthLayout: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
-                                        },
-                                        IsOpenSaveToolbar: true
-                                      }))
-                                    }}
-                                    type="number"
-                                    min={0}
-                                  />
-                                </div> */}
                                     <div className='cb'>
 
                                     </div>
                                   </div>
+                                  <div className="break-line"></div>
                                   <div className='item'>
                                     <div className='itemLeft'>
-                                      <p className='title'>Padding table</p>
+                                      <p className='title'>Text color</p>
+                                      <div className='flex flex-align-center'>
+                                        <div className='w90pt'>
+                                          <TextField
+                                            id='TextColorCard'
+                                            placeholder='Text color'
+                                            value={settingState.Setting2.TextColorCard}
+                                            onChange={(e) => {
+                                              dispatch(setSetting({
+                                                ...settingState,
+                                                Setting2: {
+                                                  ...settingState.Setting2,
+                                                  TextColorCard: e == '' ? '#000000' : e,
+                                                },
+                                                IsOpenSaveToolbar: true
+                                              }))
+                                            }}
+                                          />
+                                        </div>
+
+                                        <input type="color" value={settingState.Setting2.TextColorCard} onChange={e => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              TextColorCard: e.target.value == '' ? '#000000' : e.target.value.toUpperCase(),
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }} />
+                                      </div>
+
+                                    </div>
+                                    <div className='itemRight'>
+                                      <p className='title'>Background color</p>
+                                      <div className='flex flex-align-center'>
+                                        <div className='w90pt'>
+                                          <TextField
+                                            id='BackgroundColorCard'
+                                            placeholder='Background color'
+                                            value={settingState.Setting2.BackgroundColorCard}
+                                            onChange={(e) => {
+                                              dispatch(setSetting({
+                                                ...settingState,
+                                                Setting2: {
+                                                  ...settingState.Setting2,
+                                                  BackgroundColorCard: e == '' ? '#FFFFFF' : e.trim(),
+                                                },
+                                                IsOpenSaveToolbar: true
+                                              }))
+                                            }}
+                                          />
+
+                                        </div>
+                                        <input type="color" value={settingState.Setting2.BackgroundColorCard} onChange={e => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              BackgroundColorCard: e.target.value == '' ? '#FFFFFF' : e.target.value.toUpperCase(),
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                          setFilterBackgroundColorCard(hexToCSSFilter(e.target.value == '' ? '#FFFFFF' : e.target.value.toUpperCase()).filter)
+                                          console.log(hexToCSSFilter(e.target.value == '' ? '#FFFFFF' : e.target.value.toUpperCase()).filter)
+                                        }} />
+                                      </div>
+
+                                    </div>
+                                    <div className='cb'>
+
+                                    </div>
+                                  </div>
+
+
+                                </div>
+                              </> : <>
+                                <div className='group-col-half'>
+                                  <div className='item'>
+                                    <div className='itemLeft'>
+                                      <p className='title'>Font size</p>
                                       <TextField
-                                        placeholder='Padding table'
-                                        value={settingState.Setting.TablePadding.toString()}
+                                        id='FontSizeItemInTable'
+                                        placeholder='Font size'
+                                        value={settingState.Setting2.FontSizeItemInTable}
                                         onChange={(e) => {
                                           dispatch(setSetting({
                                             ...settingState,
-                                            Setting: {
-                                              ...settingState.Setting,
-                                              TablePadding: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              FontSizeItemInTable: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
                                             },
                                             IsOpenSaveToolbar: true
                                           }))
@@ -433,9 +760,11 @@ function DiscountFeature() {
                                         min={0}
                                       />
                                     </div>
+
                                     <div className='itemRight'>
                                       <p className='title'>Border size table</p>
                                       <TextField
+                                        id='TableBorderSize'
                                         placeholder='Border size table'
                                         value={settingState.Setting.TableBorderSize.toString()}
                                         onChange={(e) => {
@@ -456,13 +785,97 @@ function DiscountFeature() {
 
                                     </div>
                                   </div>
-                                </>
-                              }
+                                  <div className="break-line"></div>
+                                  <div className='item'>
+                                    <div className='itemLeft'>
+                                      <p className='title'>Text color</p>
+                                      <div className='flex flex-align-center'>
+                                        <div className='w90pt'>
+                                          <TextField
+                                            id='TextColorItemInTable'
+                                            placeholder='Text color'
+                                            value={settingState.Setting2.TextColorItemInTable}
+                                            onChange={(e) => {
+                                              dispatch(setSetting({
+                                                ...settingState,
+                                                Setting2: {
+                                                  ...settingState.Setting2,
+                                                  TextColorItemInTable: e == '' ? '#000000' : e,
+                                                },
+                                                IsOpenSaveToolbar: true
+                                              }))
+                                            }}
+                                          />
+                                        </div>
+
+                                        <input type="color" value={settingState.Setting2.TextColorItemInTable} onChange={e => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              TextColorItemInTable: e.target.value == '' ? '#000000' : e.target.value.toUpperCase(),
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }} />
+                                      </div>
+
+                                    </div>
+                                    <div className='itemRight'>
+                                      <p className='title'>Background color</p>
+                                      <div className='flex flex-align-center'>
+                                        <div className='w90pt'>
+                                          <TextField
+                                            id='BackgroundColorItemInTable'
+                                            placeholder='Background color'
+                                            value={settingState.Setting2.BackgroundColorItemInTable}
+                                            onChange={(e) => {
+                                              dispatch(setSetting({
+                                                ...settingState,
+                                                Setting2: {
+                                                  ...settingState.Setting2,
+                                                  BackgroundColorItemInTable: e == '' ? '#FFFFFF' : e.trim(),
+                                                },
+                                                IsOpenSaveToolbar: true
+                                              }))
+                                            }}
+                                          />
+
+                                        </div>
+                                        <input type="color" value={settingState.Setting2.BackgroundColorItemInTable} onChange={e => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              BackgroundColorItemInTable: e.target.value == '' ? '#FFFFFF' : e.target.value.toUpperCase(),
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }} />
+                                      </div>
+
+                                    </div>
+                                    <div className='cb'>
+
+                                    </div>
+                                  </div>
+
+
+                                </div>
+                              </>
+                            }
+                          </div>
+                        </Card.Section>
+                        {/* CSS JS */}
+                        <Card.Section>
+                          <div className='element-general'>
+                            <div className='group-col-half'>
 
                               <div className='item'>
                                 <div className='itemLeft'>
                                   <p className='title'>Custom css</p>
                                   <TextField
+                                    id='CustomCssProductPage'
                                     placeholder=''
                                     value={settingState.Setting.CustomCssProductPage}
                                     onChange={(e) => {
@@ -482,6 +895,7 @@ function DiscountFeature() {
                                 <div className='itemRight'>
                                   <p className='title'>Custom js</p>
                                   <TextField
+                                    id='CustomJsProductPage'
                                     placeholder=''
                                     value={settingState.Setting.CustomJsProductPage}
                                     onChange={(e) => {
@@ -504,7 +918,6 @@ function DiscountFeature() {
                               </div>
                             </div>
                           </div>
-
                         </Card.Section>
                       </Card>
                     </Layout.Section>
@@ -538,6 +951,7 @@ function DiscountFeature() {
                             <div className="break-line"></div>
                             <Stack>
                               <Checkbox
+                                id='ShowNotiOnCart'
                                 label="Show notification on cart page"
                                 checked={settingState.Setting.ShowNotiOnCart}
                                 onChange={(e) => {
@@ -556,6 +970,7 @@ function DiscountFeature() {
                             <div className='element-general-child'>
                               <p className='only-text'>Text notification on cart page</p>
                               <TextField
+                                id='TextNotiOnCart'
                                 placeholder='Buy {Quantity} + discount {Percent or price}'
                                 value={settingState.Setting.TextNotiOnCart}
                                 onChange={(e) => {
@@ -574,6 +989,7 @@ function DiscountFeature() {
                             <div className="break-line"></div>
                             <Stack>
                               <Checkbox
+                                id='UseDiscountCodeOnCart'
                                 label="Use discount code on cart page"
                                 checked={settingState.Setting.UseDiscountCodeOnCart}
                                 onChange={(e) => {
@@ -604,6 +1020,7 @@ function DiscountFeature() {
                               <div className="break-line"></div>
                               <p className='only-text'>Discount code prefix</p>
                               <TextField
+                                id='DisCountCodePrefix'
                                 placeholder=''
                                 value={settingState.Setting.DisCountCodePrefix}
                                 onChange={(e) => {
@@ -623,6 +1040,7 @@ function DiscountFeature() {
 
                             <Stack>
                               <Checkbox
+                                id='UseUpdateOnCartPage'
                                 label="Use upsale on cart page"
                                 checked={settingState.Setting.UseUpdateOnCartPage}
                                 onChange={(e) => {
@@ -645,6 +1063,7 @@ function DiscountFeature() {
                                   <p className='title'>Custom css</p>
                                   <div className="break-line"></div>
                                   <TextField
+                                    id='CustomCssCart'
                                     placeholder='Custom css'
                                     value={settingState.Setting.CustomCssCart}
                                     onChange={(e) => {
@@ -665,6 +1084,7 @@ function DiscountFeature() {
                                   <p className='title'>Custom js</p>
                                   <div className="break-line"></div>
                                   <TextField
+                                    id='CustomJsCart'
                                     placeholder='Custom js'
                                     value={settingState.Setting.CustomJsCart}
                                     onChange={(e) => {
@@ -701,7 +1121,7 @@ function DiscountFeature() {
                     </h2>
                     <div className='bg-bound'>
                       <div className='preview-table'>
-                        <h2 className="Polaris-Heading Heading-Bottom-10 Heading-Icon-Right"> {settingState.Setting.TextQuantityBreaks}
+                        <h2 className="Polaris-Heading Heading-Bottom-10 Heading-Icon-Right" style={{ fontSize: settingState.Setting2.FontSizeDiscountTitle + 'px', color: settingState.Setting2.TextColorDiscountTitle }}> {settingState.Setting.TextQuantityBreaks}
                           {/* <Icon source={ConfettiMajor} color='base'></Icon> */}
 
                         </h2>
@@ -714,12 +1134,12 @@ function DiscountFeature() {
                                     <table className="Polaris-DataTable__Table" style={{ padding: settingState.Setting.TablePadding + 'px', border: settingState.Setting.TableBorderSize + 'px solid #fff' }}>
                                       <thead style={{ fontSize: settingState.Setting.TableFontSizeHeading + 'px' }}>
                                         <tr>
-                                          <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header" scope="col">{settingState.Setting.TextQuantity}</th>
-                                          <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header" scope="col">{settingState.Setting.TextDiscount}</th>
+                                          <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header" scope="col" style={{ fontSize: settingState.Setting.TableFontSizeHeading + 'px', color: settingState.Setting2.TextColorHeading, backgroundColor: settingState.Setting2.BackgroundColorHeading }}>{settingState.Setting.TextQuantity}</th>
+                                          <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header" scope="col" style={{ fontSize: settingState.Setting.TableFontSizeHeading + 'px', color: settingState.Setting2.TextColorHeading, backgroundColor: settingState.Setting2.BackgroundColorHeading }}>{settingState.Setting.TextDiscount}</th>
 
                                           {
                                             settingState.Setting.ShowDiscountedPrice ? <>
-                                              <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header" scope="col">{settingState.Setting.TextDiscountPrice}</th>
+                                              <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header" scope="col" style={{ fontSize: settingState.Setting.TableFontSizeHeading + 'px', color: settingState.Setting2.TextColorHeading, backgroundColor: settingState.Setting2.BackgroundColorHeading }}>{settingState.Setting.TextDiscountPrice}</th>
                                             </> : <></>
                                           }
                                         </tr>
@@ -729,11 +1149,11 @@ function DiscountFeature() {
                                           rowsPreview.map((item, index) => {
                                             return (
                                               <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable">
-                                                <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row">{settingState.Setting.TextBuy + ' ' + item[0] + settingState.Setting.TextPlus}</th>
-                                                <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">{item[1] + '%'}</td>
+                                                <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{settingState.Setting.TextBuy + ' ' + item[0] + settingState.Setting.TextPlus}</th>
+                                                <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{item[1] + '%'}</td>
                                                 {
                                                   settingState.Setting.ShowDiscountedPrice ? <>
-                                                    <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">{'$' + item[2]}</td>
+                                                    <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{'$' + item[2]}</td>
                                                   </> : <></>
                                                 }
 
@@ -756,24 +1176,24 @@ function DiscountFeature() {
 
                                         <tbody>
                                           <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable">
-                                            <th style={{ fontSize: settingState.Setting.TableFontSizeHeading + 'px' }} data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col">{settingState.Setting.TextQuantity}</th>
-                                            <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row">{settingState.Setting.TextBuy + ' ' + rowsPreview[0][0] + settingState.Setting.TextPlus}</th>
-                                            <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row">{settingState.Setting.TextBuy + ' ' + rowsPreview[1][0] + settingState.Setting.TextPlus}</th>
-                                            <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row">{settingState.Setting.TextBuy + ' ' + rowsPreview[2][0] + settingState.Setting.TextPlus}</th>
+                                            <th style={{ fontSize: settingState.Setting.TableFontSizeHeading + 'px', color: settingState.Setting2.TextColorHeading, backgroundColor: settingState.Setting2.BackgroundColorHeading }} data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col">{settingState.Setting.TextQuantity}</th>
+                                            <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{settingState.Setting.TextBuy + ' ' + rowsPreview[0][0] + settingState.Setting.TextPlus}</th>
+                                            <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{settingState.Setting.TextBuy + ' ' + rowsPreview[1][0] + settingState.Setting.TextPlus}</th>
+                                            <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{settingState.Setting.TextBuy + ' ' + rowsPreview[2][0] + settingState.Setting.TextPlus}</th>
                                           </tr>
                                           <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable">
-                                            <th style={{ fontSize: settingState.Setting.TableFontSizeHeading + 'px' }} data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col">{settingState.Setting.TextDiscount}</th>
-                                            <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">{rowsPreview[0][1] + '%'}</td>
-                                            <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">{rowsPreview[1][1] + '%'}</td>
-                                            <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">{rowsPreview[2][1] + '%'}</td>
+                                            <th style={{ fontSize: settingState.Setting.TableFontSizeHeading + 'px', color: settingState.Setting2.TextColorHeading, backgroundColor: settingState.Setting2.BackgroundColorHeading }} data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col">{settingState.Setting.TextDiscount}</th>
+                                            <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{rowsPreview[0][1] + '%'}</td>
+                                            <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{rowsPreview[1][1] + '%'}</td>
+                                            <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{rowsPreview[2][1] + '%'}</td>
                                           </tr>
                                           {
                                             settingState.Setting.ShowDiscountedPrice ? <>
                                               <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable">
-                                                <th style={{ fontSize: settingState.Setting.TableFontSizeHeading + 'px' }} data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col">{settingState.Setting.TextDiscountPrice}</th>
-                                                <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">{'$' + rowsPreview[0][2]}</td>
-                                                <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">{'$' + rowsPreview[1][2]}</td>
-                                                <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">{'$' + rowsPreview[2][2]}</td>
+                                                <th style={{ fontSize: settingState.Setting.TableFontSizeHeading + 'px', color: settingState.Setting2.TextColorHeading, backgroundColor: settingState.Setting2.BackgroundColorHeading }} data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header Polaris-DataTable__Cell--header-border-none" scope="col">{settingState.Setting.TextDiscountPrice}</th>
+                                                <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{'$' + rowsPreview[0][2]}</td>
+                                                <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{'$' + rowsPreview[1][2]}</td>
+                                                <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{'$' + rowsPreview[2][2]}</td>
                                               </tr>
 
                                             </> : <></>
@@ -799,23 +1219,23 @@ function DiscountFeature() {
                           settingState.Setting.LayoutInProductPage == 3 ? <>
 
                             <div className="Polaris-CalloutCard__Buttons" style={{ display: 'flex' }}>
-                              <div className='card-orange'>
-                                <img src={CardOrange} alt="" style={{ marginLeft: '0' }} className="Polaris-CalloutCard__Image" />
-                                <p className="buy">Buy {rowsPreview[0][0]}+</p>
-                                <p className="get">get</p>
-                                <p className="off">{rowsPreview[0][1]}% off</p>
+                              <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
+                                <img src={settingState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: filterBackgroundColorCard.replace(';', '') }} className="Polaris-CalloutCard__Image" />
+                                <p className="buy">{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
+                                <p className="get">{settingState.Setting2.TextGet}</p>
+                                <p className="off">{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
                               </div>
-                              <div className='card-orange'>
-                                <img src={CardOrange} alt="" style={{ marginLeft: '0' }} className="Polaris-CalloutCard__Image" />
-                                <p className="buy">Buy {rowsPreview[1][0]}+</p>
-                                <p className="get">get</p>
-                                <p className="off">{rowsPreview[1][1]}% off</p>
+                              <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
+                                <img src={settingState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: filterBackgroundColorCard.replace(';', '') }} className="Polaris-CalloutCard__Image" />
+                                <p className="buy">{settingState.Setting.TextBuy} {rowsPreview[1][0]}{settingState.Setting.TextPLus}</p>
+                                <p className="get">{settingState.Setting2.TextGet}</p>
+                                <p className="off">{rowsPreview[1][1]}% {settingState.Setting2.TextOff}</p>
                               </div>
-                              <div className='card-orange'>
-                                <img src={CardOrange} alt="" style={{ marginLeft: '0' }} className="Polaris-CalloutCard__Image" />
-                                <p className="buy">Buy {rowsPreview[2][0]}+</p>
-                                <p className="get">get</p>
-                                <p className="off">{rowsPreview[2][1]}% off</p>
+                              <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
+                                <img src={settingState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: filterBackgroundColorCard.replace(';', '') }} className="Polaris-CalloutCard__Image" />
+                                <p className="buy">{settingState.Setting.TextBuy} {rowsPreview[2][0]}{settingState.Setting.TextPLus}</p>
+                                <p className="get">{settingState.Setting2.TextGet}</p>
+                                <p className="off">{rowsPreview[2][1]}% {settingState.Setting2.TextOff}</p>
                               </div>
                             </div>
                           </>

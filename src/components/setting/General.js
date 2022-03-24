@@ -207,7 +207,7 @@ function General() {
                                 }))
                                 dispatch(loadProductByCampaign(e.value));
                               }}
-                              isSearchable={false}
+                              isSearchable={true}
                             // value={parseInt(settingState.CampaignID)}
                             />
                           </div>

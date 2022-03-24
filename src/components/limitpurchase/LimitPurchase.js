@@ -14,12 +14,13 @@ import TableCollection from './TableCollection';
 import Select from 'react-select';
 
 
-const LimitPurchase = (props) => {
+const LimitPurchase = () => {
     const [IsOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
     const [IsBulkUpdate, setIsBulkUpdate] = useState(false);
     const [LimitPurchaseCurrent, setLimitPurchaseCurrent] = useState(null);
     const [Alert, setAlert] = useState(null);
     const dispatch = useDispatch();
+    const appState = useSelector((state) => state.app);
     const limitPurchaseState = useSelector((state) => state.limitpurchase.ListLimitPurchase);
     const createLimitPurchaseState = useSelector((state) => state.limitpurchase.CreateUpdateLimitPurchase);
     const [IsOpenAdSpecificCollectionModal, setIsOpenAddSpecificCollectionModal] = useState(false);
@@ -362,7 +363,9 @@ const LimitPurchase = (props) => {
                                 rows={limitPurchaseState.Paginate.CurrentItems != null && limitPurchaseState.Paginate.CurrentItems.length > 0 ? limitPurchaseState.Paginate.CurrentItems.map((limitpurchase, index) => {
                                     return [
                                         <>
-                                            <p>{limitpurchase.Title}</p>
+                                            <p>
+                                                <a href={'https://'+appState?.Shop?.Domain+'/products/' + limitpurchase.Handle} target="_blank">{limitpurchase.Title}</a>
+                                            </p>
                                         </>
                                         ,
                                         <>
