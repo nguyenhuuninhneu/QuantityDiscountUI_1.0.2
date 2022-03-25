@@ -4,14 +4,43 @@ import { PageActions, Card, Layout, Heading, TextStyle, Button, ButtonGroup, Tex
 import { CircleInformationMajor } from '@shopify/polaris-icons';
 import Loading from '../../components/plugins/Loading';
 import { setSetting } from '../../state/modules/setting/actions';
-import { saveActive, loadProductByCampaign,synchronizeData } from '../../state/modules/setting/operations';
+import { saveActive, loadProductByCampaign, synchronizeData } from '../../state/modules/setting/operations';
 import Select from 'react-select';
+import config from '../../config/config';
+import axios from 'axios';
+
+
 
 function General() {
   const dispatch = useDispatch();
   const appState = useSelector((state) => state.app);
   const settingState = useSelector((state) => state.setting.ListSetting);
+  const getCampaign = async (input) => {
+    await axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginateSetting', {
+      params: {
+        search: input,
+        shopID: appState?.Shop.ID,
+        shop: appState?.Shop.Domain,
+        page: 1,
+        pagezise: 100
+      }
+    })
+      .then((res) => {
+        const result = res?.data;
+        dispatch(setSetting({
+          ...settingState,
+          IsLoadNewProduct: false,
+          ListCampaign: result.campaigns,
+          CampaignID: 0,
+          // CampaignID: result.campaigns.length > 0 ? result.campaigns[0].value : 0
+        }))
 
+      })
+      .catch(err => console.log(err))
+  }
+  useEffect(() => {
+    getCampaign('');
+  }, [dispatch]);
 
   return (
     <>
@@ -118,12 +147,12 @@ function General() {
                           <p className='ptb8'>
                             Synchronize data to app
                           </p>
-                          <Button 
-                          disabled={settingState.LoadingDataSync}
-                          primary 
-                          onClick={() => {
-                            dispatch(synchronizeData());
-                          }}>Synchronize data</Button>
+                          <Button
+                            disabled={settingState.LoadingDataSync}
+                            primary
+                            onClick={() => {
+                              dispatch(synchronizeData());
+                            }}>Synchronize data</Button>
 
                         </div>
                         <div className='cb'>
@@ -196,8 +225,10 @@ function General() {
                           </div>
                           <div className='itemRight'>
                             <Select
+                              name="form-field-name"
                               options={settingState.ListCampaign}
-                              defaultValue={settingState.ListCampaign[0]}
+                              onSearch={getCampaign}
+                              loadOptions={getCampaign}
                               onChange={(e) => {
                                 dispatch(setSetting({
                                   ...settingState,
@@ -208,7 +239,8 @@ function General() {
                                 dispatch(loadProductByCampaign(e.value));
                               }}
                               isSearchable={true}
-                            // value={parseInt(settingState.CampaignID)}
+                              //value={settingState.CampaignID}
+                              value={settingState.ListCampaign != null && settingState.CampaignID != 0 && settingState.ListCampaign.filter(p => p.value == settingState.CampaignID)[0] || settingState.ListCampaign != null && settingState.ListCampaign[0]}
                             />
                           </div>
                           <div className='cb'>
@@ -220,7 +252,6 @@ function General() {
                             <div className='relative'>
                               <Select
                                 disabled={settingState.IsLoadNewProduct}
-                                defaultValue={settingState.ListProduct[0]}
                                 options={settingState.ListProduct}
                                 onChange={(e) => {
                                   dispatch(setSetting({

@@ -103,10 +103,10 @@ const reducer = (state = INITIAL_STATE, action) => {
           Setting: action.payload.setting,
           Setting2: action.payload.setting2,
           ListLayout: action.payload.listLayout,
-          ListCampaign: action.payload.listCampaign,
-          ListProduct: action.payload.listProduct,
-          CampaignID: action.payload.listCampaign.length > 0 ? action.payload.listCampaign[0]?.ID : 0,
-          ProductID: action.payload.listProduct.length > 0 ? action.payload.listProduct[0]?.ProductCode : 0,
+          // ListCampaign: action.payload.listCampaign,
+          // ListProduct: action.payload.listProduct,
+          // CampaignID: action.payload.listCampaign.length > 0 ? action.payload.listCampaign[0]?.ID : 0,
+          // ProductID: action.payload.listProduct.length > 0 ? action.payload.listProduct[0]?.ProductCode : 0,
           // DiscountDetail: action.payload.discountDetail,
           // TotalDiscountCode: action.payload.discountDetail.length,
         }
@@ -280,7 +280,8 @@ const reducer = (state = INITIAL_STATE, action) => {
           ...state.ListSetting,
           IsLoadNewProduct: false,
           ListProduct: action.payload.listProduct,
-          ProductID: action.payload.listProduct.length > 0 ? action.payload.listProduct[0].ProductCode : 0
+          ProductID: 0,
+          // ProductID: action.payload.listProduct.length > 0 ? action.payload.listProduct[0].value : 0
         }
       };
 
