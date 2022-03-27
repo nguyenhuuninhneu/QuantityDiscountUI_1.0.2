@@ -25,7 +25,7 @@ function DiscountFeature() {
   ]
   const [rowsPreview, setRowPreview] = useState(dataRowPreview);
   const [isOpenDiscountCode, setIsOpenDiscountCode] = useState(false);
-  const [filterBackgroundColorCard, setFilterBackgroundColorCard] = useState(hexToCSSFilter(settingState.Setting2.BackgroundColorCard).filter);
+  const [filterBackgroundColorCard, setFilterBackgroundColorCard] = useState(hexToCSSFilter(settingState.Setting2.BackgroundColorCard || '#E48227').filter);
   const getDiscountCode = async () => {
     await axios.get(config.rootLink + '/FrontEnd/GetDiscountCode', {
       params: {

@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ListCampaign from './components/campaign/ListCampaign';
 import CreateUpdateCampaign from './components/campaign/CreateUpdateCampaign';
 import { setIsCreatingCampaign, setIsNoCampaign, setMenu ,setIsEditCampaign, setNoCallTwices} from './state/modules/app/actions';
-import { createCampaign } from './state/modules/campaign/operations';
+import { createCampaign,fetchList } from './state/modules/campaign/operations';
 import Dashboard from './components/dashboard/Dashboard';
 import Report from './components/dashboard/Report';
 import LimitPurchase from './components/limitpurchase/LimitPurchase';
@@ -30,14 +30,13 @@ const AppFrame = () => {
   const campaignListState = useSelector((state) => state.campaign.ListCampaign);
   useEffect(() => {
     dispatch(appOperations.fetchShop());
-    // dispatch(campaignOperations.fetchList());
   }, [dispatch]);
   const setActiveMenu = (menu) => {
     dispatch(setMenu(menu));
     dispatch(setIsEditCampaign(false))
     if (menu !== moreAppConfig.Menu.CREATECAMPAIGN) {
       dispatch(setNoCallTwices(false));
-      if (campaignListState.campaigns != null && campaignListState.campaigns != undefined && campaignListState.campaigns.length > 0) {
+      if (campaignListState.TotalCampaign > 0) {
         dispatch(setIsNoCampaign(false))
       }
     }

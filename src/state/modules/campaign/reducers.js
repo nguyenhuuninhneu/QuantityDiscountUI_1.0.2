@@ -171,13 +171,12 @@ const reducer = (state = INITIAL_STATE, action) => {
         ListCampaign: {
           ...state.ListCampaign,
           listLoading: false,
-          campaigns: action.payload.list,
           Paginate: {
-            Offset: 0,
-            TotalPage: action.payload.list.length <= moreAppConfig.ItemPerPage ? 1 : Math.ceil(action.payload.list.length / moreAppConfig.ItemPerPage),
-            CurrentItems: action.payload.list.slice(0, moreAppConfig.ItemPerPage)
+            ...state.ListCampaign.Paginate,
+            CurrentItems: action.payload.campaigns,
+            TotalPage: action.payload.totalpage
           },
-          TotalCampaign: action.payload.list.length,
+          TotalCampaign: action.payload.totalitem
 
         },
         CreateUpdateCampaign: {

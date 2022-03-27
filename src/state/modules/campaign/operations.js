@@ -11,9 +11,14 @@ const todayStr = year + '-' + month + '-' + day;
 export const fetchList = () => {
   return (dispatch, getState) => {
     dispatch(actions.fetchListLoading());
-    axios.get(config.rootLink + '/FrontEnd/GetCampaigns', {
+    axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginate', {
       params: {
-        shop: config.shop
+        search: '',
+        discounttype: 0,
+        shopID: getState().app.Shop?.ID,
+        shop: config.shop,
+        page: 1,
+        pagezise: 10
       }
     })
       .then(function (response) {
@@ -22,7 +27,7 @@ export const fetchList = () => {
       })
       .catch(function (error) {
         const errorMsg = error.message;
-        dispatch(actions.fetchListFailed(errorMsg));
+        console.log(errorMsg);
       })
 
   };

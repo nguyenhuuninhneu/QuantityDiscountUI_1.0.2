@@ -14,7 +14,7 @@ export const fetchSetting = () => {
             .then(function (response) {
                 const result = response?.data;
                 dispatch(actions.fetchCompleted(result));
-                dispatch(loadProductByCampaign(result.ListCampaign[0].ID));
+                // dispatch(loadProductByCampaign(result.ListCampaign[0].ID));
             })
             .catch(function (error) {
                 const errorMsg = error.message;

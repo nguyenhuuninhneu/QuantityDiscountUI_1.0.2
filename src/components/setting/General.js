@@ -39,7 +39,7 @@ function General() {
       .catch(err => console.log(err))
   }
   useEffect(() => {
-    getCampaign('');
+    // getCampaign('');
   }, [dispatch]);
 
   return (
@@ -227,7 +227,6 @@ function General() {
                             <Select
                               name="form-field-name"
                               options={settingState.ListCampaign}
-                              onSearch={getCampaign}
                               loadOptions={getCampaign}
                               onChange={(e) => {
                                 dispatch(setSetting({

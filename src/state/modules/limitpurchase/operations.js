@@ -5,9 +5,14 @@ import * as actions from "./actions";
 export const fetchList = () => {
   return (dispatch, getState) => {
     dispatch(actions.fetchListLoading());
-    axios.get(config.rootLink + '/FrontEnd/GetLimitPurchases', {
+    axios.get(config.rootLink + '/FrontEnd/GetLimitPurchasesPaginate', {
       params: {
-        shop: config.shop
+        search: '',
+        typeselected: 0,
+        shopID: getState().app.Shop?.ID,
+        shop: config.shop,
+        page: 1,
+        pagezise: 10
       }
     })
       .then(function (response) {

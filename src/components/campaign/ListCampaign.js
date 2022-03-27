@@ -19,55 +19,42 @@ const ListCampaign = (props) => {
     const [Alert, setAlert] = useState(null);
     const dispatch = useDispatch();
     const campaignState = useSelector((state) => state.campaign.ListCampaign);
+    const appState = useSelector((state) => state.app);
 
     useEffect(() => {
-
         dispatch(fetchList());
-        // dispatch(setCreateUpdateCampaign(
-        //     {
-        //         ...campaignCreateState,
-        //         campaign:
-        //         {
-        //             ...campaignCreateState.campaign,
-        //             ListVariants: []
-        //         }
-        //     }));
-        // Fetch items from another resources.
-        const endOffset = campaignState.Paginate.Offset + moreAppConfig.ItemPerPage;
-        if (campaignState.campaigns != undefined && campaignState.campaigns != null) {
-            dispatch(setListCampaign({
-                ...campaignState,
-                Paginate: {
-                    ...campaignState.Paginate,
-                    Offset: campaignState.Paginate.Offset,
-                    CurrentItems: campaignState.campaigns.slice(campaignState.Paginate.Offset, endOffset),
-                    TotalPage: campaignState.campaigns.length <= moreAppConfig.ItemPerPage ? 1 : Math.ceil(campaignState.campaigns.length / moreAppConfig.ItemPerPage)
-                }
-            }))
-        }
 
-    }, []);
+    }, [dispatch]);
 
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
-
-        var listCampaign = campaignState.campaigns;
-        if (campaignState.TextSearchProduct !== undefined && campaignState.TextSearchProduct !== null && campaignState.TextSearchProduct !== '') {
-            listCampaign = listCampaign.filter(p => p.Title.toLowerCase().includes(campaignState.TextSearchProduct.toLowerCase()));
-        }
-        if (campaignState.DiscountType !== undefined && campaignState.DiscountType !== null && campaignState.DiscountType > 0) {
-            listCampaign = listCampaign.filter(p => p.DiscountType === campaignState.DiscountType);
-        }
-        const newOffset = (event.selected * moreAppConfig.ItemPerPage) % listCampaign.length;
-        const endOffset = newOffset + moreAppConfig.ItemPerPage;
-        dispatch(setListCampaign({
-            ...campaignState,
-            Paginate: {
-                ...campaignState.Paginate,
-                Offset: newOffset,
-                CurrentItems: listCampaign.slice(newOffset, endOffset),
+        axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginate', {
+            params: {
+                search: campaignState.TextSearchProduct,
+                discounttype: campaignState.DiscountTypeSelected.value,
+                shopID: appState.Shop?.ID,
+                shop: appState.Shop?.Domain,
+                page: event.selected + 1,
+                pagezise: 10
+                // pagezise: 10
             }
-        }))
+        })
+            .then(function (response) {
+                const result = response?.data;
+                dispatch(setListCampaign({
+                    ...campaignState,
+                    Paginate: {
+                        ...campaignState.Paginate,
+                        CurrentItems: result.campaigns,
+                        TotalPage: result.totalpage
+                    },
+                    TotalCampaign: result.totalitem
+                }))
+            })
+            .catch(function (error) {
+                const errorMsg = error.message;
+                console.log(errorMsg);
+            })
     };
 
     const onClickDeleteCampaign = (campaign) => {
@@ -76,34 +63,48 @@ const ListCampaign = (props) => {
     }
 
     const handleDeleteCampaign = () => {
-        if (campaignState.campaigns != null && campaignState.campaigns.length > 0 && Campaign != null && Campaign.ID > 0) {
+        if (campaignState.Paginate.CurrentItems != null && campaignState.Paginate.CurrentItems.length > 0 && Campaign != null && Campaign.ID > 0) {
             axios.post(config.rootLink + '/FrontEnd/DeleteCampaign', { id: Campaign.ID, shop: config.shop, isVariantCampaign: Campaign.IsVariantProduct })
                 .then(function (response) {
                     if (response.data.IsSuccess) {
-                        var newArr = campaignState.campaigns.filter(p => p.ID != Campaign.ID);
-                        var totlapage = Math.ceil(newArr.length / moreAppConfig.ItemPerPage);
-                        console.log(totlapage);
-                        dispatch(setListCampaign({
-                            ...campaignState,
-                            campaigns: newArr,
-                            Paginate: {
-                                ...campaignState.Paginate,
-                                Offset: 0,
-                                CurrentItems: newArr.slice(0, moreAppConfig.ItemPerPage),
-                                TotalPage: newArr.length <= moreAppConfig.ItemPerPage ? 1 : Math.ceil(newArr.length / moreAppConfig.ItemPerPage)
-                            },
-                            TotalCampaign: newArr.length
-                        }))
-                        if (newArr.length == 0) {
-                            dispatch(setIsNoCampaign(true));
+                        axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginate', {
+                            params: {
+                                search: campaignState.TextSearchProduct,
+                                discounttype: campaignState.DiscountTypeSelected.value,
+                                shopID: appState.Shop?.ID,
+                                shop: appState.Shop?.Domain,
+                                page: 1,
+                                pagezise: 10
+                                // pagezise: 10
+                            }
+                        })
+                            .then(function (response) {
+                                const result = response?.data;
+                                dispatch(setListCampaign({
+                                    ...campaignState,
+                                    Paginate: {
+                                        ...campaignState.Paginate,
+                                        CurrentItems: result.campaigns,
+                                        TotalPage: result.totalpage
+                                    },
+                                    TotalCampaign: result.totalitem
+                                }))
+                                if (result.campaigns.length == 0) {
+                                    dispatch(setIsNoCampaign(true));
 
-                        } else {
-                            dispatch(setIsNoCampaign(false));
-                        }
-                        dispatch(setIsCreatingCampaign(false));
-                        setAlert(<Toast content={'The campaign: ' + Campaign.Title + ' deleted successfully'} duration={3000} onDismiss={() => {
-                            setAlert(null);
-                        }} />);
+                                } else {
+                                    dispatch(setIsNoCampaign(false));
+                                }
+                                dispatch(setIsCreatingCampaign(false));
+                                setAlert(<Toast content={'The campaign: ' + Campaign.Title + ' deleted successfully'} duration={3000} onDismiss={() => {
+                                    setAlert(null);
+                                }} />);
+                            })
+                            .catch(function (error) {
+                                const errorMsg = error.message;
+                                console.log(errorMsg);
+                            })
+
                     }
                     else {
                         setAlert(null);
@@ -118,27 +119,39 @@ const ListCampaign = (props) => {
         }
     }
     const handleSearchCampaign = (textSearch, discountType) => {
-        var listCampaign = campaignState.campaigns;
-        if (textSearch !== undefined && textSearch !== null && textSearch !== '') {
-            listCampaign = listCampaign.filter(p => p.Title.includes(textSearch));
-        }
-        if (discountType !== undefined && discountType !== null && discountType.value > 0) {
-            listCampaign = listCampaign.filter(p => p.DiscountType === discountType.value);
-        }
-        //Set List + paging
-        dispatch(setListCampaign({
-            ...campaignState,
-            TextSearchProduct: textSearch,
-            DiscountType: discountType.value,
-            DiscountTypeSelected: discountType,
-            Paginate: {
-                ...campaignState.Paginate,
-                Offset: 0,
-                CurrentItems: listCampaign.slice(0, moreAppConfig.ItemPerPage),
-                TotalPage: listCampaign.length <= moreAppConfig.ItemPerPage ? 1 : Math.ceil(listCampaign.length / moreAppConfig.ItemPerPage)
-            },
-            TotalCampaign: listCampaign.length
-        }))
+        axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginate', {
+            params: {
+                search: textSearch,
+                discounttype: discountType.value,
+                shopID: appState.Shop?.ID,
+                shop: appState.Shop?.Domain,
+                page: 1,
+                pagezise: 10
+                // pagezise: 10
+            }
+        })
+            .then(function (response) {
+                const result = response?.data;
+                //Set List + paging
+                dispatch(setListCampaign({
+                    ...campaignState,
+                    TextSearchProduct: textSearch,
+                    DiscountType: discountType.value,
+                    DiscountTypeSelected: discountType,
+                    Paginate: {
+                        ...campaignState.Paginate,
+                        CurrentItems: result.campaigns,
+                        TotalPage: result.totalpage
+                    },
+                    TotalCampaign: result.totalitem
+                }))
+            })
+            .catch(function (error) {
+                const errorMsg = error.message;
+                console.log(errorMsg);
+            })
+
+
     };
     var newArrdiscounttype = [{ label: 'Discount based on', value: 0 }];
     newArrdiscounttype = [...newArrdiscounttype, ...moreAppConfig.discounttype]
@@ -158,10 +171,10 @@ const ListCampaign = (props) => {
                                 Active: !campaign.Active
                             } : p)),
                         },
-                        campaigns: campaignState.campaigns.map((p, i) => (p.ID == campaign.ID ? {
-                            ...p,
-                            Active: !campaign.Active
-                        } : p)),
+                        // campaigns: campaignState.campaigns.map((p, i) => (p.ID == campaign.ID ? {
+                        //     ...p,
+                        //     Active: !campaign.Active
+                        // } : p)),
                     }))
                     // setCurrentItems(currentItems.map((p, i) => (p.ID == campaign.ID ? {
                     //     ...p,
@@ -184,7 +197,7 @@ const ListCampaign = (props) => {
         // (campaignState.campaigns == null || campaignState.campaigns.length == 0) ? <CreateUpdateCampaign Collections={props.Collections} Products={props.Products} IsNoCampaign={true}></CreateUpdateCampaign> :
 
         <>
-            {campaignState.IsLoadingPage
+            {campaignState.listLoading
                 ? <Loading></Loading>
                 : <>
                     <div className='campaign-products'>
@@ -197,7 +210,8 @@ const ListCampaign = (props) => {
                                                 placeholder={'Search Product Title'}
                                                 value={campaignState.TextSearchProduct}
                                                 onChange={(e) => {
-                                                    handleSearchCampaign(e, campaignState.DiscountTypeSelected)
+                                                    
+                                                    handleSearchCampaign(e, campaignState.DiscountTypeSelected);
                                                 }}
                                                 type="text"
                                             />
@@ -210,6 +224,11 @@ const ListCampaign = (props) => {
                                                     options={newArrdiscounttype}
                                                     onChange={(e) => {
                                                         // e = parseInt(e);
+                                                        dispatch(setListCampaign({
+                                                            ...campaignState,
+                                                            DiscountType: e.value,
+                                                            DiscountTypeSelected: e,
+                                                        }))
                                                         handleSearchCampaign(campaignState.TextSearchProduct, e);
                                                     }}
                                                     isSearchable={false}
@@ -263,7 +282,7 @@ const ListCampaign = (props) => {
                                             'Action'
                                         ]}
                                         // footerContent={`Showing ${currentItems.length} of ${campaignState..length} results`}
-                                        rows={campaignState.Paginate.CurrentItems != null && campaignState.Paginate.CurrentItems.length > 0 ? campaignState.Paginate.CurrentItems.map((campaign, index) => {
+                                        rows={campaignState.Paginate.CurrentItems != undefined && campaignState.Paginate.CurrentItems != null && campaignState.Paginate.CurrentItems.length > 0 ? campaignState.Paginate.CurrentItems.map((campaign, index) => {
                                             return [
                                                 campaign.ID,
                                                 <>
@@ -273,16 +292,16 @@ const ListCampaign = (props) => {
                                                 (campaign.DiscountType === 1 ? "Minimum Cart Quantity" : campaign.DiscountType === 2 ? "Minimum Same Product Quantity" : campaign.DiscountType === 3 ? "Minimum Same Variant Quantity" : ""),
                                                 <List type="bullet">
                                                     {
-                                                        campaign.ListDetails.map((item, index) => {
+                                                        campaign.ListDetails != undefined && campaign.ListDetails != null && campaign.ListDetails.length ? campaign.ListDetails.map((item, index) => {
                                                             return (
                                                                 index <= 1 ?
-                                                                    <List.Item>Buy {item.Quantity}+ {campaign.PriceType !== 3 ? 'discount': 'fixed price'} {item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'} </List.Item> : <></>
+                                                                    <List.Item>Buy {item.Quantity}+ {campaign.PriceType !== 3 ? 'discount' : 'fixed price'} {item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'} </List.Item> : <></>
                                                             )
 
-                                                        })
+                                                        }) : <></>
 
                                                     }
-                                                    {campaign.ListDetails.length > 2 ? <><p>...</p></> : ''}
+                                                    {campaign.ListDetails != undefined && campaign.ListDetails != null && campaign.ListDetails.length > 2 ? <><p>...</p></> : ''}
                                                 </List>
                                                 ,
                                                 // <>

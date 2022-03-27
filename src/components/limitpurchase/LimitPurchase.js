@@ -29,18 +29,18 @@ const LimitPurchase = () => {
 
         dispatch(fetchList());
         // Fetch items from another resources.
-        const endOffset = limitPurchaseState.Paginate.Offset + moreAppConfig.ItemPerPage;
-        if (limitPurchaseState.limitpurchases != undefined && limitPurchaseState.limitpurchases != null) {
-            dispatch(setListLimitPurchase({
-                ...limitPurchaseState,
-                Paginate: {
-                    ...limitPurchaseState.Paginate,
-                    Offset: limitPurchaseState.Paginate.Offset,
-                    CurrentItems: limitPurchaseState.limitpurchases.slice(limitPurchaseState.Paginate.Offset, endOffset),
-                    TotalPage: limitPurchaseState.limitpurchases.length <= moreAppConfig.ItemPerPage ? 1 : Math.ceil(limitPurchaseState.limitpurchases.length / moreAppConfig.ItemPerPage)
-                }
-            }))
-        }
+        // const endOffset = limitPurchaseState.Paginate.Offset + moreAppConfig.ItemPerPage;
+        // if (limitPurchaseState.limitpurchases != undefined && limitPurchaseState.limitpurchases != null) {
+        //     dispatch(setListLimitPurchase({
+        //         ...limitPurchaseState,
+        //         Paginate: {
+        //             ...limitPurchaseState.Paginate,
+        //             Offset: limitPurchaseState.Paginate.Offset,
+        //             CurrentItems: limitPurchaseState.limitpurchases.slice(limitPurchaseState.Paginate.Offset, endOffset),
+        //             TotalPage: limitPurchaseState.limitpurchases.length <= moreAppConfig.ItemPerPage ? 1 : Math.ceil(limitPurchaseState.limitpurchases.length / moreAppConfig.ItemPerPage)
+        //         }
+        //     }))
+        // }
 
     }, []);
     const validateNumber = (e) => {
@@ -52,24 +52,33 @@ const LimitPurchase = () => {
     }
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
-
-        var listCampaign = limitPurchaseState.limitpurchases;
-        if (limitPurchaseState.TextSearchProduct !== undefined && limitPurchaseState.TextSearchProduct !== null && limitPurchaseState.TextSearchProduct !== '') {
-            listCampaign = listCampaign.filter(p => p.Title.includes(limitPurchaseState.TextSearchProduct));
-        }
-        if (limitPurchaseState.ProductSelected !== undefined && limitPurchaseState.ProductSelected !== null && limitPurchaseState.ProductSelected.value > 0) {
-            listCampaign = listCampaign.filter(p => p.ProductSelected === limitPurchaseState.ProductSelected.value);
-        }
-        const newOffset = (event.selected * moreAppConfig.ItemPerPage) % listCampaign.length;
-        const endOffset = newOffset + moreAppConfig.ItemPerPage;
-        dispatch(setListLimitPurchase({
-            ...limitPurchaseState,
-            Paginate: {
-                ...limitPurchaseState.Paginate,
-                Offset: newOffset,
-                CurrentItems: listCampaign.slice(newOffset, endOffset),
+        axios.get(config.rootLink + '/FrontEnd/GetLimitPurchasesPaginate', {
+            params: {
+                search: limitPurchaseState.TextSearchProduct,
+                typeselected: limitPurchaseState.ProductSelected.value,
+                shopID: appState.Shop?.ID,
+                shop: appState.Shop?.Domain,
+                page: event.selected + 1,
+                pagezise: 10
             }
-        }))
+        })
+            .then(function (response) {
+                const result = response?.data;
+                dispatch(setListLimitPurchase({
+                    ...limitPurchaseState,
+                    Paginate: {
+                        ...limitPurchaseState.Paginate,
+                        CurrentItems: result.list,
+                        TotalPage: result.totalpage
+                    },
+                    TotalLimitPurchase: result.totalitem
+                }))
+            })
+            .catch(function (error) {
+                const errorMsg = error.message;
+                console.log(errorMsg);
+            })
+        
     };
 
     const onClickDeleteLimitPurchase = (limitpurchase) => {
@@ -99,39 +108,41 @@ const LimitPurchase = () => {
             axios.post(config.rootLink + '/FrontEnd/DeleteLimitPurchase', { id: LimitPurchaseCurrent.ID, shop: config.shop })
                 .then(function (response) {
                     if (response.data.IsSuccess) {
-                        var newArrAll = limitPurchaseState.limitpurchases.map((p, i) => (p.ID == LimitPurchaseCurrent.ID ? {
-                            ...p,
-                            ID: null,
-                            Min: null,
-                            Max: null
-                        } : p));
-                        var arrFilter = newArrAll;
-                        if (limitPurchaseState.TextSearchProduct !== undefined && limitPurchaseState.TextSearchProduct !== null && limitPurchaseState.TextSearchProduct !== '') {
-                            arrFilter = arrFilter.filter(p => p.Title.toLowerCase().includes(limitPurchaseState.TextSearchProduct.toLowerCase()));
-                        }
-                        if (limitPurchaseState.ProductSelected !== undefined && limitPurchaseState.ProductSelected !== null && limitPurchaseState.ProductSelected.value > 0) {
-                            arrFilter = arrFilter.filter(p => p.ID != null && p.ID !== 0);
-                        }
-                        // var newArrListProductHaveLimit = limitPurchaseState.ListProductHaveLimit.filter(p => p.value != LimitPurchaseCurrent.ProductCode);
-                        dispatch(setListLimitPurchase({
-                            ...limitPurchaseState,
-                            limitpurchases: newArrAll,
-                            // ListProductHaveLimit: newArrListProductHaveLimit,
-                            Paginate: {
-                                ...limitPurchaseState.Paginate,
-                                Offset: 0,
-                                CurrentItems: arrFilter.slice(0, moreAppConfig.ItemPerPage),
-                                TotalPage: arrFilter.length <= moreAppConfig.ItemPerPage ? 1 : Math.ceil(arrFilter.length / moreAppConfig.ItemPerPage)
-                            },
-                            TotalLimitPurchase: arrFilter.length
-                        }))
-                        dispatch(setCreateUpdateLimitPurchase({
-                            ...createLimitPurchaseState,
-                            IsOpenSaveToolbar: false
-                        }))
-                        setAlert(<Toast content={'The limit purchase: ' + LimitPurchaseCurrent.Title + ' deleted successfully'} duration={3000} onDismiss={() => {
-                            setAlert(null);
-                        }} />);
+                        axios.get(config.rootLink + '/FrontEnd/GetLimitPurchasesPaginate', {
+                            params: {
+                                search: limitPurchaseState.TextSearchProduct,
+                                typeselected: limitPurchaseState.ProductSelected.value,
+                                shopID: appState.Shop?.ID,
+                                shop: appState.Shop?.Domain,
+                                page: 1,
+                                pagezise: 10
+                            }
+                        })
+                            .then(function (response) {
+                                const result = response?.data;
+                                //Set List + paging
+                                dispatch(setListLimitPurchase({
+                                    ...limitPurchaseState,
+                                    Paginate: {
+                                        ...limitPurchaseState.Paginate,
+                                        Offset: 0,
+                                        CurrentItems: result.list,
+                                        TotalPage: result.totalpage
+                                    },
+                                    TotalLimitPurchase: result.totalitem
+                                }))
+                                dispatch(setCreateUpdateLimitPurchase({
+                                    ...createLimitPurchaseState,
+                                    IsOpenSaveToolbar: false
+                                }))
+                                setAlert(<Toast content={'The limit purchase: ' + LimitPurchaseCurrent.Title + ' deleted successfully'} duration={3000} onDismiss={() => {
+                                    setAlert(null);
+                                }} />);
+                            })
+                            .catch(function (error) {
+                                const errorMsg = error.message;
+                                console.log(errorMsg);
+                            })
                     }
                     else {
                         setAlert(null);
@@ -146,26 +157,36 @@ const LimitPurchase = () => {
         }
     }
     const handleSearchProductLimit = (textSearch, productSelected) => {
-        var listLimit = limitPurchaseState.limitpurchases;
-        if (textSearch !== undefined && textSearch !== null && textSearch !== '') {
-            listLimit = listLimit.filter(p => p.Title.toLowerCase().includes(textSearch.toLowerCase()));
-        }
-        if (productSelected !== undefined && productSelected !== null && productSelected.value > 0) {
-            listLimit = listLimit.filter(p => p.ID != null && p.ID !== 0);
-        }
-        //Set List + paging
-        dispatch(setListLimitPurchase({
-            ...limitPurchaseState,
-            TextSearchProduct: textSearch,
-            ProductSelected: productSelected,
-            Paginate: {
-                ...limitPurchaseState.Paginate,
-                Offset: 0,
-                CurrentItems: listLimit.slice(0, moreAppConfig.ItemPerPage),
-                TotalPage: listLimit.length <= moreAppConfig.ItemPerPage ? 1 : Math.ceil(listLimit.length / moreAppConfig.ItemPerPage)
-            },
-            TotalLimitPurchase: listLimit.length
-        }))
+        axios.get(config.rootLink + '/FrontEnd/GetLimitPurchasesPaginate', {
+            params: {
+                search: textSearch,
+                typeselected: productSelected.value,
+                shopID: appState.Shop?.ID,
+                shop: appState.Shop?.Domain,
+                page: 1,
+                pagezise: 10
+            }
+        })
+            .then(function (response) {
+                const result = response?.data;
+                //Set List + paging
+                dispatch(setListLimitPurchase({
+                    ...limitPurchaseState,
+                    TextSearchProduct: textSearch,
+                    ProductSelected: productSelected,
+                    Paginate: {
+                        ...limitPurchaseState.Paginate,
+                        Offset: 0,
+                        CurrentItems: result.list,
+                        TotalPage: result.totalpage
+                    },
+                    TotalLimitPurchase: result.totalitem
+                }))
+            })
+            .catch(function (error) {
+                const errorMsg = error.message;
+                console.log(errorMsg);
+            })
     };
 
     function ValidForm() {

@@ -63,16 +63,16 @@ const CreateUpdateCampaign = (props) => {
                     campaignVariants = [
                         {
                             ID: Math.floor(100000000 + Math.random() * 900000000),
-                            ProductID: 0,
+                            ProductID: res.data.listOptionProduct[0].ProductID,
                             VariantID: 0,
                             ListVariant: listVariant,
                             ListVariantSelected: []
                         },
                         {
                             ID: Math.floor(100000000 + Math.random() * 900000000),
-                            ProductID: 0,
+                            ProductID: res.data.listOptionProduct[1].ProductID,
                             VariantID: 0,
-                            ListVariant: listVariant,
+                            ListVariant: listVariant2,
                             ListVariantSelected: []
                         }
                     ]
@@ -88,12 +88,47 @@ const CreateUpdateCampaign = (props) => {
                             SelectOptionProducts: res.data.listOptionProduct,
                         }));
                 }
-                if (appState.IsEditCampaign) {
-                    dispatch(setCreateUpdateCampaign(
-                        {
-                            ...campaignState,
-                            SelectOptionProducts: res.data.listOptionProduct,
-                        }));
+                else {
+                    if (campaign.ListVariants == undefined || campaign.ListVariants == null || campaign.ListVariants.length == 0) {
+                        var product = res.data.listOptionProduct;
+                        var listVariant = product !== undefined && product !== null && product.map(m => m.ListVariant) != null && product.map(m => m.ListVariant) != undefined ? product.map(m => m.ListVariant)[0] : [];
+                        var listVariant2 = product !== undefined && product !== null && product.map(m => m.ListVariant) != null && product.map(m => m.ListVariant) != undefined ? product.map(m => m.ListVariant)[1] : [];
+                        campaignVariants = [
+                            {
+                                ID: Math.floor(100000000 + Math.random() * 900000000),
+                                ProductID: res.data.listOptionProduct[0].ProductID,
+                                VariantID: 0,
+                                ListVariant: listVariant,
+                                ListVariantSelected: []
+                            },
+                            {
+                                ID: Math.floor(100000000 + Math.random() * 900000000),
+                                ProductID: res.data.listOptionProduct[1].ProductID,
+                                VariantID: 0,
+                                ListVariant: listVariant2,
+                                ListVariantSelected: []
+                            }
+                        ]
+                        // setRowPreview(campaign.ListDetails);
+                        dispatch(setCreateUpdateCampaign(
+                            {
+                                ...campaignState,
+                                campaign:
+                                {
+                                    ...campaign,
+                                    ListVariants: campaignVariants,
+                                },
+                                SelectOptionProducts: res.data.listOptionProduct,
+                            }));
+                    } else {
+                        dispatch(setCreateUpdateCampaign(
+                            {
+                                ...campaignState,
+                                SelectOptionProducts: res.data.listOptionProduct,
+                            }));
+                    }
+
+
                 }
                 getSettingOne();
 
@@ -1220,12 +1255,12 @@ const CreateUpdateCampaign = (props) => {
                                                                                 </div>
 
                                                                             ))}
-                                                                    <InlineError message={campaignState.CampaignDetailValidation} fieldID="myFieldID" />
 
                                                                     <div className='node'>
                                                                         <Button primary onClick={() => {
                                                                             AddRule()
                                                                         }}>Add Rule</Button>
+                                                                        <InlineError message={campaignState.CampaignDetailValidation} fieldID="myFieldID" />
 
                                                                     </div>
 
@@ -1464,7 +1499,7 @@ const CreateUpdateCampaign = (props) => {
                                                                                 return (
                                                                                     <>
                                                                                         <div className='card-orange' style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>
-                                                                                            <img src={campaignState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: hexToCSSFilter(campaignState.Setting2.BackgroundColorCard).filter.replace(';', '') }} className="Polaris-CalloutCard__Image" />
+                                                                                            <img src={campaignState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: hexToCSSFilter(campaignState.Setting2.BackgroundColorCard|| '#E48227').filter.replace(';', '') }} className="Polaris-CalloutCard__Image" />
                                                                                             <p className="buy">{campaignState.Setting.TextBuy} {item.Quantity}{campaignState.Setting.TextPLus}</p>
                                                                                             <p className="get" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{campaignState.Setting2.TextGet}</p>
                                                                                             <p className="off" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'} {campaignState.Setting2.TextOff}</p>

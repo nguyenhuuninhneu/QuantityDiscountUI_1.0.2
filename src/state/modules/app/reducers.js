@@ -50,13 +50,14 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         IsLoading: false,
         Shop: action.payload.shop,
-        Setting: action.payload.setting,
+        // Setting: action.payload.setting,
         // LimitPurchase: action.payload.limitpurchase,
         // Products: action.payload.products,
         // SelectOptionProducts: action.payload.listOptionProduct,
-        Collections: action.payload.collects,
+        // Collections: action.payload.collects,
         IsNoCampaign: !action.payload.hasCampaign,
-        Menu: !action.payload.hasCampaign ? moreAppConfig.Menu.CREATECAMPAIGN : moreAppConfig.Menu.MANAGECAMPAIGN
+        Menu:  moreAppConfig.Menu.MANAGECAMPAIGN,
+        // Menu: !action.payload.hasCampaign ? moreAppConfig.Menu.CREATECAMPAIGN : moreAppConfig.Menu.MANAGECAMPAIGN,
       };
     case types.SET_IS_EDIT_CAMPAIGN:
       return {

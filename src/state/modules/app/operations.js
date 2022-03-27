@@ -1,5 +1,6 @@
 import axios from "axios";
 import config from "../../../config/config";
+import operationsCampaign from "../campaign/operations";
 import * as actions from "./actions";
 
 export const fetchShop = () => {
@@ -19,7 +20,7 @@ export const fetchShop = () => {
         if (result.displayprocess) {
           dispatch(getProcess("Create"));
         } 
-        
+        dispatch(operationsCampaign.fetchList());
       })
       .catch(function (error) {
         const errorMsg = error.message;

@@ -68,6 +68,8 @@ const INITIAL_STATE = {
       FontSizeCard: "15",
       TextColorCard: "#000000",
       BackgroundColorCard: "#FFFFFF",
+      TextMinimumProductTitle: "You have to choose minimum of {minimum} {product_title}",
+      TextMaximumProductTitle: "You can only choose maximum of {maximum} {product_title}",
     },
     TotalDiscountCode: 0,
     DiscountDetail: null,

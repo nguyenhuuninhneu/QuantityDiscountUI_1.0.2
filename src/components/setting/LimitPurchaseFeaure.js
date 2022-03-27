@@ -342,10 +342,10 @@ function LimitPurchaseFeature() {
                     <Layout.Section oneThird>
                       <Card>
                         <Card.Section>
-                          <Heading size="small">3. Alert text</Heading>
+                          <Heading size="small">3. Alert text in product page</Heading>
                           <div className='element-general'>
                             <div className="break-line"></div>
-                            <p className='only-text'>Alert text when customer choose more than maximum:</p>
+                            <p className='only-text'>When customer choose more than maximum:</p>
                             <div className='group-fill-text'>
                               <div className='item'>
                                 <div className='col col1'>
@@ -381,7 +381,7 @@ function LimitPurchaseFeature() {
                           </div>
                           <div className='element-general'>
                             <div className="break-line"></div>
-                            <p className='only-text'>Alert text when customer choose less than minimum:</p>
+                            <p className='only-text'>When customer choose less than minimum:</p>
                             <div className='group-fill-text'>
                               <div className='item'>
                                 <div className='col col1'>
@@ -417,7 +417,7 @@ function LimitPurchaseFeature() {
                           </div>
                           <div className='element-general'>
                             <div className="break-line"></div>
-                            <p className='only-text'>Alert text when customer choose within the allowed range but total product in cart exceeds maximum:</p>
+                            <p className='only-text'>When customer choose within the allowed range but total product in cart exceeds maximum:</p>
                             <div className='group-fill-text'>
                               <div className='item'>
                                 <div className='col col1'>
@@ -457,45 +457,97 @@ function LimitPurchaseFeature() {
                   </Layout>
                 </div>
               </div>
-              {/* <div className='colRight'>
-                <div className='section section-preview bg-fff'>
-                  <div className='preview'>
-                    <h2 className="Polaris-Heading Heading-Icon Heading-Preview"> <Icon source={ViewMinor} color='base'></Icon> How will the alert look
-                    </h2>
-                    <div className='bg-bound'>
-                      <div className='preview-table'>
-                        <Card>
-                          <div className="item-center">
-                            <DataTable
-                              columnContentTypes={[
-                                'text',
-                              ]}
-                              headings={[
-                                settingState.Setting2.TextOop
-                              ]}
-                              rows={
-                                [
-                                  [<>
-                                    <p>{settingState.Setting2.TextMinMaxRequired}</p>
-                                    <p>{settingState.Setting2.TextPleaseFix}</p>
-                                    <p className='update-cart'>
-                                      <Button primary onClick={() => {
-
-                                      }}>{settingState.Setting2.TextUpdateCart}</Button>
-                                    </p>
-                                  </>]
-                                ]
-                              }
-                            />
+              
+              <div className='cb'>
+              </div>
+            </div>
+            <div className="alert-cart-page">
+              <div className='colLeft'>
+                <div className='section cart-page'>
+                  <Layout>
+                    <Layout.Section oneThird>
+                      <Card>
+                        <Card.Section>
+                          <Heading size="small">4. Alert text in cart page</Heading>
+                          <div className='element-general'>
+                            <div className="break-line"></div>
+                            <p className='only-text'>When customer update quantity and total quantity exceeds maximum:</p>
+                            <div className='group-fill-text'>
+                              <div className='item'>
+                                <div className='col col1'>
+                                “You can only choose maximum of {"{maximum}"} {"{product_title}"}”
+                                </div>
+                                <div className='col col2'>
+                                  <Icon
+                                    source={CircleRightMajor}
+                                    color="base" />
+                                </div>
+                                <div className='col col3'>
+                                  <TextField
+                                    placeholder='“You can only choose maximum of {maximum} {product_title}”'
+                                    value={settingState.Setting2.TextMaximumProductTitle}
+                                    onChange={(e) => {
+                                      dispatch(setSetting({
+                                        ...settingState,
+                                        Setting2: {
+                                          ...settingState.Setting2,
+                                          TextMaximumProductTitle: e,
+                                        },
+                                        IsOpenSaveToolbar: true
+                                      }))
+                                    }}
+                                    type="text"
+                                    multiline={2}
+                                  />
+                                </div>
+                                <div className='cb'>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                        </Card>
-
-                      </div>
-
-                    </div>
-                  </div>
+                          <div className='element-general'>
+                            <div className="break-line"></div>
+                            <p className='only-text'>When customer update quantity and total quantity is less than minimum:</p>
+                            <div className='group-fill-text'>
+                              <div className='item'>
+                                <div className='col col1'>
+                                “You have to choose minimum of {"{minimum}"} {"{product_title}"}”
+                                </div>
+                                <div className='col col2'>
+                                  <Icon
+                                    source={CircleRightMajor}
+                                    color="base" />
+                                </div>
+                                <div className='col col3'>
+                                  <TextField
+                                    placeholder='“You have to choose minimum of {minimum} {product_title}”'
+                                    value={settingState.Setting2.TextMinimumProductTitle}
+                                    onChange={(e) => {
+                                      dispatch(setSetting({
+                                        ...settingState,
+                                        Setting2: {
+                                          ...settingState.Setting2,
+                                          TextMinimumProductTitle: e,
+                                        },
+                                        IsOpenSaveToolbar: true
+                                      }))
+                                    }}
+                                    type="text"
+                                    multiline={2}
+                                  />
+                                </div>
+                                <div className='cb'>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </Card.Section>
+                      </Card>
+                    </Layout.Section>
+                  </Layout>
                 </div>
-              </div> */}
+              </div>
+              
               <div className='cb'>
               </div>
             </div>

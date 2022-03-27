@@ -6,7 +6,7 @@ const INITIAL_STATE = {
     TextSearchProduct: null,
     Collections: null,
     ListProductHaveLimit: [{ label: 'All products', value: 0 },{ label: 'Product have limit', value: 1 }],
-    ProductSelected: null,
+    ProductSelected: 0,
     IsLoadingPage: false,
     Paginate: {
       CurrentItems: [],
@@ -65,10 +65,10 @@ const reducer = (state = INITIAL_STATE, action) => {
           Collections: action.payload.collects,
           Paginate: {
             Offset: 0,
-            TotalPage: action.payload.list.length <= moreAppConfig.ItemPerPage ? 1 : Math.ceil(action.payload.list.length / moreAppConfig.ItemPerPage),
-            CurrentItems: action.payload.list.slice(0, moreAppConfig.ItemPerPage)
+            TotalPage: action.payload.totalpage,
+            CurrentItems: action.payload.list
           },
-          TotalLimitPurchase: action.payload.list.length,
+          TotalLimitPurchase: action.payload.totalitem,
 
         },
         CreateUpdateLimitPurchase: {
