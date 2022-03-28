@@ -20,9 +20,10 @@ import TableCollection from './TableCollection';
 import TableProduct from './TableProduct';
 import Select from 'react-select';
 import axios from 'axios';
-import CardOrange from '../../assets/images/card-orange.svg';
 import CardOrange2 from '../../assets/images/card-orange-2.svg';
 import CardOrange3 from '../../assets/images/card-orange-3.svg';
+import CardBorder2 from '../../assets/images/card-border-2.svg';
+import CardBorder3 from '../../assets/images/card-border-3.svg';
 import { hexToCSSFilter } from 'hex-to-css-filter';
 
 
@@ -1534,6 +1535,7 @@ const CreateUpdateCampaign = (props) => {
                                                                                     <>
                                                                                         <div className='card-orange' style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>
                                                                                             <img src={campaignState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: hexToCSSFilter(campaignState.Setting2.BackgroundColorCard || '#E48227').filter.replace(';', '') }} className="Polaris-CalloutCard__Image" />
+                                                                                            <img src={campaignState.Setting2.CardTheme == 0 ? CardBorder2 : CardBorder3} className="card-border" alt="" />
                                                                                             <p className="buy">{campaignState.Setting.TextBuy} {item.Quantity}{campaignState.Setting.TextPLus}</p>
                                                                                             <p className="get" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{campaignState.Setting2.TextGet}</p>
                                                                                             <p className="off" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'}{campaign.PriceType === 3 ? '/'+campaignState.Setting.TextEach : ' ' + campaignState.Setting2.TextOff}</p>

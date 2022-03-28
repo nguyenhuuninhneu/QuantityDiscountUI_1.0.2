@@ -8,6 +8,8 @@ import { saveSetting, fetchSetting } from '../../state/modules/setting/operation
 import Select from 'react-select';
 import CardOrange2 from '../../assets/images/card-orange-2.svg';
 import CardOrange3 from '../../assets/images/card-orange-3.svg';
+import CardBorder2 from '../../assets/images/card-border-2.svg';
+import CardBorder3 from '../../assets/images/card-border-3.svg';
 import { hexToCSSFilter } from 'hex-to-css-filter';
 import config from '../../config/config';
 import axios from 'axios';
@@ -253,6 +255,7 @@ function DiscountFeature() {
                                       }))
                                     }}>
                                       <img src={CardOrange2} alt="" style={{ filter: filterBackgroundColorCard.replace(';', '') }} />
+                                      <img src={CardBorder2} className="card-border" alt="" />
                                     </Button>
                                   </div>
                                   <div className={settingState.Setting2.CardTheme == 1 ? 'item-card-theme active' : 'item-card-theme'}>
@@ -267,6 +270,7 @@ function DiscountFeature() {
                                       }))
                                     }}>
                                       <img src={CardOrange3} style={{ filter: filterBackgroundColorCard.replace(';', '') }} alt="" />
+                                      <img src={CardBorder3} className="card-border" alt="" />
                                     </Button>
                                   </div>
                                   <div className='cb'></div>
@@ -1251,18 +1255,21 @@ function DiscountFeature() {
                             <div className="Polaris-CalloutCard__Buttons" style={{ display: 'flex' }}>
                               <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
                                 <img src={settingState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: filterBackgroundColorCard.replace(';', '') }} className="Polaris-CalloutCard__Image" />
+                                <img src={settingState.Setting2.CardTheme == 0 ? CardBorder2 : CardBorder3} className="card-border" alt="" />
                                 <p className="buy">{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
                                 <p className="get">{settingState.Setting2.TextGet}</p>
                                 <p className="off">{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
                               </div>
                               <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
                                 <img src={settingState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: filterBackgroundColorCard.replace(';', '') }} className="Polaris-CalloutCard__Image" />
+                                <img src={settingState.Setting2.CardTheme == 0 ? CardBorder2 : CardBorder3} className="card-border" alt="" />
                                 <p className="buy">{settingState.Setting.TextBuy} {rowsPreview[1][0]}{settingState.Setting.TextPLus}</p>
                                 <p className="get">{settingState.Setting2.TextGet}</p>
                                 <p className="off">{rowsPreview[1][1]}% {settingState.Setting2.TextOff}</p>
                               </div>
                               <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
                                 <img src={settingState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: filterBackgroundColorCard.replace(';', '') }} className="Polaris-CalloutCard__Image" />
+                                <img src={settingState.Setting2.CardTheme == 0 ? CardBorder2 : CardBorder3} className="card-border" alt="" />
                                 <p className="buy">{settingState.Setting.TextBuy} {rowsPreview[2][0]}{settingState.Setting.TextPLus}</p>
                                 <p className="get">{settingState.Setting2.TextGet}</p>
                                 <p className="off">{rowsPreview[2][1]}% {settingState.Setting2.TextOff}</p>
