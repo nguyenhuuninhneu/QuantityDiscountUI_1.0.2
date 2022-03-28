@@ -627,6 +627,36 @@ function DiscountFeature() {
                                     <div className='cb'>
                                     </div>
                                   </div>
+                                  <div className='item'>
+                                    <div className='col col1'>
+                                      each
+                                    </div>
+                                    <div className='col col2'>
+                                      <Icon
+                                        source={CircleRightMajor}
+                                        color="base" />
+                                    </div>
+                                    <div className='col col3'>
+                                      <TextField
+                                        id='TextEach'
+                                        placeholder='off'
+                                        value={settingState.Setting.TextEach}
+                                        onChange={(e) => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting: {
+                                              ...settingState.Setting,
+                                              TextEach: e,
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }}
+                                        type="text"
+                                      />
+                                    </div>
+                                    <div className='cb'>
+                                    </div>
+                                  </div>
                                 </> :
                                   <></>}
                             </div>

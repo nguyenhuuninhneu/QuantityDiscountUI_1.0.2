@@ -10,9 +10,11 @@ function TableCollection(props) {
   const dispatch = useDispatch();
   const campaignState = useSelector((state) => state.campaign.CreateUpdateCampaign);
   const campaign = campaignState.campaign;
+  const appState = useSelector((state) => state.app);
   const [textSearch, setTextSearch] = useState('');
-  const [selectedRows, setSelectedRows] = useState(props.ItemSelected);
-  const [colletions, setCollections] = useState([]);
+  const [nextPage, setNextPage] = useState(1);
+  const [wholeSelected, setWholeSelected] = React.useState(props.ItemSelected || []);
+  const [selectedRows, setSelectedRows] = React.useState([]);//props.ItemSelected || 
   const [data, setData] = useState([]);
   const columns = [
     {
@@ -26,34 +28,70 @@ function TableCollection(props) {
   ];
   const handleChangeTextSearch = (e) => {
     setTextSearch(e);
-    if (e === '') {
-      setData(colletions);
-    } else {
-      var arr = colletions.filter(p => p.Title.toLowerCase().includes(textSearch.toLowerCase()));
-      setData(arr);
-    }
-
+    setNextPage(1)
+    axios.get(config.rootLink + '/FrontEnd/GetCollectPaginate', {
+      params: {
+        search: e,
+        shopID: appState.Shop?.ID,
+        shop: appState?.Shop.Domain,
+        page: 1,
+        pagezise: 10
+      }
+    })
+      .then(function (response) {
+        const result = response?.data;
+        setData(result.collects)
+        if (result.page < result.totalpage) {
+          setNextPage(result.page + 1)
+        } else {
+          setNextPage(0)
+        }
+      })
+      .catch(function (error) {
+        const errorMsg = error.message;
+        console.log(errorMsg);
+      })
   };
 
 
   useEffect(() => {
-    // setSelectedRows(props.ItemSelected)
-    axios.get(config.rootLink + '/FrontEnd/GetCollect', {
+    setNextPage(1)
+    axios.get(config.rootLink + '/FrontEnd/GetCollectPaginate', {
       params: {
-        shopID: campaign.ShopID,
-        shop: config.shop,
+        search: textSearch,
+        shopID: appState.Shop?.ID,
+        shop: appState?.Shop.Domain,
+        page: 1,
+        pagezise: 10
       }
     })
       .then(function (response) {
-        setData(response?.data.collects)
-        setCollections(response?.data.collects)
+        const result = response?.data;
+        setData(result.collects)
+        // setTotalPage(result.totalpage);
+        if (result.page < result.totalpage) {
+          setNextPage(result.page + 1)
+        } else {
+          setNextPage(0)
+        }
       })
       .catch(function (error) {
         const errorMsg = error.message;
+        console.log(errorMsg);
       })
   }, []);
   const handleRowSelected = React.useCallback(state => {
     setSelectedRows(state.selectedRows);
+    if (wholeSelected.length === 0) {
+      setWholeSelected(...wholeSelected, state.selectedRows)
+    } else {
+      var arrWhole = wholeSelected;
+      var arrAdd = state.selectedRows.filter(x => !arrWhole.map(p => p.ProductID).includes(x.ProductID));
+      if (arrAdd.length > 0) {
+        arrWhole = arrWhole.concat(arrAdd);
+      }
+      setWholeSelected(arrWhole)
+    }
   }, []);
   function AddCollectionToInput() {
     dispatch(setCreateUpdateCampaign(
@@ -62,7 +100,7 @@ function TableCollection(props) {
         campaign:
         {
           ...campaign,
-          ListCollects: selectedRows
+          ListCollects: wholeSelected
         },
         IsOpenSaveToolbar: true
       }));
@@ -100,7 +138,7 @@ function TableCollection(props) {
             placeholder='Search Collection'
           />
           <div className="selected-item">
-            {selectedRows.length} collection selected
+            {wholeSelected.length} collection selected
           </div>
 
         </div>
@@ -109,7 +147,7 @@ function TableCollection(props) {
           data={data}
           selectableRows
           onSelectedRowsChange={handleRowSelected}
-          selectableRowSelected={row => props.ItemSelected != undefined && props.ItemSelected.map(p => p.CollectID).indexOf(row.CollectID) >= 0}
+          selectableRowSelected={row => wholeSelected != undefined && wholeSelected.map(p => p.CollectID).indexOf(row.CollectID) >= 0}
         />
       </Modal.Section>
 

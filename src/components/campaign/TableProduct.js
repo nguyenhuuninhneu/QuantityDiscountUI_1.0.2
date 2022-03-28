@@ -19,9 +19,9 @@ function TableProduct(props) {
 
     const [textSearch, setTextSearch] = useState('');
     const [textLoading, setTextLoading] = useState('');
-    const [TotalPage, setTotalPage] = useState(1);
     const [nextPage, setNextPage] = useState(1);
-    const [selectedRows, setSelectedRows] = React.useState([]);
+    const [wholeSelected, setWholeSelected] = React.useState(props.ItemSelected || []);
+    const [selectedRows, setSelectedRows] = React.useState([]);//props.ItemSelected ||
     const [data, setData] = useState([]);
 
     const columns = [
@@ -92,6 +92,17 @@ function TableProduct(props) {
     };
     const handleRowSelected = React.useCallback(state => {
         setSelectedRows(state.selectedRows);
+        if (wholeSelected.length === 0) {
+            setWholeSelected(...wholeSelected, state.selectedRows)
+        } else {
+            var arrWhole = wholeSelected;
+            var arrAdd = state.selectedRows.filter(x => !arrWhole.map(p=>p.ProductID).includes(x.ProductID));
+            if (arrAdd.length > 0) {
+                arrWhole = arrWhole.concat(arrAdd);
+            }
+            setWholeSelected(arrWhole)
+        }
+
     }, []);
     function AddProductToInput() {
         dispatch(setCreateUpdateCampaign(
@@ -100,7 +111,7 @@ function TableProduct(props) {
                 campaign:
                 {
                     ...campaign,
-                    ListProducts: selectedRows
+                    ListProducts: wholeSelected
                 },
                 IsOpenSaveToolbar: true
             }));
@@ -182,6 +193,7 @@ function TableProduct(props) {
                 hasMore={true}
                 // loader={textLoading}
                 height={420}
+                marginTop={10}
             >
                 <Modal.Section>
 
@@ -195,9 +207,10 @@ function TableProduct(props) {
                             placeholder='Search Product'
                         />
                         <div className="selected-item">
-                            {selectedRows.length} product selected
+                            {wholeSelected.length} product selected
                         </div>
-
+                        <div className="shadow">
+                        </div>
                     </div>
 
                     <DataTable
@@ -205,37 +218,38 @@ function TableProduct(props) {
                         data={data}
                         selectableRows
                         onSelectedRowsChange={handleRowSelected}
-                        selectableRowSelected={row => props.ItemSelected != undefined && props.ItemSelected.map(p => p.ProductID).indexOf(row.ProductID) >= 0}
+                        selectableRowSelected={row => wholeSelected != undefined && wholeSelected.map(p => p.ProductID).indexOf(row.ProductID) >= 0}
                     />
 
                     {/* {
-                    data !== undefined && data !== null && data.length > 0 ? <>
-                        <div className='paging-area'>
-                            <ReactPaginate
-                                nextLabel=">"
-                                onPageChange={handlePageClick}
-                                pageRangeDisplayed={2}
-                                marginPagesDisplayed={2}
-                                pageCount={TotalPage}
-                                previousLabel="<"
-                                pageClassName="page-item"
-                                pageLinkClassName="page-link"
-                                previousClassName="page-item"
-                                previousLinkClassName="page-link"
-                                nextClassName="page-item"
-                                nextLinkClassName="page-link"
-                                breakLabel="..."
-                                breakClassName="page-item"
-                                breakLinkClassName="page-link"
-                                containerClassName="pagination"
-                                activeClassName="active"
-                                renderOnZeroPageCount={null}
-                            />
-                        </div>
-                    </> : null
-                } */}
+data !== undefined && data !== null && data.length > 0 ? <>
+<div className='paging-area'>
+<ReactPaginate
+nextLabel=">"
+onPageChange={handlePageClick}
+pageRangeDisplayed={2}
+marginPagesDisplayed={2}
+pageCount={TotalPage}
+previousLabel="<"
+pageClassName="page-item"
+pageLinkClassName="page-link"
+previousClassName="page-item"
+previousLinkClassName="page-link"
+nextClassName="page-item"
+nextLinkClassName="page-link"
+breakLabel="..."
+breakClassName="page-item"
+breakLinkClassName="page-link"
+containerClassName="pagination"
+activeClassName="active"
+renderOnZeroPageCount={null}
+/>
+</div>
+</> : null
+} */}
 
                 </Modal.Section>
+
             </InfiniteScroll>
         </Modal>
     )

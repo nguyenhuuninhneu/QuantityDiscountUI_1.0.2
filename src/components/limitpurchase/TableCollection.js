@@ -3,14 +3,17 @@ import { Modal, TextField } from '@shopify/polaris';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCreateUpdateLimitPurchase } from '../../state/modules/limitpurchase/actions';
 import DataTable from 'react-data-table-component';
-
+import axios from 'axios';
+import config from '../../config/config';
 
 function TableCollection(props) {
   const dispatch = useDispatch();
+  const appState = useSelector((state) => state.app);
   const createUpdateLimitPurchase = useSelector((state) => state.limitpurchase.CreateUpdateLimitPurchase);
   const [textSearch, setTextSearch] = useState('');
-
-  const [selectedRows, setSelectedRows] = React.useState([]);
+  const [nextPage, setNextPage] = useState(1);
+  const [wholeSelected, setWholeSelected] = React.useState(props.ItemSelected || []);
+  const [selectedRows, setSelectedRows] = React.useState([]);//props.ItemSelected || 
   const [data, setData] = useState([]);
 
   const columns = [
@@ -25,19 +28,69 @@ function TableCollection(props) {
   ];
   const handleChangeTextSearch = (e) => {
     setTextSearch(e);
-    if (e === '') {
-      setData(props.Collections);
-    } else {
-      var arr = props.Collections.filter(p => p.Title.toLowerCase().includes(textSearch.toLowerCase()) || p.Handle.toLowerCase().includes(textSearch.toLowerCase()));
-      setData(arr);
-    }
+    setNextPage(1)
+    axios.get(config.rootLink + '/FrontEnd/GetCollectPaginate', {
+      params: {
+        search: e,
+        shopID: appState.Shop?.ID,
+        shop: appState?.Shop.Domain,
+        page: 1,
+        pagezise: 10
+      }
+    })
+      .then(function (response) {
+        const result = response?.data;
+        setData(result.collects)
+        if (result.page < result.totalpage) {
+          setNextPage(result.page + 1)
+        } else {
+          setNextPage(0)
+        }
+      })
+      .catch(function (error) {
+        const errorMsg = error.message;
+        console.log(errorMsg);
+      })
 
   };
   useEffect(() => {
-    setData(props.Collections)
+    setNextPage(1)
+    axios.get(config.rootLink + '/FrontEnd/GetCollectPaginate', {
+      params: {
+        search: textSearch,
+        shopID: appState.Shop?.ID,
+        shop: appState?.Shop.Domain,
+        page: 1,
+        pagezise: 10
+      }
+    })
+      .then(function (response) {
+        const result = response?.data;
+        setData(result.collects)
+        // setTotalPage(result.totalpage);
+        if (result.page < result.totalpage) {
+          setNextPage(result.page + 1)
+        } else {
+          setNextPage(0)
+        }
+      })
+      .catch(function (error) {
+        const errorMsg = error.message;
+        console.log(errorMsg);
+      })
   }, []);
   const handleRowSelected = React.useCallback(state => {
     setSelectedRows(state.selectedRows);
+    if (wholeSelected.length === 0) {
+      setWholeSelected(...wholeSelected, state.selectedRows)
+    } else {
+      var arrWhole = wholeSelected;
+      var arrAdd = state.selectedRows.filter(x => !arrWhole.map(p => p.ProductID).includes(x.ProductID));
+      if (arrAdd.length > 0) {
+        arrWhole = arrWhole.concat(arrAdd);
+      }
+      setWholeSelected(arrWhole)
+    }
   }, []);
   function AddCollectionToInput() {
     dispatch(setCreateUpdateLimitPurchase(
@@ -46,7 +99,7 @@ function TableCollection(props) {
         BulkUpdate:
         {
           ...createUpdateLimitPurchase.BulkUpdate,
-          ListCollects: selectedRows
+          ListCollects: wholeSelected
         },
         IsOpenSaveToolbar: true
       }));
@@ -83,7 +136,7 @@ function TableCollection(props) {
             placeholder='Search Collection'
           />
           <div className="selected-item">
-            {selectedRows.length} collection selected
+            {wholeSelected.length} collection selected
           </div>
 
         </div>
@@ -92,7 +145,7 @@ function TableCollection(props) {
           data={data}
           selectableRows
           onSelectedRowsChange={handleRowSelected}
-          selectableRowSelected={row => props.ItemSelected != undefined && props.ItemSelected.map(p => p.CollectID).indexOf(row.CollectID) >= 0}
+          selectableRowSelected={row => wholeSelected != undefined && wholeSelected.map(p => p.CollectID).indexOf(row.CollectID) >= 0}
         />
       </Modal.Section>
     </Modal>

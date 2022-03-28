@@ -1422,11 +1422,20 @@ input.active+.slider .off {
     position: relative;
 }
 
-.selected-item{
+.selected-item {
     color: #6D7175;
     padding-top: 5px;
-    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-bottom: 6px;
     background-color: #fff;
+   
+}
+.shadow{
+    width: 50%;
+    height: 1px;
+    margin:auto;
+    margin-top: -5px;
+    box-shadow: 0 2px 0px rgb(78 127 119 / 90%);
 }
 .time-zone-note{
     font-size: 14px;

@@ -39,5 +39,6 @@ const moreAppConfig = {
     MaxValidationText: 'Max is required.',
     MaxGreateThanMinValidationText: 'Max limit must be greater than min.',
     LimitPurchaseCollectValidationText: 'Collection is required.',
+    
 }
 export default moreAppConfig;
