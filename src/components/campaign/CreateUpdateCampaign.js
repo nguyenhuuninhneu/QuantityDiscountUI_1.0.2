@@ -1554,11 +1554,11 @@ const CreateUpdateCampaign = (props) => {
                                                         {
                                                             campaignState.Setting.ShowDescription ? <>
                                                                 <p className='discount-applied'> {
-                                                                    campaign.DiscountType === 3 ?
-                                                                        "This discount is applied to the total quantity of the same variant of this product in your cart"
+                                                                    campaign.DiscountType === 1 ?
+                                                                    campaign.Setting2.TextMinimumCartQuantity
                                                                         : campaign.DiscountType === 2 ?
-                                                                        "This discount is applied to the total quantity of this product in your cart" : 
-                                                                        "This discount is applied to the total quantity of products in your cart"
+                                                                        campaign.Setting2.TextMinimumSameProductQuantity : 
+                                                                        campaign.Setting2.TextMinimumSameProductVariantQuantity
                                                                 }</p>
                                                             </> : <></>
                                                         }
