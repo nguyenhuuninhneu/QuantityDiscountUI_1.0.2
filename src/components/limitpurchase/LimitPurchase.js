@@ -52,10 +52,11 @@ const LimitPurchase = () => {
     }
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
+        debugger;
         axios.get(config.rootLink + '/FrontEnd/GetLimitPurchasesPaginate', {
             params: {
                 search: limitPurchaseState.TextSearchProduct,
-                typeselected: limitPurchaseState.ProductSelected.value,
+                typeselected: limitPurchaseState.ProductSelected,
                 shopID: appState.Shop?.ID,
                 shop: appState.Shop?.Domain,
                 page: event.selected + 1,
@@ -111,7 +112,7 @@ const LimitPurchase = () => {
                         axios.get(config.rootLink + '/FrontEnd/GetLimitPurchasesPaginate', {
                             params: {
                                 search: limitPurchaseState.TextSearchProduct,
-                                typeselected: limitPurchaseState.ProductSelected.value,
+                                typeselected: limitPurchaseState.ProductSelected,
                                 shopID: appState.Shop?.ID,
                                 shop: appState.Shop?.Domain,
                                 page: 1,
@@ -160,7 +161,7 @@ const LimitPurchase = () => {
         axios.get(config.rootLink + '/FrontEnd/GetLimitPurchasesPaginate', {
             params: {
                 search: textSearch,
-                typeselected: productSelected.value,
+                typeselected: productSelected,
                 shopID: appState.Shop?.ID,
                 shop: appState.Shop?.Domain,
                 page: 1,
@@ -335,7 +336,7 @@ const LimitPurchase = () => {
                                         defaultValue={limitPurchaseState.ListProductHaveLimit[0]}
                                         options={limitPurchaseState.ListProductHaveLimit}
                                         onChange={(e) => {
-                                            handleSearchProductLimit(limitPurchaseState.TextSearchProduct, e);
+                                            handleSearchProductLimit(limitPurchaseState.TextSearchProduct, e.value);
                                         }}
                                         isSearchable={false}
                                     // value={limitPurchaseState.ProductSelected}

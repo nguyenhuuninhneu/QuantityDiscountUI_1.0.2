@@ -15,6 +15,7 @@ const INITIAL_STATE = {
   Process: 0,
   DisplayProcess: false,
   NoCallTwiceTime: false,
+  PlanNumber: 0,
 };
 
 
@@ -55,8 +56,10 @@ const reducer = (state = INITIAL_STATE, action) => {
         // Products: action.payload.products,
         // SelectOptionProducts: action.payload.listOptionProduct,
         // Collections: action.payload.collects,
+        PlanNumber: action.payload.planNumber,
         IsNoCampaign: !action.payload.hasCampaign,
         Menu:  moreAppConfig.Menu.MANAGECAMPAIGN,
+        DisplayProcess: action.payload.displayprocess,
         // Menu: !action.payload.hasCampaign ? moreAppConfig.Menu.CREATECAMPAIGN : moreAppConfig.Menu.MANAGECAMPAIGN,
       };
     case types.SET_IS_EDIT_CAMPAIGN:
