@@ -135,7 +135,8 @@ export const saveCampaign = (isFirstCampaign = false) => {
             dispatch(actions.setListCampaign(
               {
                 ...getState().campaign.ListCampaign,
-                TotalCampaign: getState().campaign.ListCampaign.TotalCampaign + 1
+                TotalCampaign: getState().campaign.ListCampaign.TotalCampaign + 1,
+                WholeCampaignNumber: getState().campaign.ListCampaign.WholeCampaignNumber + 1,
               }));
           }
         } else {

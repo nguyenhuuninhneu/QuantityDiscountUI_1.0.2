@@ -20,7 +20,7 @@ const ListCampaign = (props) => {
     const dispatch = useDispatch();
     const campaignState = useSelector((state) => state.campaign.ListCampaign);
     const appState = useSelector((state) => state.app);
-
+    const [isShowPopupUpgradeCreateCampaign, setIsShowPopupUpgradeCreateCampaign] = useState(false);
     useEffect(() => {
         dispatch(fetchList());
 
@@ -48,7 +48,8 @@ const ListCampaign = (props) => {
                         CurrentItems: result.campaigns,
                         TotalPage: result.totalpage
                     },
-                    TotalCampaign: result.totalitem
+                    TotalCampaign: result.totalitem,
+                    WholeCampaignNumber: result.wholecampaignnumber
                 }))
             })
             .catch(function (error) {
@@ -87,7 +88,8 @@ const ListCampaign = (props) => {
                                         CurrentItems: result.campaigns,
                                         TotalPage: result.totalpage
                                     },
-                                    TotalCampaign: result.totalitem
+                                    TotalCampaign: result.totalitem,
+                                    WholeCampaignNumber: result.wholecampaignnumber
                                 }))
                                 if (result.campaigns.length == 0) {
                                     dispatch(setIsNoCampaign(true));
@@ -143,7 +145,8 @@ const ListCampaign = (props) => {
                         CurrentItems: result.campaigns,
                         TotalPage: result.totalpage
                     },
-                    TotalCampaign: result.totalitem
+                    TotalCampaign: result.totalitem,
+                    WholeCampaignNumber: result.wholecampaignnumber
                 }))
             })
             .catch(function (error) {
@@ -210,7 +213,7 @@ const ListCampaign = (props) => {
                                                 placeholder={'Search Product Title'}
                                                 value={campaignState.TextSearchProduct}
                                                 onChange={(e) => {
-                                                    
+
                                                     handleSearchCampaign(e, campaignState.DiscountTypeSelected);
                                                 }}
                                                 type="text"
@@ -244,15 +247,19 @@ const ListCampaign = (props) => {
                                     </div>
                                     <div className='colRight'>
                                         <Button primary onClick={() => {
-
-                                            if (campaignState.TotalCampaign === 0) {
-                                                dispatch(setIsNoCampaign(true))
+                                            if (campaignState.WholeCampaignNumber >= 5 && appState.PlanNumber === 0) {
+                                                setIsShowPopupUpgradeCreateCampaign(true)
+                                            } else {
+                                                if (campaignState.TotalCampaign === 0) {
+                                                    dispatch(setIsNoCampaign(true))
+                                                }
+                                                dispatch(setIsCreatingCampaign(true))
+                                                dispatch(setIsEditCampaign(false))
+                                                dispatch(setNoCallTwices(true));
+                                                dispatch(createCampaign());
+                                                dispatch(setMenu(moreAppConfig.Menu.CREATECAMPAIGN));
                                             }
-                                            dispatch(setIsCreatingCampaign(true))
-                                            dispatch(setIsEditCampaign(false))
-                                            dispatch(setNoCallTwices(true));
-                                            dispatch(createCampaign());
-                                            dispatch(setMenu(moreAppConfig.Menu.CREATECAMPAIGN));
+
                                         }}>Create new campaign</Button>
                                         {/* dispatch(createCampaign()) */}
                                     </div>
@@ -409,6 +416,31 @@ const ListCampaign = (props) => {
                         </p>
                     </TextContainer>
                 </Modal.Section>
+            </Modal>
+            <Modal
+                open={isShowPopupUpgradeCreateCampaign}
+                onClose={() => {
+                    setIsShowPopupUpgradeCreateCampaign(false)
+
+                }}
+                title="You are on the Basic plan with maximum of 5 campaigns. Do you want to upgrade?"
+                primaryAction={{
+                    content: 'Upgrade',
+                    onAction: () => {
+                        setIsShowPopupUpgradeCreateCampaign(false)
+                        dispatch(setMenu(moreAppConfig.Menu.PLAN))
+                    },
+                }}
+                secondaryActions={[
+                    {
+                        content: 'Cancel',
+                        onAction: () => {
+                            setIsShowPopupUpgradeCreateCampaign(false)
+                        },
+                    },
+                ]}
+            >
+
             </Modal>
             {Alert}
         </>

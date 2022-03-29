@@ -66,3 +66,10 @@ export const getProcessFailed = (data) => {
     payload: data,
   };
 };
+
+export const setPlanNumber = (data) => {
+  return {
+    type: types.SET_PLAN_NUMBER,
+    payload: data,
+  };
+};

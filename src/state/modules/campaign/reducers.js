@@ -20,6 +20,7 @@ const INITIAL_STATE = {
       Offset: 0,
     },
     TotalCampaign: 0,
+    WholeCampaignNumber: 0,
     Process: 100,
     IsFullyLoaded: true,
   },
@@ -191,7 +192,8 @@ const reducer = (state = INITIAL_STATE, action) => {
             CurrentItems: action.payload.campaigns,
             TotalPage: action.payload.totalpage
           },
-          TotalCampaign: action.payload.totalitem
+          TotalCampaign: action.payload.totalitem,
+          WholeCampaignNumber: action.payload.wholecampaignnumber,
 
         },
         CreateUpdateCampaign: {

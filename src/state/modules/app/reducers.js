@@ -90,6 +90,12 @@ const reducer = (state = INITIAL_STATE, action) => {
         Process: action.payload.process,
         DisplayProcess: action.payload.displayprocess,
       };
+      
+    case types.SET_PLAN_NUMBER:
+      return {
+        ...state,
+        PlanNumber: action.payload,
+      };
     default:
       return state;
   }

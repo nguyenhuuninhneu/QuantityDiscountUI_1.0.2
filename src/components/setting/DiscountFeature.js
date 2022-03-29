@@ -5,6 +5,7 @@ import { DeleteMinor, QuestionMarkMajor, CircleInformationMajor, CircleRightMajo
 import Loading from '../../components/plugins/Loading';
 import { setSetting } from '../../state/modules/setting/actions';
 import { saveSetting, fetchSetting, synchronizeDiscountFromShopify } from '../../state/modules/setting/operations';
+import { setMenu } from '../../state/modules/app/actions';
 import Select from 'react-select';
 import CardOrange2 from '../../assets/images/card-orange-2.svg';
 import CardOrange3 from '../../assets/images/card-orange-3.svg';
@@ -13,7 +14,7 @@ import CardBorder3 from '../../assets/images/card-border-3.svg';
 import { hexToCSSFilter } from 'hex-to-css-filter';
 import config from '../../config/config';
 import axios from 'axios';
-
+import moreAppConfig from '../../config/moreAppConfig';
 
 function DiscountFeature() {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ function DiscountFeature() {
   ]
   const [rowsPreview, setRowPreview] = useState(dataRowPreview);
   const [isOpenDiscountCode, setIsOpenDiscountCode] = useState(false);
+  const [isShowPopupUpgrade, setIsShowPopupUpgrade] = useState(false);
   const [filterBackgroundColorCard, setFilterBackgroundColorCard] = useState(hexToCSSFilter(settingState.Setting2.BackgroundColorCard || '#E48227').filter);
   const getDiscountCode = async () => {
     await axios.get(config.rootLink + '/FrontEnd/GetDiscountCode', {
@@ -1178,10 +1180,10 @@ function DiscountFeature() {
                                   <div className='cb'>
                                   </div>
                                 </div>
-                                
+
                                 <div className='item'>
                                   <div className='col col1'>
-                                  “Base on”
+                                    “Base on”
                                   </div>
                                   <div className='col col2'>
                                     <Icon
@@ -1209,10 +1211,10 @@ function DiscountFeature() {
                                   <div className='cb'>
                                   </div>
                                 </div>
-                                
+
                                 <div className='item'>
                                   <div className='col col1'>
-                                  “Discount code”
+                                    “Discount code”
                                   </div>
                                   <div className='col col2'>
                                     <Icon
@@ -1240,10 +1242,10 @@ function DiscountFeature() {
                                   <div className='cb'>
                                   </div>
                                 </div>
-                                
+
                                 <div className='item'>
                                   <div className='col col1'>
-                                  “Discount code isn’t available”
+                                    “Discount code isn’t available”
                                   </div>
                                   <div className='col col2'>
                                     <Icon
@@ -1281,14 +1283,20 @@ function DiscountFeature() {
                                 label="Use upsale on cart page"
                                 checked={settingState.Setting.UseUpdateOnCartPage}
                                 onChange={(e) => {
-                                  dispatch(setSetting({
-                                    ...settingState,
-                                    Setting: {
-                                      ...settingState.Setting,
-                                      UseUpdateOnCartPage: e,
-                                    },
-                                    IsOpenSaveToolbar: true
-                                  }))
+                                  if (appState.PlanNumber === 0) {
+                                    setIsShowPopupUpgrade(true);
+                                  }
+                                  else {
+                                    dispatch(setSetting({
+                                      ...settingState,
+                                      Setting: {
+                                        ...settingState.Setting,
+                                        UseUpdateOnCartPage: e,
+                                      },
+                                      IsOpenSaveToolbar: true
+                                    }))
+                                  }
+                                  
 
                                 }}
                               />
@@ -1619,7 +1627,31 @@ function DiscountFeature() {
           }))
         }} /> : null
       }
+      <Modal
+        open={isShowPopupUpgrade}
+        onClose={() => {
+          setIsShowPopupUpgrade(false)
 
+        }}
+        title="This feature is only available in Advance plan. Do you want to upgrade?"
+        primaryAction={{
+          content: 'Upgrade',
+          onAction: () => {
+            setIsShowPopupUpgrade(false)
+            dispatch(setMenu(moreAppConfig.Menu.PLAN))
+          },
+        }}
+        secondaryActions={[
+          {
+            content: 'Cancel',
+            onAction: () => {
+              setIsShowPopupUpgrade(false)
+            },
+          },
+        ]}
+      >
+
+      </Modal>
     </>
   )
 }

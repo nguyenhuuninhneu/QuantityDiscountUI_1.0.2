@@ -1,7 +1,7 @@
 import './App.css';
 import './assets/css/App.css';
-import React, { useEffect } from 'react';
-import { Icon, Button } from '@shopify/polaris';
+import React, { useEffect,useState } from 'react';
+import { Icon, Button, Modal } from '@shopify/polaris';
 import { AnalyticsMajor, QuestionMarkMajor } from '@shopify/polaris-icons';
 import moreAppConfig from './config/moreAppConfig';
 import Loading from './components/plugins/Loading';
@@ -9,8 +9,8 @@ import { appOperations } from "./state/modules/app";
 import { useSelector, useDispatch } from "react-redux";
 import ListCampaign from './components/campaign/ListCampaign';
 import CreateUpdateCampaign from './components/campaign/CreateUpdateCampaign';
-import { setIsCreatingCampaign, setIsNoCampaign, setMenu ,setIsEditCampaign, setNoCallTwices} from './state/modules/app/actions';
-import { createCampaign,fetchList } from './state/modules/campaign/operations';
+import { setIsCreatingCampaign, setIsNoCampaign, setMenu, setIsEditCampaign, setNoCallTwices } from './state/modules/app/actions';
+import { createCampaign, fetchList } from './state/modules/campaign/operations';
 import Dashboard from './components/dashboard/Dashboard';
 import Report from './components/dashboard/Report';
 import LimitPurchase from './components/limitpurchase/LimitPurchase';
@@ -21,13 +21,18 @@ import IconImagesMajor from './assets/images/ico_images_major.svg';
 import IconLimitPurchaseMajor from './assets/images/ico_limit_purchase.svg';
 import IconDiscountCodeMajor from './assets/images/ico_discount_code_major.svg';
 import IconAnalyticsMajor from './assets/images/ico_analytics_major.svg';
-import {  getProcess } from './state/modules/app/operations';
+import { getProcess } from './state/modules/app/operations';
 import Process from './components/plugins/Process';
 import ReactInterval from 'react-interval';
+
+
+
 const AppFrame = () => {
   const dispatch = useDispatch();
   const appState = useSelector((state) => state.app);
   const campaignListState = useSelector((state) => state.campaign.ListCampaign);
+  const [isShowPopupUpgrade, setIsShowPopupUpgrade] = useState(false);
+  const [isShowPopupUpgradeCreateCampaign, setIsShowPopupUpgradeCreateCampaign] = useState(false);
   useEffect(() => {
     dispatch(appOperations.fetchShop());
   }, [dispatch]);
@@ -82,7 +87,14 @@ const AppFrame = () => {
             <ul className="Polaris-Navigation__Section">
               <li className="Polaris-Navigation__ListItem">
                 <div className="Polaris-Navigation__ItemWrapper">
-                  <a className="Polaris-Navigation__Item Polaris-Navigation--subNavigationActive" aria-expanded="true" aria-controls="PolarisSecondaryNavigation1" onClick={() => { setActiveMenu(moreAppConfig.Menu.DASHBOARD) }} data-polaris-unstyled="true">
+                  <a className="Polaris-Navigation__Item Polaris-Navigation--subNavigationActive" aria-expanded="true" aria-controls="PolarisSecondaryNavigation1" onClick={() => {
+                    if (appState.PlanNumber === 0) {
+                      setIsShowPopupUpgrade(true)
+                    }
+                    else {
+                      setActiveMenu(moreAppConfig.Menu.DASHBOARD)
+                    }
+                  }} data-polaris-unstyled="true">
                     <div className="Polaris-Navigation__Icon">
                       <img src={IconAnalyticsMajor} alt="" />
                     </div>
@@ -93,10 +105,23 @@ const AppFrame = () => {
                   <div id="PolarisSecondaryNavigation1" className="Polaris-Collapsible" aria-expanded="true" style={{ transitionDuration: '0ms', transitionTimingFunction: 'linear', maxHeight: 'none', overflow: 'visible' }}>
                     <ul className="Polaris-Navigation__List">
                       <li className="Polaris-Navigation__ListItem">
-                        <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.DASHBOARD ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} aria-disabled="false" onClick={() => { setActiveMenu(moreAppConfig.Menu.DASHBOARD) }} data-polaris-unstyled="true"><span className="Polaris-Navigation__Text">Dashboard</span></a></div>
+                        <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.DASHBOARD ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} aria-disabled="false" onClick={() => {
+                          if (appState.PlanNumber === 0) {
+                            setIsShowPopupUpgrade(true)
+                          }
+                          else {
+                            setActiveMenu(moreAppConfig.Menu.DASHBOARD)
+                          }
+                        }} data-polaris-unstyled="true"><span className="Polaris-Navigation__Text">Dashboard</span></a></div>
                       </li>
                       <li className="Polaris-Navigation__ListItem">
-                        <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.REPORT ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} aria-disabled="false" onClick={() => { setActiveMenu(moreAppConfig.Menu.REPORT) }} data-polaris-unstyled="true"><span className="Polaris-Navigation__Text">Report</span></a></div>
+                        <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.REPORT ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} aria-disabled="false" onClick={() => { 
+                          if (appState.PlanNumber === 0) {
+                            setIsShowPopupUpgrade(true)
+                          }
+                          else {
+                            setActiveMenu(moreAppConfig.Menu.REPORT)
+                          } }} data-polaris-unstyled="true"><span className="Polaris-Navigation__Text">Report</span></a></div>
                       </li>
                     </ul>
                   </div>
@@ -104,12 +129,16 @@ const AppFrame = () => {
               </li>
               <li className="Polaris-Navigation__ListItem">
                 <div className="Polaris-Navigation__ItemWrapper">
-                  <a className="Polaris-Navigation__Item Polaris-Navigation--subNavigationActive" onClick={() => { 
-                    if (appState.NoCallTwiceTime == false) {
-                      dispatch(setNoCallTwices(true));
-                      setActiveMenu(moreAppConfig.Menu.CREATECAMPAIGN)
+                  <a className="Polaris-Navigation__Item Polaris-Navigation--subNavigationActive" onClick={() => {
+                    if (campaignListState.WholeCampaignNumber >= 5 && appState.PlanNumber === 0) {
+                      setIsShowPopupUpgradeCreateCampaign(true)
+                    }else {
+                      if (appState.NoCallTwiceTime == false) {
+                        dispatch(setNoCallTwices(true));
+                        setActiveMenu(moreAppConfig.Menu.CREATECAMPAIGN)
+                      }
                     }
-                     }} aria-expanded="true" aria-controls="PolarisSecondaryNavigation5" data-polaris-unstyled="true">
+                  }} aria-expanded="true" aria-controls="PolarisSecondaryNavigation5" data-polaris-unstyled="true">
                     <div className="Polaris-Navigation__Icon">
                       <img src={IconDiscountCodeMajor} alt="" />
                     </div>
@@ -121,17 +150,26 @@ const AppFrame = () => {
                     <ul className="Polaris-Navigation__List">
                       <li className="Polaris-Navigation__ListItem">
                         <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.CREATECAMPAIGN ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} onClick={() => {
+                          
                           if (appState.NoCallTwiceTime == false) {
-                            if (campaignListState.TotalCampaign === 0) {
-                              dispatch(setIsNoCampaign(true))
+                            if (campaignListState.WholeCampaignNumber >= 5 && appState.PlanNumber === 0) {
+                              setIsShowPopupUpgradeCreateCampaign(true)
                             }
-                            dispatch(setIsCreatingCampaign(true));
-                            dispatch(setIsEditCampaign(false));
-                            dispatch(setNoCallTwices(true));
-                            dispatch(createCampaign());
-                            setActiveMenu(moreAppConfig.Menu.CREATECAMPAIGN);
+                            else
+                            {
+                              if (campaignListState.TotalCampaign === 0) {
+                                dispatch(setIsNoCampaign(true))
+                              }
+                              dispatch(setIsCreatingCampaign(true));
+                              dispatch(setIsEditCampaign(false));
+                              dispatch(setNoCallTwices(true));
+                              dispatch(createCampaign());
+                              setActiveMenu(moreAppConfig.Menu.CREATECAMPAIGN);
+                              
+                            }
+                           
                           }
-                        }} data-polaris-unstyled="true" data-polaris-unstyled="true"><span className="Polaris-Navigation__Text">{appState.IsEditCampaign ? 'Update': 'Create'} campaign</span></a></div>
+                        }} data-polaris-unstyled="true" data-polaris-unstyled="true"><span className="Polaris-Navigation__Text">{appState.IsEditCampaign ? 'Update' : 'Create'} campaign</span></a></div>
                       </li>
                       <li className="Polaris-Navigation__ListItem">
                         <div className="Polaris-Navigation__ItemWrapper">
@@ -215,6 +253,57 @@ const AppFrame = () => {
           </Button>
 
         </div>
+
+        <Modal
+          open={isShowPopupUpgrade}
+          onClose={() => {
+            setIsShowPopupUpgrade(false)
+
+          }}
+          title="This feature is only available in Advance plan. Do you want to upgrade?"
+          primaryAction={{
+            content: 'Upgrade',
+            onAction: () => {
+              setIsShowPopupUpgrade(false)
+              setActiveMenu(moreAppConfig.Menu.PLAN)
+            },
+          }}
+          secondaryActions={[
+            {
+              content: 'Cancel',
+              onAction: () => {
+                setIsShowPopupUpgrade(false)
+              },
+            },
+          ]}
+        >
+
+        </Modal>
+        <Modal
+          open={isShowPopupUpgradeCreateCampaign}
+          onClose={() => {
+            setIsShowPopupUpgradeCreateCampaign(false)
+
+          }}
+          title="You are on the Basic plan with maximum of 5 campaigns. Do you want to upgrade?"
+          primaryAction={{
+            content: 'Upgrade',
+            onAction: () => {
+              setIsShowPopupUpgradeCreateCampaign(false)
+              setActiveMenu(moreAppConfig.Menu.PLAN)
+            },
+          }}
+          secondaryActions={[
+            {
+              content: 'Cancel',
+              onAction: () => {
+                setIsShowPopupUpgradeCreateCampaign(false)
+              },
+            },
+          ]}
+        >
+
+        </Modal>
       </>
 
 

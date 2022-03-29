@@ -1,6 +1,7 @@
 import axios from "axios";
 import config from "../../../config/config";
 import * as actions from "./actions";
+import * as appAction from "../../modules/app/actions";
 
 export const fetchPlan = () => {
   return (dispatch, getState) => {
@@ -38,7 +39,8 @@ export const Upgrade = () => {
             window.open(result.ConfirmationUrl, "_blank");
           }
           dispatch(actions.setUpgradeCompleted(result));
-          
+          // dispatch(appAction.setPlanNumber(1))
+
         } else {
           dispatch(actions.setUpgradeFailed(result));
         }
@@ -62,8 +64,11 @@ export const Downgrade = () => {
 
         const result = response?.data;
         if (result.IsSuccess) {
+          if (result.ConfirmationUrl != '' && result.ConfirmationUrl != undefined) {
+            window.open(result.ConfirmationUrl, "_blank");
+          }
           dispatch(actions.setDowngradeCompleted(result));
-
+          // dispatch(appAction.setPlanNumber(0))
         } else {
           dispatch(actions.setDowngradeFailed(result));
         }

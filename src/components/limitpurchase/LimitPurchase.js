@@ -52,7 +52,6 @@ const LimitPurchase = () => {
     }
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
-        debugger;
         axios.get(config.rootLink + '/FrontEnd/GetLimitPurchasesPaginate', {
             params: {
                 search: limitPurchaseState.TextSearchProduct,
