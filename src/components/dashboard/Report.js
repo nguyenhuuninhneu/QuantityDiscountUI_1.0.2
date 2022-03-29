@@ -9,9 +9,13 @@ import '../../assets/css/paginate.css';
 import ReactPaginate from 'react-paginate';
 import Loading from '../../components/plugins/Loading';
 import Select from 'react-select';
+import axios from 'axios';
+import config from '../../config/config';
 
 const Report = (props) => {
     const dispatch = useDispatch();
+    const appState = useSelector((state) => state.app);
+
     const reportState = useSelector((state) => state.report.ListReport);
     const [Alert, setAlert] = useState(null);
     var today = new Date();
@@ -19,19 +23,7 @@ const Report = (props) => {
     useEffect(() => {
         var strDateToday = today.getFullYear() + '-' + (today.getMonth() < 9 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1) + '-' + (today.getDate() < 10 ? '0' + today.getDate() : today.getDate());
         dispatch(fetchList(strDateToday, strDateToday));
-        // Fetch items from another resources.
-        const endOffset = reportState.Paginate.Offset + moreAppConfig.ItemPerPage;
-        if (reportState.reports != undefined && reportState.reports != null) {
-            dispatch(setListReport({
-                ...reportState,
-                Paginate: {
-                    ...reportState.Paginate,
-                    Offset: reportState.Paginate.Offset,
-                    CurrentItems: reportState.reports.slice(reportState.Paginate.Offset, endOffset),
-                    TotalPage: reportState.reports.length <= moreAppConfig.ItemPerPage ? 1 : Math.ceil(reportState.reports.length / moreAppConfig.ItemPerPage)
-                }
-            }))
-        }
+        
 
     }, []);
     const [{ month, year }, setDate] = useState({ month: today.getMonth(), year: today.getFullYear() });
@@ -214,19 +206,35 @@ const Report = (props) => {
     }
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
-
-        var listReport = reportState.reports;
-
-        const newOffset = (event.selected * moreAppConfig.ItemPerPage) % listReport.length;
-        const endOffset = newOffset + moreAppConfig.ItemPerPage;
-        dispatch(setListReport({
-            ...reportState,
-            Paginate: {
-                ...reportState.Paginate,
-                Offset: newOffset,
-                CurrentItems: listReport.slice(newOffset, endOffset),
+        var strStart = selectedDates.start.getFullYear() + '-' + (selectedDates.start.getMonth() < 9 ? '0' + (selectedDates.start.getMonth() + 1) : selectedDates.start.getMonth() + 1) + '-' + (selectedDates.start.getDate() < 10 ? '0' + selectedDates.start.getDate() : selectedDates.start.getDate());
+        var strEnd = selectedDates.end.getFullYear() + '-' + (selectedDates.end.getMonth() < 9 ? '0' + (selectedDates.end.getMonth() + 1) : selectedDates.end.getMonth() + 1) + '-' + (selectedDates.end.getDate() < 10 ? '0' + selectedDates.end.getDate() : selectedDates.end.getDate());
+        axios.get(config.rootLink + '/FrontEnd/GetReports', {
+            params: {
+                shopID: appState.Shop?.ID,
+                shop: appState.Shop?.Domain,
+                startDate: strStart,
+        endDate: strEnd,
+                page: event.selected + 1,
+                pagezise: 10
+                // pagezise: 10
             }
-        }))
+        })
+            .then(function (response) {
+                const result = response?.data;
+                dispatch(setListReport({
+                    ...reportState,
+                    Paginate: {
+                        ...reportState.Paginate,
+                        CurrentItems: result.list,
+                        TotalPage: result.totalpage
+                    },
+                    TotalReport: result.totalitem
+                }))
+            })
+            .catch(function (error) {
+                const errorMsg = error.message;
+                console.log(errorMsg);
+            })
     };
 
     return (
@@ -415,12 +423,14 @@ const Report = (props) => {
                                                                             IsLoadingSpinner: true
                                                                         }))
                                                                         dispatch(reportDetail(report.CampaignID));
-                                                                    }} accessibilityLabel="Detail" > {
+                                                                    }} accessibilityLabel="Detail" > 
+                                                                    Detail
+                                                                    {/* {
                                                                         reportState.IsLoadingSpinner ? <>
                                                                             <Spinner accessibilityLabel="Small spinner example" size="small" />
                                                                         </>
                                                                             : <>Detail</>
-                                                                    }
+                                                                    } */}
                                                                 </Button>
 
                                                             </div>
