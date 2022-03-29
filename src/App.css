@@ -1376,7 +1376,7 @@ input.active+.slider .off {
     margin-bottom: 10px;
 }
 
-.card-orange .buy{
+.buy{
     position: absolute;
     top: 10%;
     left:50%;
@@ -1385,7 +1385,7 @@ input.active+.slider .off {
     font-size: inherit;
 }
 
-.card-orange .get{
+.get{
     position: absolute;
     top: 34%;
     left:50%;
@@ -1394,7 +1394,7 @@ input.active+.slider .off {
     font-size: inherit;
 }
 
-.card-orange .off{
+.off{
     position: absolute;
     top: 63%;
     left:50%;

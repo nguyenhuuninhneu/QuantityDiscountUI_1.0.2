@@ -4,7 +4,7 @@ import * as actions from "./actions";
 
 export const fetchSetting = () => {
     return (dispatch, getState) => {
-        dispatch(actions.setIsLoadingPage(true));
+        // dispatch(actions.setIsLoadingPage(true));
         axios.get(config.rootLink + '/FrontEnd/GetSetting', {
             params: {
                 shop: getState().app.Shop?.Domain,

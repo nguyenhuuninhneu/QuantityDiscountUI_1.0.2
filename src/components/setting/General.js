@@ -15,8 +15,8 @@ function General() {
   const dispatch = useDispatch();
   const appState = useSelector((state) => state.app);
   const settingState = useSelector((state) => state.setting.ListSetting);
-  const getCampaign = async (input) => {
-    await axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginateSetting', {
+  const getCampaign = (input) => {
+   axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginateSetting', {
       params: {
         search: input,
         shopID: appState?.Shop.ID,
@@ -39,7 +39,7 @@ function General() {
       .catch(err => console.log(err))
   }
   useEffect(() => {
-    // getCampaign('');
+    getCampaign('');
   }, [dispatch]);
 
   return (

@@ -242,7 +242,7 @@ function DiscountFeature() {
                             {
                               settingState.Setting.LayoutInProductPage === 3 ? <>
                                 <div className='group-card-theme'>
-                                  <div className={settingState.Setting2.CardTheme == 0 ? 'item-card-theme active' : 'item-card-theme'}>
+                                  <div className={settingState.Setting2.CardTheme == 0 ? 'item-card-theme active' : 'item-card-theme'}  style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
                                     <Button onClick={() => {
 
                                       dispatch(setSetting({
@@ -256,6 +256,9 @@ function DiscountFeature() {
                                     }}>
                                       <img src={CardOrange2} alt="" style={{ filter: filterBackgroundColorCard.replace(';', '') }} />
                                       <img src={CardBorder2} className="card-border" alt="" />
+                                      <p className="buy"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
+                                      <p className="get"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
+                                      <p className="off"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
                                     </Button>
                                   </div>
                                   <div className={settingState.Setting2.CardTheme == 1 ? 'item-card-theme active' : 'item-card-theme'}>
@@ -271,6 +274,9 @@ function DiscountFeature() {
                                     }}>
                                       <img src={CardOrange3} style={{ filter: filterBackgroundColorCard.replace(';', '') }} alt="" />
                                       <img src={CardBorder3} className="card-border" alt="" />
+                                      <p className="buy"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
+                                      <p className="get"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
+                                      <p className="off"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
                                     </Button>
                                   </div>
                                   <div className='cb'></div>
