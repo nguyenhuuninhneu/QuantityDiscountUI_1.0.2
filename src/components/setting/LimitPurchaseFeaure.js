@@ -90,7 +90,7 @@ function LimitPurchaseFeature() {
                           <Heading size="small">2. Limit table</Heading>
                           <div className='element-general'>
                             <div className="break-line"></div>
-                            <p className='only-text'>Replace the default text on limit table:</p>
+                            <p className='only-text'>Customize limit title</p>
                             <div className='group-fill-text'>
                               <div className='item'>
                                 <div className='col col1'>
@@ -125,6 +125,77 @@ function LimitPurchaseFeature() {
                                 <div className='cb'>
                                 </div>
                               </div>
+
+                            </div>
+                            <div className='group-col-half'>
+                              <div className='item'>
+                                <div className='itemLeft'>
+                                  <p className='title'>Font size</p>
+                                  <TextField
+                                    id='FontSizeTitlePurchaseLimit'
+                                    placeholder='Font size'
+                                    value={settingState.Setting2.FontSizeTitlePurchaseLimit}
+                                    onChange={(e) => {
+                                      dispatch(setSetting({
+                                        ...settingState,
+                                        Setting2: {
+                                          ...settingState.Setting2,
+                                          FontSizeTitlePurchaseLimit: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
+                                        },
+                                        IsOpenSaveToolbar: true
+                                      }))
+                                    }}
+                                    type="number"
+                                    min={0}
+                                  />
+                                </div>
+                                <div className='itemRight'>
+                                  <p className='title'>Text color</p>
+                                  <div className='flex flex-align-center'>
+                                    <div className='w90pt'>
+                                      <TextField
+                                        id='TextColorTitlePurchaseLimit'
+                                        placeholder='Text color'
+                                        value={settingState.Setting2.TextColorTitlePurchaseLimit}
+                                        onChange={(e) => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              TextColorTitlePurchaseLimit: e == '' ? '#FFFFFF' : e.trim(),
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }}
+                                      />
+                                    </div>
+                                    <input type="color" value={settingState.Setting2.TextColorTitlePurchaseLimit} onChange={e => {
+                                      dispatch(setSetting({
+                                        ...settingState,
+                                        Setting2: {
+                                          ...settingState.Setting2,
+                                          TextColorTitlePurchaseLimit: e.target.value == '' ? '#FFFFFF' : e.target.value.toUpperCase(),
+                                        },
+                                        IsOpenSaveToolbar: true
+                                      }))
+                                    }} />
+                                  </div>
+
+                                </div>
+                                <div className='cb'>
+
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+
+                        </Card.Section>
+                        <Card.Section>
+                          <div className='element-general'>
+                            <div className="break-line"></div>
+                            <p className='only-text'>Customize first table row</p>
+                            <div className='group-fill-text'>
                               <div className='item'>
                                 <div className='col col1'>
                                   “Minimum”
@@ -191,7 +262,7 @@ function LimitPurchaseFeature() {
                                 <div className='cb'>
                                 </div>
                               </div>
-                              <div className='item'>
+                              {/* <div className='item'>
                                 <div className='col col1'>
                                   “Quantity”
                                 </div>
@@ -205,10 +276,6 @@ function LimitPurchaseFeature() {
                                     placeholder='Quantity'
                                     value={settingState.Setting2.TextQuantity}
                                     onChange={(e) => {
-                                      // var newRows = rowsPreview.map((p, i) =>
-                                      //   (i == index ? { ...p, Quantity: e } : p)
-                                      // )
-                                      // setRowPreview(newRows);
                                       dispatch(setSetting({
                                         ...settingState,
                                         Setting2: {
@@ -223,75 +290,107 @@ function LimitPurchaseFeature() {
                                 </div>
                                 <div className='cb'>
                                 </div>
-                              </div>
-                              {/* <div className='item'>
-                                <div className='col col1'>
-                                  “You should add...”
-                                </div>
-                                <div className='col col2'>
-                                  <Icon
-                                    source={CircleRightMajor}
-                                    color="base" />
-                                </div>
-                                <div className='col col3'>
+                              </div> */}
+                            </div>
+                            <div className='group-col-half'>
+                              <div className='item'>
+                                <div className='itemLeft'>
+                                  <p className='title'>Font size</p>
                                   <TextField
-                                    placeholder='You should add quantity larger or equal minimum'
-                                    value={settingState.Setting2.TextMinimumLimitText}
+                                    id='FontSizeLimitTable'
+                                    placeholder='Font size'
+                                    value={settingState.Setting2.FontSizeLimitTable}
                                     onChange={(e) => {
-                                      // var newRows = rowsPreview.map((p, i) =>
-                                      //   (i == index ? { ...p, Quantity: e } : p)
-                                      // )
-                                      // setRowPreview(newRows);
                                       dispatch(setSetting({
                                         ...settingState,
                                         Setting2: {
                                           ...settingState.Setting2,
-                                          TextMinimumLimitText: e,
+                                          FontSizeLimitTable: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
                                         },
                                         IsOpenSaveToolbar: true
                                       }))
                                     }}
-                                    type="text"
+                                    type="number"
+                                    min={0}
                                   />
                                 </div>
                                 <div className='cb'>
+
                                 </div>
                               </div>
                               <div className='item'>
-                                <div className='col col1'>
-                                  “You should add...”
-                                </div>
-                                <div className='col col2'>
-                                  <Icon
-                                    source={CircleRightMajor}
-                                    color="base" />
-                                </div>
-                                <div className='col col3'>
-                                  <TextField
-                                    placeholder='You should add quantity smaller or equal minimum'
-                                    value={settingState.Setting2.TextMaximumLimitText}
-                                    onChange={(e) => {
-                                      // var newRows = rowsPreview.map((p, i) =>
-                                      //   (i == index ? { ...p, Quantity: e } : p)
-                                      // )
-                                      // setRowPreview(newRows);
+                                <div className='itemLeft'>
+                                  <p className='title'>Text color</p>
+                                  <div className='flex flex-align-center'>
+                                    <div className='w90pt'>
+                                      <TextField
+                                        id='TextColorLimitTable'
+                                        placeholder='Text color'
+                                        value={settingState.Setting2.TextColorLimitTable}
+                                        onChange={(e) => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              TextColorLimitTable: e == '' ? '#000000' : e,
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }}
+                                      />
+                                    </div>
+                                    <input type="color" value={settingState.Setting2.TextColorLimitTable} onChange={e => {
                                       dispatch(setSetting({
                                         ...settingState,
                                         Setting2: {
                                           ...settingState.Setting2,
-                                          TextMaximumLimitText: e,
+                                          TextColorLimitTable: e.target.value == '' ? '#000000' : e.target.value.toUpperCase(),
                                         },
                                         IsOpenSaveToolbar: true
                                       }))
-                                    }}
-                                    type="text"
-                                  />
+                                    }} />
+                                  </div>
+
+                                </div>
+                                <div className='itemRight'>
+                                  <p className='title'>Background color</p>
+                                  <div className='flex flex-align-center'>
+                                    <div className='w90pt'>
+                                      <TextField
+                                        id='BackgroundColorLimitTable'
+                                        placeholder='Background color'
+                                        value={settingState.Setting2.BackgroundColorLimitTable}
+                                        onChange={(e) => {
+                                          dispatch(setSetting({
+                                            ...settingState,
+                                            Setting2: {
+                                              ...settingState.Setting2,
+                                              BackgroundColorLimitTable: e == '' ? '#F7CA00' : e.trim(),
+                                            },
+                                            IsOpenSaveToolbar: true
+                                          }))
+                                        }}
+                                      />
+
+                                    </div>
+                                    <input type="color" value={settingState.Setting2.BackgroundColorLimitTable} onChange={e => {
+                                      dispatch(setSetting({
+                                        ...settingState,
+                                        Setting2: {
+                                          ...settingState.Setting2,
+                                          BackgroundColorLimitTable: e.target.value == '' ? '#F7CA00' : e.target.value.toUpperCase(),
+                                        },
+                                        IsOpenSaveToolbar: true
+                                      }))
+                                    }} />
+                                  </div>
+
                                 </div>
                                 <div className='cb'>
-                                </div>
-                              </div> */}
-                            </div>
 
+                                </div>
+                              </div>
+                            </div>
                           </div>
 
                         </Card.Section>
@@ -307,23 +406,31 @@ function LimitPurchaseFeature() {
                     </h2>
                     <div className='bg-bound'>
                       <div className='preview-table'>
-                        <h2 className="Polaris-Heading Heading-Bottom-10 Heading-Icon-Right"> {settingState.Setting2.TextPurchaseLimit}
+                        <h2 className="Polaris-Heading Heading-Bottom-10 Heading-Icon-Right" style={{ fontSize: settingState.Setting2.FontSizeTitlePurchaseLimit + 'px', color: settingState.Setting2.TextColorTitlePurchaseLimit }}> {settingState.Setting2.TextPurchaseLimit}
                         </h2>
                         <Card>
                           <div className="item-center">
-                            <DataTable
-                              columnContentTypes={[
-                                'text',
-                                'text'
-                              ]}
-                              headings={[
-                                settingState.Setting2.TextMinimum,
-                                settingState.Setting2.TextMaximum
-                              ]}
-                              rows={
-                                [['3', '5']]
-                              }
-                            />
+                            <div className=""><div className="Polaris-DataTable__Navigation">
+                              <button className="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly" aria-label="" type="button" disabled=""><span className="Polaris-Button__Content">
+                                <span className="Polaris-Button__Icon"><span className="Polaris-Icon"><svg viewBox="0 0 20 20" className="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16z"></path></svg></span></span></span></button><button className="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly" aria-label="" type="button"><span className="Polaris-Button__Content"><span className="Polaris-Button__Icon"><span className="Polaris-Icon"><svg viewBox="0 0 20 20" className="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16z"></path></svg></span></span></span></button></div><div className="Polaris-DataTable"><div className="Polaris-DataTable__ScrollContainer">
+                                  <table className="Polaris-DataTable__Table">
+                                    <thead>
+                                      <tr>
+                                        <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header" scope="col" style={{ fontSize: settingState.Setting2.FontSizeLimitTable + 'px', color: settingState.Setting2.TextColorLimitTable, backgroundColor: settingState.Setting2.BackgroundColorLimitTable }}>{settingState.Setting2.TextMinimum}</th>
+                                        <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header" scope="col" style={{ fontSize: settingState.Setting2.FontSizeLimitTable + 'px', color: settingState.Setting2.TextColorLimitTable, backgroundColor: settingState.Setting2.BackgroundColorLimitTable }}>{settingState.Setting2.TextMaximum}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable">
+                                        <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row">3</th>
+                                        <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">5</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+
                           </div>
                         </Card>
                       </div>
@@ -349,7 +456,7 @@ function LimitPurchaseFeature() {
                             <div className='group-fill-text'>
                               <div className='item'>
                                 <div className='col col1'>
-                                “You can only choose maximum of {"{maximum}"} products”
+                                  “You can only choose maximum of {"{maximum}"} products”
                                 </div>
                                 <div className='col col2'>
                                   <Icon
@@ -385,7 +492,7 @@ function LimitPurchaseFeature() {
                             <div className='group-fill-text'>
                               <div className='item'>
                                 <div className='col col1'>
-                                “You can only choose minimum of {"{minimum}"} products”
+                                  “You can only choose minimum of {"{minimum}"} products”
                                 </div>
                                 <div className='col col2'>
                                   <Icon
@@ -421,7 +528,7 @@ function LimitPurchaseFeature() {
                             <div className='group-fill-text'>
                               <div className='item'>
                                 <div className='col col1'>
-                                “You already have {"{quantity}"} of this product in your cart. You can only choose maximum of {"{maximum}"} products in total. ”
+                                  “You already have {"{quantity}"} of this product in your cart. You can only choose maximum of {"{maximum}"} products in total. ”
                                 </div>
                                 <div className='col col2'>
                                   <Icon
@@ -457,7 +564,7 @@ function LimitPurchaseFeature() {
                   </Layout>
                 </div>
               </div>
-              
+
               <div className='cb'>
               </div>
             </div>
@@ -475,7 +582,7 @@ function LimitPurchaseFeature() {
                             <div className='group-fill-text'>
                               <div className='item'>
                                 <div className='col col1'>
-                                “You can only choose maximum of {"{maximum}"} {"{product_title}"}”
+                                  “You can only choose maximum of {"{maximum}"} {"{product_title}"}”
                                 </div>
                                 <div className='col col2'>
                                   <Icon
@@ -511,7 +618,7 @@ function LimitPurchaseFeature() {
                             <div className='group-fill-text'>
                               <div className='item'>
                                 <div className='col col1'>
-                                “You have to choose minimum of {"{minimum}"} {"{product_title}"}”
+                                  “You have to choose minimum of {"{minimum}"} {"{product_title}"}”
                                 </div>
                                 <div className='col col2'>
                                   <Icon
@@ -547,7 +654,7 @@ function LimitPurchaseFeature() {
                   </Layout>
                 </div>
               </div>
-              
+
               <div className='cb'>
               </div>
             </div>

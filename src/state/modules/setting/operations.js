@@ -239,5 +239,6 @@ export default {
     uninstallTheme,
     loadProductByCampaign,
     synchronizeData,
+    synchronizeDiscountFromShopify,
     getProcess
 };
