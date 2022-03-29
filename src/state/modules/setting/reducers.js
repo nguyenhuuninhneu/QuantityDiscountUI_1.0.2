@@ -83,9 +83,11 @@ const INITIAL_STATE = {
     ThemeID: 0,
     Process: 0,
     LoadingDataSync: false,
+    LoadingDiscountSync: false,
     DisplayProcess: false,
+    DisplayProcessShopify: false,
     ListLayout: [],
-    TextCustomCode: '<div class="orichiCampaignCustom" data-productid="0" data-campaignid="0"></div>',
+    TextCustomCode: '<div className="orichiCampaignCustom" data-productid="0" data-campaignid="0"></div>',
     IsOpenSaveToolbar: false,
     IsSaveLoading: false,
     IsOpenSaveResult: false,
@@ -342,6 +344,26 @@ const reducer = (state = INITIAL_STATE, action) => {
         ListSetting: {
           ...state.ListSetting,
           LoadingDataSync: false,
+        }
+
+      };
+      case types.SYNCHRONIZE_DISCOUNT_SHOPIFY_COMPLETED:
+      return {
+        ...state,
+        ListSetting: {
+          ...state.ListSetting,
+          LoadingDiscountSync: action.payload.res,
+          DisplayProcess: true,
+        }
+      };
+
+    case types.SYNCHRONIZE_DISCOUNT_SHOPIFY_FAILED:
+      return {
+        ...state,
+        ListSetting: {
+          ...state.ListSetting,
+          LoadingDiscountSync: false,
+          DisplayProcess: false,
         }
 
       };

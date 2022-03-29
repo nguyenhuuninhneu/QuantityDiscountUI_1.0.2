@@ -9,26 +9,29 @@ const year = dateObj.getFullYear();
 const todayStr = year + '-' + month + '-' + day;
 
 export const fetchList = () => {
+
   return (dispatch, getState) => {
-    dispatch(actions.fetchListLoading());
-    axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginate', {
-      params: {
-        search: '',
-        discounttype: 0,
-        shopID: getState().app.Shop?.ID,
-        shop: config.shop,
-        page: 1,
-        pagezise: 10
-      }
-    })
-      .then(function (response) {
-        const result = response?.data;
-        dispatch(actions.fetchListCompleted(result));
+    if (getState().app.Shop != null && getState().app.Shop != undefined) {
+      dispatch(actions.fetchListLoading());
+      axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginate', {
+        params: {
+          search: '',
+          discounttype: 0,
+          shopID: getState().app.Shop?.ID,
+          shop: config.shop,
+          page: 1,
+          pagezise: 10
+        }
       })
-      .catch(function (error) {
-        const errorMsg = error.message;
-        console.log(errorMsg);
-      })
+        .then(function (response) {
+          const result = response?.data;
+          dispatch(actions.fetchListCompleted(result));
+        })
+        .catch(function (error) {
+          const errorMsg = error.message;
+          console.log(errorMsg);
+        })
+    }
 
   };
 };

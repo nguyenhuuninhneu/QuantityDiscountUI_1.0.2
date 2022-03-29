@@ -4,7 +4,7 @@ import { PageActions, Card, Layout, Heading, TextStyle, Button, ButtonGroup, Tex
 import { DeleteMinor, QuestionMarkMajor, CircleInformationMajor, CircleRightMajor, ViewMinor, ConfettiMajor } from '@shopify/polaris-icons';
 import Loading from '../../components/plugins/Loading';
 import { setSetting } from '../../state/modules/setting/actions';
-import { saveSetting, fetchSetting } from '../../state/modules/setting/operations';
+import { saveSetting, fetchSetting,synchronizeDiscountFromShopify } from '../../state/modules/setting/operations';
 import Select from 'react-select';
 import CardOrange2 from '../../assets/images/card-orange-2.svg';
 import CardOrange3 from '../../assets/images/card-orange-3.svg';
@@ -258,7 +258,7 @@ function DiscountFeature() {
                                       <img src={CardBorder2} className="card-border" alt="" />
                                       <p className="buy"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
                                       <p className="get"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
-                                      <p className="off"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
+                                      <p className="off-card"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
                                     </Button>
                                   </div>
                                   <div className={settingState.Setting2.CardTheme == 1 ? 'item-card-theme active' : 'item-card-theme'}>
@@ -276,7 +276,7 @@ function DiscountFeature() {
                                       <img src={CardBorder3} className="card-border" alt="" />
                                       <p className="buy"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
                                       <p className="get"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
-                                      <p className="off"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
+                                      <p className="off-card"  style={{ color: settingState.Setting2.TextColorCard , fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
                                     </Button>
                                   </div>
                                   <div className='cb'></div>
@@ -1047,9 +1047,12 @@ function DiscountFeature() {
                             </Stack>
                             <div className="break-line"></div>
                             <div className='element-general-child'>
-                              <Button primary onClick={() => {
-
-                              }}>Sync discounts from Shopify</Button>
+                            <Button
+                            disabled={appState.DisplayProcess || settingState.LoadingDiscountSync|| settingState.LoadingDataSync}
+                            primary
+                            onClick={() => {
+                              dispatch(synchronizeDiscountFromShopify());
+                            }}>Sync discounts from Shopify</Button>
                               <div className="break-line"></div>
                               <div className="flex flex-align-center">
                                 <span className="mr-10"> Total: {settingState.TotalDiscountCode} discount codes</span> <Button onClick={() => {
@@ -1264,21 +1267,21 @@ function DiscountFeature() {
                                 <img src={settingState.Setting2.CardTheme == 0 ? CardBorder2 : CardBorder3} className="card-border" alt="" />
                                 <p className="buy">{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
                                 <p className="get">{settingState.Setting2.TextGet}</p>
-                                <p className="off">{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
+                                <p className="off-card">{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
                               </div>
                               <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
                                 <img src={settingState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: filterBackgroundColorCard.replace(';', '') }} className="Polaris-CalloutCard__Image" />
                                 <img src={settingState.Setting2.CardTheme == 0 ? CardBorder2 : CardBorder3} className="card-border" alt="" />
                                 <p className="buy">{settingState.Setting.TextBuy} {rowsPreview[1][0]}{settingState.Setting.TextPLus}</p>
                                 <p className="get">{settingState.Setting2.TextGet}</p>
-                                <p className="off">{rowsPreview[1][1]}% {settingState.Setting2.TextOff}</p>
+                                <p className="off-card">{rowsPreview[1][1]}% {settingState.Setting2.TextOff}</p>
                               </div>
                               <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
                                 <img src={settingState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: filterBackgroundColorCard.replace(';', '') }} className="Polaris-CalloutCard__Image" />
                                 <img src={settingState.Setting2.CardTheme == 0 ? CardBorder2 : CardBorder3} className="card-border" alt="" />
                                 <p className="buy">{settingState.Setting.TextBuy} {rowsPreview[2][0]}{settingState.Setting.TextPLus}</p>
                                 <p className="get">{settingState.Setting2.TextGet}</p>
-                                <p className="off">{rowsPreview[2][1]}% {settingState.Setting2.TextOff}</p>
+                                <p className="off-card">{rowsPreview[2][1]}% {settingState.Setting2.TextOff}</p>
                               </div>
                             </div>
                           </>
@@ -1346,11 +1349,11 @@ function DiscountFeature() {
                   />
                   {
                     settingState.TotalDiscountCode === 0 ? <>
-                      <div class="Polaris-Card">
-                        <div class="Polaris-IndexTable">
-                          <div class="Polaris-IndexTable__EmptySearchResultWrapper">
-                            <div class="Polaris-Stack Polaris-Stack--vertical Polaris-Stack--alignmentCenter">
-                              <div class="Polaris-Stack__Item"><span class="Polaris-TextStyle--variationSubdued"><p>There is no discount code</p></span>
+                      <div className="Polaris-Card">
+                        <div className="Polaris-IndexTable">
+                          <div className="Polaris-IndexTable__EmptySearchResultWrapper">
+                            <div className="Polaris-Stack Polaris-Stack--vertical Polaris-Stack--alignmentCenter">
+                              <div className="Polaris-Stack__Item"><span className="Polaris-TextStyle--variationSubdued"><p>There is no discount code</p></span>
                               </div>
                             </div>
                           </div>

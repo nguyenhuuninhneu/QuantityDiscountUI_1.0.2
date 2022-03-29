@@ -1538,7 +1538,7 @@ const CreateUpdateCampaign = (props) => {
                                                                                             <img src={campaignState.Setting2.CardTheme == 0 ? CardBorder2 : CardBorder3} className="card-border" alt="" />
                                                                                             <p className="buy">{campaignState.Setting.TextBuy} {item.Quantity}{campaignState.Setting.TextPLus}</p>
                                                                                             <p className="get" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{campaignState.Setting2.TextGet}</p>
-                                                                                            <p className="off" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'}{campaign.PriceType === 3 ? '/'+campaignState.Setting.TextEach : ' ' + campaignState.Setting2.TextOff}</p>
+                                                                                            <p className="off-card" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'}{campaign.PriceType === 3 ? '/'+campaignState.Setting.TextEach : ' ' + campaignState.Setting2.TextOff}</p>
                                                                                         </div>
 
                                                                                     </>
@@ -1732,7 +1732,7 @@ const CreateUpdateCampaign = (props) => {
                                                 error={campaignState.YourNameValidation}
                                                 type="text"
                                             />
-                                            <div class="break-line"></div>
+                                            <div className="break-line"></div>
                                             <TextField
                                                 label="Your email"
                                                 value={campaignState.YourEmail}
@@ -1746,7 +1746,7 @@ const CreateUpdateCampaign = (props) => {
                                                 error={campaignState.YourEmailValidation}
                                                 type="text"
                                             />
-                                            <div class="break-line"></div>
+                                            <div className="break-line"></div>
                                             <TextField
                                                 label="Describe your problem"
                                                 value={campaignState.DescribeYourProblem}

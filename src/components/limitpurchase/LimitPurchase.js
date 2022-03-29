@@ -424,11 +424,11 @@ const LimitPurchase = () => {
                                 ? <>
 
                                 </> : <>
-                                    <div class="Polaris-Card">
-                                        <div class="Polaris-IndexTable">
-                                            <div class="Polaris-IndexTable__EmptySearchResultWrapper">
-                                                <div class="Polaris-Stack Polaris-Stack--vertical Polaris-Stack--alignmentCenter">
-                                                    <div class="Polaris-Stack__Item"><span class="Polaris-TextStyle--variationSubdued"><p>There is no limit purchase</p></span>
+                                    <div className="Polaris-Card">
+                                        <div className="Polaris-IndexTable">
+                                            <div className="Polaris-IndexTable__EmptySearchResultWrapper">
+                                                <div className="Polaris-Stack Polaris-Stack--vertical Polaris-Stack--alignmentCenter">
+                                                    <div className="Polaris-Stack__Item"><span className="Polaris-TextStyle--variationSubdued"><p>There is no limit purchase</p></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -550,7 +550,7 @@ const LimitPurchase = () => {
                                         LimitPurchaseCollectValidation: ''
                                     }))
                                 }}>
-                                    <span class="search">Search collections
+                                    <span className="search">Search collections
                                     </span>
                                 </div>
                                     {

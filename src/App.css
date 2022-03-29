@@ -1394,7 +1394,7 @@ input.active+.slider .off {
     font-size: inherit;
 }
 
-.off{
+.off-card{
     position: absolute;
     top: 63%;
     left:50%;

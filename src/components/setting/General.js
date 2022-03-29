@@ -8,38 +8,73 @@ import { saveActive, loadProductByCampaign, synchronizeData } from '../../state/
 import Select from 'react-select';
 import config from '../../config/config';
 import axios from 'axios';
-
+import AsyncSelect from 'react-select/async';
+import _ from "lodash";
 
 
 function General() {
   const dispatch = useDispatch();
   const appState = useSelector((state) => state.app);
   const settingState = useSelector((state) => state.setting.ListSetting);
-  const getCampaign = (input) => {
-   axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginateSetting', {
-      params: {
-        search: input,
-        shopID: appState?.Shop.ID,
-        shop: appState?.Shop.Domain,
-        page: 1,
-        pagezise: 100
-      }
-    })
-      .then((res) => {
-        const result = res?.data;
-        dispatch(setSetting({
-          ...settingState,
-          IsLoadNewProduct: false,
-          ListCampaign: result.campaigns,
-          CampaignID: 0,
-          // CampaignID: result.campaigns.length > 0 ? result.campaigns[0].value : 0
-        }))
-
+  const wait = 100; 
+  const loadOptions = inputValue => getAsyncOptions(inputValue);
+  const debouncedLoadOptions = _.debounce(loadOptions, wait, {
+    leading: true
+  });
+  const loadOptionsProduct = inputValue2 => getAsyncOptionsProduct(inputValue2);
+  const debouncedLoadOptionsProduct = _.debounce(loadOptionsProduct, wait, {
+    leading: true
+  });
+  const getAsyncOptions = (inputValue) => {
+    return new Promise((resolve, reject) => {
+      axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginateSetting', {
+        params: {
+          search: inputValue,
+          shopID: appState?.Shop.ID,
+          shop: appState?.Shop.Domain,
+          page: 1,
+          pagezise: 10
+        }
       })
-      .catch(err => console.log(err))
+        .then((res) => {
+          const result = res?.data;
+
+          resolve(result.campaigns);
+        })
+        .catch(err => console.log(err))
+      
+    });
+  }
+  const getAsyncOptionsProduct = (inputValue2) => {
+    if (settingState.CampaignID > 0) {
+      return new Promise((resolve, reject) => {
+        axios.get(config.rootLink + '/FrontEnd/SearchProductPaginateSettingByCampaign', {
+          params: {
+            search: inputValue2,
+            campaignID: settingState.CampaignID,
+            shopID: appState?.Shop.ID,
+            shop: appState?.Shop.Domain,
+            page: 1,
+            pagezise: 10
+          }
+        })
+          .then((res) => {
+            dispatch(setSetting({
+              ...settingState,
+              IsLoadNewProduct: false
+            }))
+            const result = res?.data;
+            resolve(result.listProduct);
+            
+          })
+          .catch(err => console.log(err))
+        
+      });
+    }
+    
   }
   useEffect(() => {
-    getCampaign('');
+    // getCampaign('');
   }, [dispatch]);
 
   return (
@@ -148,7 +183,7 @@ function General() {
                             Synchronize data to app
                           </p>
                           <Button
-                            disabled={settingState.LoadingDataSync}
+                            disabled={appState.DisplayProcess || settingState.LoadingDiscountSync|| settingState.LoadingDataSync}
                             primary
                             onClick={() => {
                               dispatch(synchronizeData());
@@ -224,23 +259,20 @@ function General() {
                             Campaign
                           </div>
                           <div className='itemRight'>
-                            <Select
-                              name="form-field-name"
-                              options={settingState.ListCampaign}
-                              loadOptions={getCampaign}
-                              onChange={(e) => {
-                                dispatch(setSetting({
-                                  ...settingState,
-                                  CampaignID: e.value,
-                                  IsLoadNewProduct: true
-                                  // ListProduct: settingState.ListCampaign.filter(p => p.ID == parseInt(e))[0].ListProducts
-                                }))
-                                dispatch(loadProductByCampaign(e.value));
-                              }}
-                              isSearchable={true}
-                              //value={settingState.CampaignID}
-                              value={settingState.ListCampaign != null && settingState.CampaignID != 0 && settingState.ListCampaign.filter(p => p.value == settingState.CampaignID)[0] || settingState.ListCampaign != null && settingState.ListCampaign[0]}
+                            <AsyncSelect loadOptions={inputValue => debouncedLoadOptions(inputValue)}
+                            // options={options}
+                            onChange={(e) => {
+                              dispatch(setSetting({
+                                ...settingState,
+                                CampaignID: e.value,
+                                IsLoadNewProduct: true
+                                // ListProduct: settingState.ListCampaign.filter(p => p.ID == parseInt(e))[0].ListProducts
+                              }))
+                              getAsyncOptionsProduct('');
+                              // dispatch(loadProductByCampaign(e.value));
+                            }}
                             />
+                            
                           </div>
                           <div className='cb'>
                           </div>
@@ -249,7 +281,15 @@ function General() {
                           </div>
                           <div className='itemRight'>
                             <div className='relative'>
-                              <Select
+                            <AsyncSelect loadOptions={inputValue2 => debouncedLoadOptionsProduct(inputValue2)}
+                            onChange={(e) => {
+                              dispatch(setSetting({
+                                ...settingState,
+                                ProductID: e.value
+                              }))
+                            }}
+                            />
+                              {/* <Select
                                 disabled={settingState.IsLoadNewProduct}
                                 options={settingState.ListProduct}
                                 onChange={(e) => {
@@ -260,7 +300,7 @@ function General() {
                                 }}
                                 isSearchable={false}
                               // value={parseInt(settingState.ProductID)}
-                              />
+                              /> */}
                               {
                                 settingState.IsLoadNewProduct ?
                                   <>
@@ -281,7 +321,7 @@ function General() {
                           <div className='itemRight'>
                             <TextField
                               placeholder=""
-                              value={'<div class="orichiCampaignCustom" data-productid="' + settingState.ProductID + '" data-campaignid="' + settingState.CampaignID + '"></div>'}
+                              value={'<div className="orichiCampaignCustom" data-productid="' + settingState.ProductID + '" data-campaignid="' + settingState.CampaignID + '"></div>'}
                               onChange={(e) => { }}
                               autoComplete="off"
                               multiline={4}

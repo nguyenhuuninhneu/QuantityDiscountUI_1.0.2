@@ -51,10 +51,10 @@ const reducer = (state = INITIAL_STATE, action) => {
           reports: action.payload.list,
           Paginate: {
             Offset: 0,
-            TotalPage: action.payload.list.length <= moreAppConfig.ItemPerPage ? 1 : Math.ceil(action.payload.list.length / moreAppConfig.ItemPerPage),
-            CurrentItems: action.payload.list.slice(0, moreAppConfig.ItemPerPage)
+            TotalPage: action.payload.totalpage,
+            CurrentItems: action.payload.list
           },
-          TotalReport: action.payload.list.length,
+          TotalReport: action.payload.totalitem,
 
         },
       };

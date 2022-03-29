@@ -161,3 +161,18 @@ export const getProcessFailed = (data) => {
     payload: data,
   };
 };
+
+
+export const synchronizeDiscountShopifyCompleted = (data) => {
+  return {
+    type: types.SYNCHRONIZE_DISCOUNT_SHOPIFY_COMPLETED,
+    payload: data,
+  };
+};
+
+export const synchronizeDiscountShopifyFailed = (data) => {
+  return {
+    type: types.SYNCHRONIZE_DISCOUNT_SHOPIFY_FAILED,
+    payload: data,
+  };
+};

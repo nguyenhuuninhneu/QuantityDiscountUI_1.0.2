@@ -10,7 +10,9 @@ export const fetchList = (start, end) => {
         shopID: getState().app.Shop?.ID,
         shop: getState().app.Shop?.Domain,
         startDate: start,
-        endDate: end
+        endDate: end,
+        page: 1,
+        pagezise: 10
       }
     })
       .then(function (response) {

@@ -51,10 +51,18 @@ function Setting() {
   return (
     settingState.IsLoadingPage ? <Loading></Loading> :
       <>
-        <ReactInterval timeout={500} enabled={settingState.ListSetting.DisplayProcess}
-          callback={() => { dispatch(getProcess("Update")) }} />
+        <ReactInterval timeout={500} enabled={settingState.ListSetting.DisplayProcess  || settingState.ListSetting.DisplayProcessShopify}
+          callback={() => { 
+            if (settingState.ListSetting.DisplayProcess) {
+              dispatch(getProcess("Update"))
+            }
+            else if(settingState.ListSetting.DisplayProcessShopify){
+              dispatch(getProcess("UpdateDiscountCode"))
+            }
+            }} />
         {
-          settingState.ListSetting.DisplayProcess ? <Process Process={settingState.ListSetting.Process}></Process> : null
+          settingState.ListSetting.DisplayProcess ? <Process Process={settingState.ListSetting.Process}></Process> : 
+          settingState.ListSetting.DisplayProcessShopify ? <Process Process={settingState.ListSetting.Process}></Process> : null
         }
         <Tabs
           tabs={tabs}

@@ -211,7 +211,25 @@ export const getProcess = (type) => {
 
     };
 };
+export const synchronizeDiscountFromShopify = () => {
+    return (dispatch, getState) => {
+        axios.get(config.rootLink + '/FrontEnd/SynchronizeDiscountFromShopify', {
+            params: {
+                shopID: getState().app.Shop?.ID,
+                shop: getState().app.Shop?.Domain
+            }
+        })
+            .then(function (response) {
+                const result = response?.data;
+                dispatch(actions.synchronizeDiscountShopifyCompleted(result));
+            })
+            .catch(function (error) {
+                const errorMsg = error.message;
+                dispatch(actions.synchronizeDiscountShopifyFailed(errorMsg));
+            })
 
+    };
+};
 export default {
     fetchSetting,
     fetchThemes,
