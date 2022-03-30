@@ -7,8 +7,10 @@ export const fetchSetting = () => {
         // dispatch(actions.setIsLoadingPage(true));
         axios.get(config.rootLink + '/FrontEnd/GetSetting', {
             params: {
-                shop: getState().app.Shop?.Domain,
-                shopID: getState().app.Shop?.ID
+                shop: config.shop,
+                shopID: getState().app.Shop?.ID,
+                token: config.token,
+
             }
         })
             .then(function (response) {
@@ -49,9 +51,11 @@ export const saveActive = () => {
         dispatch(actions.setIsSaveLoading(true));
         var settingState = getState().setting.ListSetting.Setting;
         axios.post(config.rootLink + '/FrontEnd/ChangeActive', {
-            shop: getState().app.Shop?.Domain,
+            shop: config.shop,
             shopID: getState().app.Shop?.ID,
-            active: settingState.Active
+            active: settingState.Active,
+            token: config.token,
+
         })
             .then(function (response) {
 
@@ -78,7 +82,8 @@ export const saveSetting = () => {
         axios.post(config.rootLink + '/FrontEnd/SaveSetting', {
             obj: settingState.Setting,
             obj2: settingState.Setting2,
-            shop: getState().app.Shop?.Domain
+            shop: config.shop,
+            token: config.token,
         })
             .then(function (response) {
                 const result = response?.data;
@@ -175,7 +180,8 @@ export const synchronizeData = () => {
         axios.get(config.rootLink + '/FrontEnd/SynchronizeData', {
             params: {
                 shopID: getState().app.Shop?.ID,
-                shop: getState().app.Shop?.Domain
+                shop: config.shop,
+                token: config.token,
             }
         })
             .then(function (response) {
@@ -196,8 +202,9 @@ export const getProcess = (type) => {
         axios.get(config.rootLink + '/FrontEnd/GetProcess', {
             params: {
                 shopID: getState().app.Shop?.ID,
-                shop: getState().app.Shop?.Domain,
-                type: type
+                shop: config.shop,
+                type: type,
+                token: config.token,
             }
         })
             .then(function (response) {
@@ -216,7 +223,8 @@ export const synchronizeDiscountFromShopify = () => {
         axios.get(config.rootLink + '/FrontEnd/SynchronizeDiscountFromShopify', {
             params: {
                 shopID: getState().app.Shop?.ID,
-                shop: getState().app.Shop?.Domain
+                shop: config.shop,
+                token: config.token,
             }
         })
             .then(function (response) {

@@ -33,9 +33,10 @@ function TableCollection(props) {
       params: {
         search: e,
         shopID: appState.Shop?.ID,
-        shop: appState?.Shop.Domain,
+        shop: config.shop,
         page: 1,
-        pagezise: 10
+        pagezise: 10,
+        token: config.token
       }
     })
       .then(function (response) {
@@ -59,9 +60,10 @@ function TableCollection(props) {
       params: {
         search: textSearch,
         shopID: appState.Shop?.ID,
-        shop: appState?.Shop.Domain,
+        shop: config.shop,
         page: 1,
-        pagezise: 10
+        pagezise: 10,
+        token: config.token
       }
     })
       .then(function (response) {

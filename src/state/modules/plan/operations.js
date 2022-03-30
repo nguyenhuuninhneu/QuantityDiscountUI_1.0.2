@@ -8,8 +8,10 @@ export const fetchPlan = () => {
     dispatch(actions.setIsLoadingPage(true));
     axios.get(config.rootLink + '/FrontEnd/GetPlan', {
       params: {
-        shop: getState().app.Shop?.Domain,
-        shopID: getState().app.Shop?.ID
+        shop: config.shop,
+        shopID: getState().app.Shop?.ID,
+        token: config.token,
+
       }
     })
       .then(function (response) {
@@ -24,12 +26,14 @@ export const fetchPlan = () => {
   };
 };
 
-export const Upgrade = () => {
+export const Upgrade = (upgrade) => {
   return (dispatch, getState) => {
     dispatch(actions.setIsLoadingPage(true));
     axios.post(config.rootLink + '/FrontEnd/Upgrade', {
       shopID: getState().app.Shop?.ID,
-      shop: getState().app.Shop?.Domain,
+      shop: config.shop,
+      upgrade: upgrade,
+       token: config.token,
     })
       .then(function (response) {
 
@@ -38,17 +42,28 @@ export const Upgrade = () => {
           if (result.ConfirmationUrl != '' && result.ConfirmationUrl != undefined) {
             window.open(result.ConfirmationUrl, "_blank");
           }
-          dispatch(actions.setUpgradeCompleted(result));
+          if (upgrade) {
+            dispatch(actions.setUpgradeCompleted(result));
+          }
+          //start free trial
+          else {
+            dispatch(actions.setFreeTrialCompleted(result));
+
+          }
           // dispatch(appAction.setPlanNumber(1))
 
         } else {
-          dispatch(actions.setUpgradeFailed(result));
+          if (upgrade) {
+            dispatch(actions.setUpgradeFailed(result));
+          } else {
+            dispatch(actions.setUpgradeFailed(result));
+          }
         }
 
       })
       .catch(function (error) {
         const errorMsg = error.message;
-        dispatch(actions.setUpgradeFailed(errorMsg));
+        dispatch(actions.setFreeTrialFailed(errorMsg));
       })
 
   }
@@ -58,7 +73,8 @@ export const Downgrade = () => {
     dispatch(actions.setIsLoadingPage(true));
     axios.post(config.rootLink + '/FrontEnd/Downgrade', {
       shopID: getState().app.Shop?.ID,
-      shop: getState().app.Shop?.Domain,
+      shop: config.shop,
+      token: config.token,
     })
       .then(function (response) {
 
@@ -81,33 +97,8 @@ export const Downgrade = () => {
 
   }
 }
-export const StartFreeTrial = () => {
-  return (dispatch, getState) => {
-    dispatch(actions.setIsLoadingPage(true));
-    axios.post(config.rootLink + '/FrontEnd/StartFreeTrial', {
-      shopID: getState().app.Shop?.ID,
-      shop: getState().app.Shop?.Domain,
-    })
-      .then(function (response) {
-
-        const result = response?.data;
-        if (result.IsSuccess) {
-          dispatch(actions.setFreeTrialCompleted(result));
-        } else {
-          dispatch(actions.setDowngradeFailed(result));
-        }
-
-      })
-      .catch(function (error) {
-        const errorMsg = error.message;
-        dispatch(actions.setFreeTrialCompleted(errorMsg));
-      })
-
-  }
-}
 export default {
   fetchPlan,
   Upgrade,
   Downgrade,
-  StartFreeTrial
 };

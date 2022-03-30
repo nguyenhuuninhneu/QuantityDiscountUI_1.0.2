@@ -76,7 +76,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         Plan: {
           ...state.Plan,
-          PlanNumber: action.payload.PlanNumber,
+          // PlanNumber: action.payload.PlanNumber,
           IsOpenSaveToolbar: !action.payload.IsSuccess,
           IsOpenUpgrade: !action.payload.IsSuccess,
           IsLoadingPage: false,
@@ -102,7 +102,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         Plan: {
           ...state.Plan,
-          PlanNumber: action.payload.PlanNumber,
+          // PlanNumber: action.payload.PlanNumber,
           IsOpenSaveToolbar: !action.payload.IsSuccess,
           IsOpenDowngrade: !action.payload.IsSuccess,
           IsLoadingPage: false,

@@ -33,10 +33,10 @@ const ListCampaign = (props) => {
                 search: campaignState.TextSearchProduct,
                 discounttype: campaignState.DiscountTypeSelected.value,
                 shopID: appState.Shop?.ID,
-                shop: appState.Shop?.Domain,
+                shop: config.shop,
                 page: event.selected + 1,
-                pagezise: 10
-                // pagezise: 10
+                pagezise: 10,
+                token: config.token
             }
         })
             .then(function (response) {
@@ -65,7 +65,7 @@ const ListCampaign = (props) => {
 
     const handleDeleteCampaign = () => {
         if (campaignState.Paginate.CurrentItems != null && campaignState.Paginate.CurrentItems.length > 0 && Campaign != null && Campaign.ID > 0) {
-            axios.post(config.rootLink + '/FrontEnd/DeleteCampaign', { id: Campaign.ID, shop: config.shop, isVariantCampaign: Campaign.IsVariantProduct })
+            axios.post(config.rootLink + '/FrontEnd/DeleteCampaign', { id: Campaign.ID, shop: config.shop, isVariantCampaign: Campaign.IsVariantProduct,token: config.token })
                 .then(function (response) {
                     if (response.data.IsSuccess) {
                         axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginate', {
@@ -75,7 +75,8 @@ const ListCampaign = (props) => {
                                 shopID: appState.Shop?.ID,
                                 shop: appState.Shop?.Domain,
                                 page: 1,
-                                pagezise: 10
+                                pagezise: 10,
+                                token: config.token 
                                 // pagezise: 10
                             }
                         })
@@ -126,9 +127,10 @@ const ListCampaign = (props) => {
                 search: textSearch,
                 discounttype: discountType.value,
                 shopID: appState.Shop?.ID,
-                shop: appState.Shop?.Domain,
+                shop: config.shop,
                 page: 1,
-                pagezise: 10
+                pagezise: 10,
+                token: config.token
                 // pagezise: 10
             }
         })
@@ -161,7 +163,7 @@ const ListCampaign = (props) => {
 
 
     function UpdateCampaignStatus(campaign) {
-        axios.post(config.rootLink + '/FrontEnd/UpdateCampaignStatus', { id: campaign.ID, shop: config.shop, status: campaign.Active, isVariantCampaign: campaign.IsVariantProduct })
+        axios.post(config.rootLink + '/FrontEnd/UpdateCampaignStatus', { id: campaign.ID, shop: config.shop, status: campaign.Active, isVariantCampaign: campaign.IsVariantProduct, token: config.token })
             .then(function (response) {
                 if (response.data.IsSuccess) {
 

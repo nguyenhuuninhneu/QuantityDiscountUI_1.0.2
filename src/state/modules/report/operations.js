@@ -8,11 +8,13 @@ export const fetchList = (start, end) => {
     axios.get(config.rootLink + '/FrontEnd/GetReports', {
       params: {
         shopID: getState().app.Shop?.ID,
-        shop: getState().app.Shop?.Domain,
+        shop: config.shop,
         startDate: start,
         endDate: end,
         page: 1,
-        pagezise: 10
+        pagezise: 10,
+        token: config.token,
+
       }
     })
       .then(function (response) {
@@ -33,8 +35,10 @@ export const reportDetail = (campaignid) => {
     axios.get(config.rootLink + '/FrontEnd/ReportDetail', {
       params: {
         shopID: getState().app.Shop?.ID,
-        shop: getState().app.Shop?.Domain,
-        campaignID: campaignid
+        shop: config.shop,
+        campaignID: campaignid,
+        token: config.token,
+
       }
     })
       .then(function (response) {

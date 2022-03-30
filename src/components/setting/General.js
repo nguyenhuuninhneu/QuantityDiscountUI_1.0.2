@@ -31,9 +31,10 @@ function General() {
         params: {
           search: inputValue,
           shopID: appState?.Shop.ID,
-          shop: appState?.Shop.Domain,
+          shop: config.shop,
           page: 1,
-          pagezise: 10
+          pagezise: 10,
+          token: config.token,
         }
       })
         .then((res) => {
@@ -53,9 +54,10 @@ function General() {
             search: inputValue2,
             campaignID: settingState.CampaignID,
             shopID: appState?.Shop.ID,
-            shop: appState?.Shop.Domain,
+            shop: config.shop,
             page: 1,
-            pagezise: 10
+            pagezise: 10,
+            token: config.token,
           }
         })
           .then((res) => {

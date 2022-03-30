@@ -12,7 +12,8 @@ export const fetchList = () => {
         shopID: getState().app.Shop?.ID,
         shop: config.shop,
         page: 1,
-        pagezise: 10
+        pagezise: 10,
+        token: config.token,
       }
     })
       .then(function (response) {
@@ -52,6 +53,7 @@ export const saveLimitPurchase = () => {
     axios.post(config.rootLink + '/FrontEnd/SaveLimitPurchase', {
       limitPurchase: limitpurchase,
       shop: config.shop,
+      token: config.token,
     })
       .then(function (response) {
 
@@ -85,6 +87,7 @@ export const saveBulkLimitPurchase = () => {
       min: bulkUpdate.Min,
       max: bulkUpdate.Max,
       shop: config.shop,
+      token: config.token,
     })
       .then(function (response) {
 

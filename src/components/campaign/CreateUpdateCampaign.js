@@ -51,9 +51,10 @@ const CreateUpdateCampaign = (props) => {
             params: {
                 search: input,
                 shopID: appState?.Shop.ID,
-                shop: appState?.Shop.Domain,
+                shop: config.shop ,
                 page: 1,
-                pagezise: 100
+                pagezise: 100,
+                token : config.token
             }
         })
             .then((res) => {
@@ -150,6 +151,7 @@ const CreateUpdateCampaign = (props) => {
             params: {
                 shopID: appState?.Shop?.ID,
                 shop: config.shop,
+                token: config.token,
             }
         })
             .then((res) => {

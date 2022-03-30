@@ -5,7 +5,7 @@ import { Modal, Button, Icon, Toast } from '@shopify/polaris';
 import { CircleTickMajor } from '@shopify/polaris-icons';
 import { setPlan } from '../../state/modules/plan/actions';
 import Loading from '../../components/plugins/Loading';
-import { fetchPlan, Upgrade, Downgrade, StartFreeTrial } from '../../state/modules/plan/operations';
+import { fetchPlan, Upgrade, Downgrade } from '../../state/modules/plan/operations';
 
 function Plan() {
     const dispatch = useDispatch();
@@ -185,7 +185,7 @@ function Plan() {
                 primaryAction={{
                     content: 'Upgrade',
                     onAction: () => {
-                        dispatch(Upgrade())
+                        dispatch(Upgrade(true))
                     },
                 }}
                 secondaryActions={[
@@ -245,7 +245,7 @@ function Plan() {
                 primaryAction={{
                     content: 'Upgrade',
                     onAction: () => {
-                        dispatch(StartFreeTrial())
+                        dispatch(Upgrade(false))
                     },
                 }}
                 secondaryActions={[

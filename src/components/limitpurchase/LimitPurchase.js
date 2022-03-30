@@ -57,9 +57,11 @@ const LimitPurchase = () => {
                 search: limitPurchaseState.TextSearchProduct,
                 typeselected: limitPurchaseState.ProductSelected,
                 shopID: appState.Shop?.ID,
-                shop: appState.Shop?.Domain,
+                shop: config.shop,
                 page: event.selected + 1,
-                pagezise: 10
+                pagezise: 10,
+                token: config.token,
+
             }
         })
             .then(function (response) {
@@ -105,7 +107,7 @@ const LimitPurchase = () => {
     }
     const handleDeleteLimitPurchase = () => {
         if (limitPurchaseState.limitpurchases != null && limitPurchaseState.limitpurchases.length > 0 && LimitPurchaseCurrent != null && LimitPurchaseCurrent.ID > 0) {
-            axios.post(config.rootLink + '/FrontEnd/DeleteLimitPurchase', { id: LimitPurchaseCurrent.ID, shop: config.shop })
+            axios.post(config.rootLink + '/FrontEnd/DeleteLimitPurchase', { id: LimitPurchaseCurrent.ID, shop: config.shop, token: config.token })
                 .then(function (response) {
                     if (response.data.IsSuccess) {
                         axios.get(config.rootLink + '/FrontEnd/GetLimitPurchasesPaginate', {
@@ -113,9 +115,10 @@ const LimitPurchase = () => {
                                 search: limitPurchaseState.TextSearchProduct,
                                 typeselected: limitPurchaseState.ProductSelected,
                                 shopID: appState.Shop?.ID,
-                                shop: appState.Shop?.Domain,
+                                shop: config.shop,
                                 page: 1,
-                                pagezise: 10
+                                pagezise: 10, 
+                                token: config.token
                             }
                         })
                             .then(function (response) {
@@ -162,9 +165,10 @@ const LimitPurchase = () => {
                 search: textSearch,
                 typeselected: productSelected,
                 shopID: appState.Shop?.ID,
-                shop: appState.Shop?.Domain,
+                shop: config.shop,
                 page: 1,
-                pagezise: 10
+                pagezise: 10,
+                token: config.token
             }
         })
             .then(function (response) {
@@ -274,40 +278,7 @@ const LimitPurchase = () => {
 
         return true;
     }
-    // function UpdateCampaignStatus(campaign) {
-    //     axios.post(config.rootLink + '/FrontEnd/UpdateCampaignStatus', { id: campaign.ID, shop: config.shop, status: campaign.Active, isVariantCampaign: campaign.IsVariantProduct })
-    //         .then(function (response) {
-    //             if (response.data.IsSuccess) {
-
-    //                 dispatch(setListLimitPurchase({
-    //                     ...limitPurchaseState,
-    //                     Paginate: {
-    //                         ...limitPurchaseState.Paginate,
-    //                         CurrentItems: limitPurchaseState.Paginate.CurrentItems.map((p, i) => (p.ID == campaign.ID ? {
-    //                             ...p,
-    //                             Active: !campaign.Active
-    //                         } : p)),
-    //                     },
-    //                     campaigns: limitPurchaseState.limitpurchases.map((p, i) => (p.ID == campaign.ID ? {
-    //                         ...p,
-    //                         Active: !campaign.Active
-    //                     } : p)),
-    //                 }))
-    //                 // setCurrentItems(currentItems.map((p, i) => (p.ID == campaign.ID ? {
-    //                 //     ...p,
-    //                 //     Active: !campaign.Active
-    //                 // } : p)))
-    //                 setAlert(<Toast content={'The campaign: ' + campaign.Title + ' update status successfully'} duration={3000} onDismiss={() => {
-    //                     setAlert(null);
-    //                 }} />);
-    //             }
-
-    //         })
-    //         .catch(function (error) {
-    //             // handle error
-    //             console.log(error);
-    //         })
-    // }
+   
     function RemoveSpecificCollection(id) {
         var arrPro = createLimitPurchaseState.BulkUpdate.ListCollects.filter(p => p.ID != id);
         dispatch(setCreateUpdateLimitPurchase(

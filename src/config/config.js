@@ -3,6 +3,7 @@ const config = {
     //rootLink: "https://discount.orichi.info",
     version: 1,
     shop: OTGetUrlParameter("shop"),
+    token: OTGetUrlParameter("token"),
     //shop: 'orichi-demo.myshopify.com',
     admin: OTGetUrlParameter("admin"),
     hmac: window.location.href.split("&hmac=")[1],

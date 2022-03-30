@@ -20,7 +20,8 @@ export const fetchList = () => {
           shopID: getState().app.Shop?.ID,
           shop: config.shop,
           page: 1,
-          pagezise: 10
+          pagezise: 10,
+          token: config.token,
         }
       })
         .then(function (response) {
@@ -122,7 +123,8 @@ export const saveCampaign = (isFirstCampaign = false) => {
       shopID: campaign.ShopID,
       yourname: yourname,
       youremail: youremail,
-      describe: describe
+      describe: describe,
+      token: config.token,
     })
       .then(function (response) {
 

@@ -35,6 +35,7 @@ function DiscountFeature() {
       params: {
         shopID: appState?.Shop?.ID,
         shop: config.shop,
+        token: config.token,
       }
     })
       .then((res) => {

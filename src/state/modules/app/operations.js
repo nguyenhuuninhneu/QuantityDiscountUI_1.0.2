@@ -8,7 +8,8 @@ export const fetchShop = () => {
     dispatch(actions.fetchShopLoading());
     axios.get(config.rootLink + '/FrontEnd/GetShop', {
       params: {
-        shop: config.shop
+        shop: config.shop,
+        token: config.token,
       }
     })
       .then(function (response) {
@@ -35,8 +36,9 @@ export const getProcess = (type) => {
       axios.get(config.rootLink + '/FrontEnd/GetProcess', {
           params: {
               shopID: getState().app.Shop?.ID,
-              shop: getState().app.Shop?.Domain,
-              type: type
+              shop: config.shop,
+              type: type,
+              token: config.token,
           }
       })
           .then(function (response) {

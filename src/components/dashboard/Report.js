@@ -211,11 +211,12 @@ const Report = (props) => {
         axios.get(config.rootLink + '/FrontEnd/GetReports', {
             params: {
                 shopID: appState.Shop?.ID,
-                shop: appState.Shop?.Domain,
+                shop: config.shop,
                 startDate: strStart,
         endDate: strEnd,
                 page: event.selected + 1,
-                pagezise: 10
+                pagezise: 10,
+                token: config.token,
                 // pagezise: 10
             }
         })
