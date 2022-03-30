@@ -4,7 +4,7 @@ import { PageActions, Card, Layout, Heading, TextStyle, Button, ButtonGroup, Tex
 import { CircleInformationMajor } from '@shopify/polaris-icons';
 import Loading from '../../components/plugins/Loading';
 import { setSetting } from '../../state/modules/setting/actions';
-import { saveActive, loadProductByCampaign, synchronizeData } from '../../state/modules/setting/operations';
+import { saveActive, loadProductByCampaign, synchronizeData, enableAppEmbed } from '../../state/modules/setting/operations';
 import Select from 'react-select';
 import config from '../../config/config';
 import axios from 'axios';
@@ -101,8 +101,15 @@ function General() {
                             <p>Our Quantity Discount app uses the new Shopify app embed feature. This can sometimes be disabled so you will have to verify this is toggled on before using the app.</p>
                           </div>
                           <div className="Polaris-CalloutCard__Buttons">
-                            <Button primary={false} onClick={() => {
-                            }}>Enable app embed</Button>
+                            <Button primary={false}
+                            loading={settingState.IsEnabledAppLoading}
+                            onClick={() => {
+                              dispatch(setSetting({
+                                ...settingState,
+                                IsEnabledAppLoading: true
+                              }))
+                              dispatch(enableAppEmbed(!settingState.Setting.IsEnableAppEmbed))
+                            }}>{settingState.Setting.IsEnableAppEmbed ? 'Disable':'Enable'} app embed</Button>
 
                           </div>
                         </div>

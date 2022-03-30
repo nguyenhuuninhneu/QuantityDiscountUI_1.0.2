@@ -296,18 +296,19 @@ function DiscountFeature() {
                             <Select
                               id='LayoutInProductPage'
                               // label="Discount based on"
+                              defaultValue={settingState.ListLayout[2]}
                               options={settingState.ListLayout}
                               onChange={(value) => {
-
                                 handleSelectLayoutType(value);
                               }}
                               isSearchable={false}
-                              value={settingState.ListLayout.filter(p => p.value == settingState.Setting.LayoutInProductPage)[0] || settingState.ListLayout[0]}
+                              value={settingState.ListLayout.filter(p => p.value == settingState.Setting.LayoutInProductPage)[0] || settingState.ListLayout[2]}
                             />
                             <div className="break-line"></div>
-                            <p className='only-text'>Select card theme</p>
                             {
                               settingState.Setting.LayoutInProductPage === 3 ? <>
+                                <p className='only-text'>Select card theme</p>
+
                                 <div className='group-card-theme'>
                                   <div className={settingState.Setting2.CardTheme == 0 ? 'item-card-theme active' : 'item-card-theme'} style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
                                     <Button onClick={() => {
@@ -1297,7 +1298,7 @@ function DiscountFeature() {
                                       IsOpenSaveToolbar: true
                                     }))
                                   }
-                                  
+
 
                                 }}
                               />

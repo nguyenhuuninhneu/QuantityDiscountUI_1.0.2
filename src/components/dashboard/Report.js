@@ -11,6 +11,7 @@ import Loading from '../../components/plugins/Loading';
 import Select from 'react-select';
 import axios from 'axios';
 import config from '../../config/config';
+import  utils  from '../../config/utils';
 
 const Report = (props) => {
     const dispatch = useDispatch();
@@ -410,8 +411,8 @@ const Report = (props) => {
                                                     return [
                                                         report.CampaignID,
                                                         report.Title,
-                                                        report.TotalDiscount,
-                                                        Math.floor(report.TotalPrice, 2),
+                                                        utils.ShopifyMoney(report.TotalDiscount, reportState.FormatMoney),
+                                                        utils.ShopifyMoney(Math.floor(report.TotalPrice, 2), reportState.FormatMoney),
                                                         report.ViewProduct,
                                                         report.ViewCart,
                                                         <>
@@ -544,8 +545,8 @@ const Report = (props) => {
                                                 order.OrderID,
                                                 order.CustomerName,
                                                 order.CustomerPhone,
-                                                order.TotalDiscount,
-                                                order.TotalPrice
+                                                utils.ShopifyMoney(order.TotalDiscount, reportState.FormatMoney),
+                                                utils.ShopifyMoney(order.TotalPrice, reportState.FormatMoney),
 
                                             ];
                                         }) : []}

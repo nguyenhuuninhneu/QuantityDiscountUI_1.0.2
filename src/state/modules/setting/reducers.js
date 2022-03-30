@@ -3,6 +3,7 @@ import * as types from "./types";
 const INITIAL_STATE = {
   ListSetting: {
     IsLoadingPage: true,
+    IsEnabledAppLoading: false,
     selectedTab: 0,
     Setting: {
       ID: 0,
@@ -11,12 +12,12 @@ const INITIAL_STATE = {
       ShowDescription: true,
       ShowDiscountProductPage: true,
       ShowDiscountedPrice: true,
-      LayoutInProductPage: 1,
+      LayoutInProductPage: 4,
       ShowColumnTotal: true,
       TextQuantityBreaks: "🔥 Buy more, save more! 🔥",
       TextQuantity: "Quantity",
       TextDiscount: "Discount",
-      TextDiscountPrice: "Discount Price",
+      TextDiscountPrice: "Discounted price",
       TextPlus: "+",
       TextPrice: "Price",
       TextBuy: "Buy",
@@ -34,7 +35,8 @@ const INITIAL_STATE = {
       DisCountCodePrefix: "",
       UseUpdateOnCartPage: true,
       CustomCssCart: "",
-      CustomJsCart: ""
+      CustomJsCart: "",
+      IsEnableAppEmbed: false
     },
     Setting2: {
       ID: 0,
@@ -70,7 +72,7 @@ const INITIAL_STATE = {
       BackgroundColorCard: "#F7CA00",
       TextMinimumProductTitle: "You have to choose minimum of {minimum} {product_title}",
       TextMaximumProductTitle: "You can only choose maximum of {maximum} {product_title}",
-      
+
       TextMinimumCartQuantity: "This discount is applied to the total quantity of products in your cart",
       TextMinimumSameProductQuantity: "This discount is applied to the total quantity of this product in your cart",
       TextMinimumSameProductVariantQuantity: "This discount is applied to the total quantity of products in your cart",
@@ -360,7 +362,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         }
 
       };
-      case types.SYNCHRONIZE_DISCOUNT_SHOPIFY_COMPLETED:
+    case types.SYNCHRONIZE_DISCOUNT_SHOPIFY_COMPLETED:
       return {
         ...state,
         ListSetting: {
@@ -377,6 +379,22 @@ const reducer = (state = INITIAL_STATE, action) => {
           ...state.ListSetting,
           LoadingDiscountSync: false,
           DisplayProcess: false,
+        }
+
+      };
+    case types.ENABLE_APP_EMBED:
+      return {
+        ...state,
+        ListSetting: {
+          ...state.ListSetting,
+          Setting: {
+            ...state.ListSetting.Setting,
+            IsEnableAppEmbed: action.payload.isEnable
+          },
+          IsOpenSaveToolbar: !action.payload.res,
+          IsEnabledAppLoading: false,
+          IsOpenSaveResult: true,
+          MessageSaveResult: action.payload.res ? "Successed" : "Failed",
         }
 
       };

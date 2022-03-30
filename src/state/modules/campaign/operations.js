@@ -75,6 +75,7 @@ export const createCampaign = () => {
         EndTimeValidation: null,
         IsOpenSaveResult: false,
         IsOpenSaveToolbar: false,
+        IsEndDate: false,
         // IsLoadingPage: true
 
       }));
@@ -88,6 +89,7 @@ export const editCampaign = (campaign) => {
       {
         ...getState().campaign.CreateUpdateCampaign,
         campaign: campaign,
+        IsEndDate: campaign.EndDate === 30000101 ? false : true,
         EndTimeValidation: null,
         IsOpenSaveResult: false
       }));
@@ -107,7 +109,7 @@ export const editCampaign = (campaign) => {
   }
 }
 
-export const saveCampaign = (isFirstCampaign = false) => {
+export const saveCampaign = (isFirstCampaign = false,isEndDate = false) => {
   return (dispatch, getState) => {
     dispatch(actions.setIsSaveLoading(true));
     dispatch(actions.setIsLoadingPage(true));
@@ -120,6 +122,7 @@ export const saveCampaign = (isFirstCampaign = false) => {
       campaign: campaign,
       shop: config.shop,
       isFirstCampaign: isFirstCampaign,
+      isEndDate: isEndDate,
       shopID: campaign.ShopID,
       yourname: yourname,
       youremail: youremail,

@@ -51,10 +51,10 @@ const CreateUpdateCampaign = (props) => {
             params: {
                 search: input,
                 shopID: appState?.Shop.ID,
-                shop: config.shop ,
+                shop: config.shop,
                 page: 1,
                 pagezise: 100,
-                token : config.token
+                token: config.token
             }
         })
             .then((res) => {
@@ -195,7 +195,7 @@ const CreateUpdateCampaign = (props) => {
     };
 
     const [isLoadingStep, setIsLoadingStep] = useState(false);
-    const [isEndDate, setIsEndDate] = useState(campaign !== undefined && campaign !== null ? (campaign.ID > 0 && campaign.EndDateEdit !== '' ? true : false) : false);
+
 
     function ChangeStep(step) {
         setIsLoadingStep(true);
@@ -503,7 +503,7 @@ const CreateUpdateCampaign = (props) => {
             scrollToCampaignDetail();
             return false;
         }
-        if (isEndDate && campaign.EndDateEdit.toString() === '') {
+        if (campaignState.IsEndDate && campaign.EndDateEdit.toString() === '') {
             dispatch(setCreateUpdateCampaign({
                 ...campaignState,
                 IsOpenSaveToolbar: false,
@@ -512,7 +512,7 @@ const CreateUpdateCampaign = (props) => {
             scrollToDate();
             return false;
         }
-        if ((campaign.StartDateEdit.toString() != '' && isEndDate && campaign.EndDateEdit.toString() != '')) {
+        if ((campaign.StartDateEdit.toString() != '' && campaignState.IsEndDate && campaign.EndDateEdit.toString() != '')) {
             var startTime = Date.parse(campaign.StartDateEdit);
             var endTime = Date.parse(campaign.EndDateEdit);
             if (endTime <= startTime) {
@@ -690,7 +690,7 @@ const CreateUpdateCampaign = (props) => {
                                                     if (isFirstCampaign) {
                                                         if (ValidForm()) {
                                                             if (campaign.Step === 2) {
-                                                                dispatch(saveCampaign(isFirstCampaign));
+                                                                dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
                                                             } else {
                                                                 ChangeStep(2);
                                                             }
@@ -702,7 +702,7 @@ const CreateUpdateCampaign = (props) => {
                                                     }
                                                     else {
                                                         if (ValidForm()) {
-                                                            dispatch(saveCampaign(isFirstCampaign));
+                                                            dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
                                                         }
                                                     }
 
@@ -721,7 +721,7 @@ const CreateUpdateCampaign = (props) => {
                                                         if (isFirstCampaign) {
                                                             if (ValidForm()) {
                                                                 if (campaign.Step === 2) {
-                                                                    dispatch(saveCampaign(isFirstCampaign));
+                                                                    dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
                                                                 } else {
                                                                     ChangeStep(2);
                                                                 }
@@ -733,7 +733,7 @@ const CreateUpdateCampaign = (props) => {
                                                         }
                                                         else {
                                                             if (ValidForm()) {
-                                                                dispatch(saveCampaign(isFirstCampaign));
+                                                                dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
                                                             }
                                                         }
 
@@ -1310,14 +1310,8 @@ const CreateUpdateCampaign = (props) => {
                                                                         <div className='flex-half'>
                                                                             <Checkbox
                                                                                 label="Set end date"
-                                                                                checked={isEndDate}
+                                                                                checked={campaignState.IsEndDate}
                                                                                 onChange={(e) => {
-                                                                                    setIsEndDate(e);
-                                                                                    dispatch(setCreateUpdateCampaign({
-                                                                                        ...campaignState,
-                                                                                        IsOpenSaveToolbar: true,
-                                                                                        EndTimeValidation: '',
-                                                                                    }))
                                                                                     if (e == false) {
                                                                                         dispatch(setCreateUpdateCampaign({
                                                                                             ...campaignState,
@@ -1326,8 +1320,11 @@ const CreateUpdateCampaign = (props) => {
                                                                                                 EndDateEdit: '',
                                                                                                 EndDate: '',
                                                                                             },
+                                                                                            IsOpenSaveToolbar: true,
+                                                                                            IsEndDate: e,
+                                                                                            EndTimeValidation: '',
                                                                                         }))
-                                                                                    }else {
+                                                                                    } else {
                                                                                         dispatch(setCreateUpdateCampaign({
                                                                                             ...campaignState,
                                                                                             campaign: {
@@ -1335,14 +1332,17 @@ const CreateUpdateCampaign = (props) => {
                                                                                                 EndDateEdit: todayStr,
                                                                                                 EndDate: todayStr,
                                                                                             },
+                                                                                            IsOpenSaveToolbar: true,
+                                                                                            IsEndDate: e,
+                                                                                            EndTimeValidation: '',
                                                                                         }))
                                                                                     }
                                                                                 }}
                                                                             />
                                                                             <TextField
-                                                                                disabled={!isEndDate}
-                                                                                value={isEndDate ? campaign.EndDateEdit : campaign.EndDateEditEmpty}
-                                                                                type={isEndDate ? "date" : "text"}
+                                                                                disabled={!campaignState.IsEndDate}
+                                                                                value={campaignState.IsEndDate ? campaign.EndDateEdit : campaign.EndDateEditEmpty}
+                                                                                type={campaignState.IsEndDate ? "date" : "text"}
                                                                                 error={campaignState.EndTimeValidation}
                                                                                 onChange={(e) => {
                                                                                     dispatch(setCreateUpdateCampaign({
@@ -1540,7 +1540,7 @@ const CreateUpdateCampaign = (props) => {
                                                                                             <img src={campaignState.Setting2.CardTheme == 0 ? CardBorder2 : CardBorder3} className="card-border" alt="" />
                                                                                             <p className="buy">{campaignState.Setting.TextBuy} {item.Quantity}{campaignState.Setting.TextPLus}</p>
                                                                                             <p className="get" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{campaignState.Setting2.TextGet}</p>
-                                                                                            <p className="off-card" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'}{campaign.PriceType === 3 ? '/'+campaignState.Setting.TextEach : ' ' + campaignState.Setting2.TextOff}</p>
+                                                                                            <p className="off-card" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'}{campaign.PriceType === 3 ? '/' + campaignState.Setting.TextEach : ' ' + campaignState.Setting2.TextOff}</p>
                                                                                         </div>
 
                                                                                     </>
@@ -1557,10 +1557,10 @@ const CreateUpdateCampaign = (props) => {
                                                             campaignState.Setting.ShowDescription ? <>
                                                                 <p className='discount-applied'> {
                                                                     campaign.DiscountType === 1 ?
-                                                                    campaignState.Setting2.TextMinimumCartQuantity
+                                                                        campaignState.Setting2.TextMinimumCartQuantity
                                                                         : campaign.DiscountType === 2 ?
-                                                                        campaignState.Setting2.TextMinimumSameProductQuantity : 
-                                                                        campaignState.Setting2.TextMinimumSameProductVariantQuantity
+                                                                            campaignState.Setting2.TextMinimumSameProductQuantity :
+                                                                            campaignState.Setting2.TextMinimumSameProductVariantQuantity
                                                                 }</p>
                                                             </> : <></>
                                                         }
@@ -1629,7 +1629,7 @@ const CreateUpdateCampaign = (props) => {
                                                     }}>Send support request</Button>
                                                     <Button primary={true} onClick={() => {
                                                         //save campaign
-                                                        dispatch(saveCampaign(isFirstCampaign));
+                                                        dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
                                                     }}>Save campaign</Button>
                                                 </div>
                                                 {
@@ -1704,7 +1704,7 @@ const CreateUpdateCampaign = (props) => {
                                             content: 'Send',
                                             onAction: () => {
                                                 if (ValidFormSuportRequest()) {
-                                                    dispatch(saveCampaign(isFirstCampaign))
+                                                    dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate))
                                                 }
                                             },
                                         }}

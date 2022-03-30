@@ -238,6 +238,26 @@ export const synchronizeDiscountFromShopify = () => {
 
     };
 };
+export const enableAppEmbed = (isEnable) => {
+    return (dispatch, getState) => {
+        axios.get(config.rootLink + '/FrontEnd/AppEmbed', {
+            params: {
+                isEnable: isEnable,
+                shop: config.shop,
+            }
+        })
+            .then(function (response) {
+                const result = response?.data;
+                dispatch(actions.enableAppEmbed(result));
+            })
+            .catch(function (error) {
+                const errorMsg = error.message;
+                console.log(errorMsg);
+                dispatch(actions.enableAppEmbed(false));
+            })
+
+    };
+};
 export default {
     fetchSetting,
     fetchThemes,
@@ -248,5 +268,6 @@ export default {
     loadProductByCampaign,
     synchronizeData,
     synchronizeDiscountFromShopify,
-    getProcess
+    getProcess,
+    enableAppEmbed
 };

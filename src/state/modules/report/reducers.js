@@ -25,7 +25,8 @@ const INITIAL_STATE = {
       TotalPage: 1,
       Offset: 0,
     },
-    ReportDetail: null
+    ReportDetail: null,
+    FormatMoney: '${{amount}} USD',
   },
 
 };
@@ -55,7 +56,7 @@ const reducer = (state = INITIAL_STATE, action) => {
             CurrentItems: action.payload.list
           },
           TotalReport: action.payload.totalitem,
-
+          FormatMoney : action.payload.FormatMoney
         },
       };
 

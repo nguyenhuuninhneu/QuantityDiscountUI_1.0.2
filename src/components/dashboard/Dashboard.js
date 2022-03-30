@@ -9,9 +9,9 @@ import { setDashboard } from '../../state/modules/dashboard/actions';
 import { fetchDashboard } from '../../state/modules/dashboard/operations';
 import { Line } from 'react-chartjs-2';
 import Select from 'react-select';
+import  utils  from '../../config/utils';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
-
 
 
 function Dashboard() {
@@ -450,7 +450,7 @@ function Dashboard() {
                   <div className='group group-discount'>
                     <div className='item'>
                       <div className='number'>
-                        ${numberWithCommas(dashboardState.DashboardData.TotalDiscount)}
+                        {utils.ShopifyMoney(dashboardState.DashboardData.TotalDiscount, dashboardState.DashboardData.FormatMoney)}
                       </div>
                       <div className='description'>
                         Total discount
@@ -458,7 +458,7 @@ function Dashboard() {
                     </div>
                     <div className='item'>
                       <div className='number'>
-                        ${numberWithCommas(dashboardState.DashboardData.TotalOrderValue)}
+                      {utils.ShopifyMoney(dashboardState.DashboardData.TotalOrderValue, dashboardState.DashboardData.FormatMoney)}
                       </div>
                       <div className='description'>
                         Total order value

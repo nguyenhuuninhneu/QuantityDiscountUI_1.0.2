@@ -31,6 +31,8 @@ const INITIAL_STATE = {
       ProductsAppliedDiscountPercentage: 0,
       TotalDiscount: 0,
       TotalOrderValue: 0,
+      FormatMoney: '${{amount}} USD',
+
     },
     DataChart: {
       labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],

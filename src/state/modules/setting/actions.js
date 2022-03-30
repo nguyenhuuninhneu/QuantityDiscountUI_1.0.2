@@ -176,3 +176,11 @@ export const synchronizeDiscountShopifyFailed = (data) => {
     payload: data,
   };
 };
+
+
+export const enableAppEmbed = (data) => {
+  return {
+    type: types.ENABLE_APP_EMBED,
+    payload: data,
+  };
+};
