@@ -126,7 +126,7 @@ function DiscountFeature() {
                             <div className='element-general-child'>
                               <p className='only-text'>For “Minimum cart quantity” condition</p>
                               <TextField
-                                id='TextNotiOnCart'
+                                id='TextMinimumCartQuantity'
                                 placeholder='This discount is applied to the total quantity of products in your cart'
                                 value={settingState.Setting2.TextMinimumCartQuantity}
                                 onChange={(e) => {
@@ -147,7 +147,7 @@ function DiscountFeature() {
                             <div className='element-general-child'>
                               <p className='only-text'>For “Minimum same product quantity” condition</p>
                               <TextField
-                                id='TextNotiOnCart'
+                                id='TextMinimumSameProductQuantity'
                                 placeholder='This discount is applied to the total quantity of this product in your cart'
                                 value={settingState.Setting2.TextMinimumSameProductQuantity}
                                 onChange={(e) => {
@@ -169,7 +169,7 @@ function DiscountFeature() {
                             <div className='element-general-child'>
                               <p className='only-text'>For “Minimum same product variant quantity” condition</p>
                               <TextField
-                                id='TextNotiOnCart'
+                                id='TextMinimumSameProductVariantQuantity'
                                 placeholder='This discount is applied to the total quantity of products in your cart'
                                 value={settingState.Setting2.TextMinimumSameProductVariantQuantity}
                                 onChange={(e) => {
