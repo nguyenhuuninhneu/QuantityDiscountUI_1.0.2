@@ -4,7 +4,7 @@ import { PageActions, Card, Layout, Heading, TextStyle, Button, ButtonGroup, Tex
 import { DeleteMinor, QuestionMarkMajor, CircleInformationMajor, CircleRightMajor, ViewMinor, ConfettiMajor } from '@shopify/polaris-icons';
 import Loading from '../../components/plugins/Loading';
 import { setSetting } from '../../state/modules/setting/actions';
-import { saveSetting, fetchSetting, synchronizeDiscountFromShopify } from '../../state/modules/setting/operations';
+import { saveSetting, fetchSetting, synchronizeDiscountFromShopify, getProcessDiscountCode } from '../../state/modules/setting/operations';
 import { setMenu } from '../../state/modules/app/actions';
 import Select from 'react-select';
 import CardOrange2 from '../../assets/images/card-orange-2.svg';
@@ -15,6 +15,8 @@ import { hexToCSSFilter } from 'hex-to-css-filter';
 import config from '../../config/config';
 import axios from 'axios';
 import moreAppConfig from '../../config/moreAppConfig';
+import ReactInterval from 'react-interval';
+
 
 function DiscountFeature() {
   const dispatch = useDispatch();
@@ -75,6 +77,11 @@ function DiscountFeature() {
         settingState.IsLoadingPage ? <Loading></Loading>
           :
           <>
+            <ReactInterval timeout={500} enabled={settingState.DisplayProcessShopify}
+              callback={() => {
+                dispatch(getProcessDiscountCode("UpdateDiscountCode"))
+              }} />
+
             <div className='discount-feature'>
               <div className='colLeft'>
                 <div className='section product-page'>
@@ -170,7 +177,7 @@ function DiscountFeature() {
                               <p className='only-text'>For “Minimum same product variant quantity” condition</p>
                               <TextField
                                 id='TextMinimumSameProductVariantQuantity'
-                                placeholder='This discount is applied to the total quantity of products in your cart'
+                                placeholder='This discount is applied to the total quantity of the same variant of this product in your cart'
                                 value={settingState.Setting2.TextMinimumSameProductVariantQuantity}
                                 onChange={(e) => {
                                   dispatch(setSetting({
@@ -322,8 +329,78 @@ function DiscountFeature() {
                                         IsOpenSaveToolbar: true
                                       }))
                                     }}>
-                                      <img src={CardOrange2} alt="" style={{ filter: filterBackgroundColorCard.replace(';', '') }} />
-                                      <img src={CardBorder2} className="card-border" alt="" />
+                                      <div className="card-left-right" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
+                                        <div className="card-inside">
+                                          <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
+                                          <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
+                                          <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
+                                        </div>
+                                        <div className="corner-left" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
+                                          <div style={{
+                                            content: '',
+                                            position: 'absolute',
+                                            top: '0',
+                                            left: '-10%',
+                                            width: '60%',
+                                            height: '100%',
+                                            backgroundColor: '#fff'
+                                          }}></div>
+
+                                          <div className="half-cỉcle">
+                                            <div style={{
+                                              content: '',
+                                              position: 'absolute',
+                                              top: '-3px',
+                                              left: '50%',
+                                              width: '5px',
+                                              height: '5px',
+                                              backgroundColor: settingState.Setting2.BackgroundColorCard
+                                            }}></div>
+                                            <div style={{
+                                              content: '',
+                                              position: 'absolute',
+                                              top: '18px',
+                                              left: '50%',
+                                              width: '5px',
+                                              height: '5px',
+                                              backgroundColor: settingState.Setting2.BackgroundColorCard
+                                            }}></div>
+                                          </div>
+                                        </div>
+                                        <div className="corner-right" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
+                                          <div style={{
+                                            content: '',
+                                            position: 'absolute',
+                                            top: '0',
+                                            right: '-10%',
+                                            width: '60%',
+                                            height: '100%',
+                                            backgroundColor: '#fff'
+                                          }}></div>
+                                          <div className="half-cỉcle">
+                                            <div style={{
+                                              content: '',
+                                              position: 'absolute',
+                                              top: '-3px',
+                                              right: '50%',
+                                              width: '5px',
+                                              height: '5px',
+                                              backgroundColor: settingState.Setting2.BackgroundColorCard
+                                            }}></div>
+                                            <div style={{
+                                              content: '',
+                                              position: 'absolute',
+                                              top: '18px',
+                                              right: '50%',
+                                              width: '5px',
+                                              height: '5px',
+                                              backgroundColor: settingState.Setting2.BackgroundColorCard
+                                            }}></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      {/* <img src={CardOrange2} alt="" style={{ filter: filterBackgroundColorCard.replace(';', '') }} />
+                                      <img src={CardBorder2} className="card-border" alt="" /> */}
                                       <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
                                       <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
                                       <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
@@ -340,11 +417,28 @@ function DiscountFeature() {
                                         IsOpenSaveToolbar: true
                                       }))
                                     }}>
-                                      <img src={CardOrange3} style={{ filter: filterBackgroundColorCard.replace(';', '') }} alt="" />
-                                      <img src={CardBorder3} className="card-border" alt="" />
-                                      <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
-                                      <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
-                                      <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
+                                      {/* <img src={CardOrange3} style={{ filter: filterBackgroundColorCard.replace(';', '') }} alt="" />
+                                      <img src={CardBorder3} className="card-border" alt="" /> */}
+                                      <div className="card-four-side" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
+                                        <div className="card-inside">
+                                          <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
+                                          <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
+                                          <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
+                                        </div>
+                                        <div className="corner-1">
+                                          <div className="half-cỉcle"></div>
+                                        </div>
+                                        <div className="corner-2">
+                                          <div className="half-cỉcle"></div>
+                                        </div>
+                                        <div className="corner-3">
+                                          <div className="half-cỉcle"></div>
+                                        </div>
+                                        <div className="corner-4">
+                                          <div className="half-cỉcle"></div>
+                                        </div>
+                                      </div>
+
                                     </Button>
                                   </div>
                                   <div className='cb'></div>
@@ -1115,12 +1209,19 @@ function DiscountFeature() {
                             </Stack>
                             <div className="break-line"></div>
                             <div className='element-general-child'>
-                              <Button
-                                disabled={appState.DisplayProcess || settingState.LoadingDiscountSync || settingState.LoadingDataSync}
-                                primary
-                                onClick={() => {
-                                  dispatch(synchronizeDiscountFromShopify());
-                                }}>Sync discounts from Shopify</Button>
+                              <div className="flex flex-align-center">
+                                <Button
+                                  disabled={appState.DisplayProcessShopify || settingState.LoadingDiscountSync || settingState.LoadingDataSync}
+                                  primary
+                                  onClick={() => {
+                                    dispatch(synchronizeDiscountFromShopify());
+                                  }}>Sync discounts from Shopify</Button>
+                                {
+                                  settingState.TextProcessShopifyCompleted != '' ? <span className="ml-10"> {settingState.TextProcessShopifyCompleted}</span> : settingState.DisplayProcessShopify ? <span className="ml-10">Loading {settingState.Process}</span> : null
+                                }
+
+                              </div>
+
                               <div className="break-line"></div>
                               <div className="flex flex-align-center">
                                 <span className="mr-10"> Total: {settingState.TotalDiscountCode} discount codes</span> <Button onClick={() => {

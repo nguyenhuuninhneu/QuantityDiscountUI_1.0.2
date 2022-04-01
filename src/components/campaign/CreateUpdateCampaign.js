@@ -2,10 +2,10 @@
 import { DataTable, Link, TextStyle, Button, InlineError, OptionList, Card, ContextualSaveBar, Heading, Layout, TextField, Toast, Stack, Modal, List, Checkbox, FormLayout, Icon } from '@shopify/polaris';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCreateUpdateCampaign, setSetting } from '../../state/modules/campaign/actions';
+import { setCreateUpdateCampaign, setSetting} from '../../state/modules/campaign/actions';
 import { setIsNoCampaign, setIsCreatingCampaign, setMenu } from '../../state/modules/app/actions';
 import config from '../../config/config';
-import { saveCampaign } from '../../state/modules/campaign/operations';
+import { saveCampaign ,enableAppEmbed} from '../../state/modules/campaign/operations';
 import moreAppConfig from '../../config/moreAppConfig';
 import TShirtYellow from '../../assets/images/t-shirt-yellow.svg';
 import TShirtGreen from '../../assets/images/t-shirt-green.svg';
@@ -1650,8 +1650,15 @@ const CreateUpdateCampaign = (props) => {
                                                                                 <p>Our Quantity Discount app uses the new Shopify app embed feature. You need to enable this feature in the Shopify Editor before publish a new campaign.</p>
                                                                             </div>
                                                                             <div className="Polaris-CalloutCard__Buttons">
-                                                                                <Button primary={false} onClick={() => {
-                                                                                }}>Enable app embed</Button>
+                                                                                <Button primary={false}
+                                                                                    loading={campaignState.IsEnabledAppLoading}
+                                                                                    onClick={() => {
+                                                                                        dispatch(setCreateUpdateCampaign({
+                                                                                            ...campaignState,
+                                                                                            IsEnabledAppLoading: true,
+                                                                                        }))
+                                                                                        dispatch(enableAppEmbed(!campaignState.Setting.IsEnableAppEmbed))
+                                                                                    }}>{campaignState.Setting.IsEnableAppEmbed ? 'Disable' : 'Enable'} app embed</Button>
 
                                                                             </div>
                                                                         </div>

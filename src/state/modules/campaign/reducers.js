@@ -96,7 +96,8 @@ const INITIAL_STATE = {
       DisCountCodePrefix: "",
       UseUpdateOnCartPage: true,
       CustomCssCart: "",
-      CustomJsCart: ""
+      CustomJsCart: "",
+      IsEnableAppEmbed: false
     },
     Setting2: {
       ID: 0,
@@ -132,10 +133,10 @@ const INITIAL_STATE = {
       BackgroundColorCard: "#FFFFFF",
       TextMinimumProductTitle: "You have to choose minimum of {minimum} {product_title}",
       TextMaximumProductTitle: "You can only choose maximum of {maximum} {product_title}",
-      
+
       TextMinimumCartQuantity: "This discount is applied to the total quantity of products in your cart",
       TextMinimumSameProductQuantity: "This discount is applied to the total quantity of this product in your cart",
-      TextMinimumSameProductVariantQuantity: "This discount is applied to the total quantity of products in your cart",
+      TextMinimumSameProductVariantQuantity: "This discount is applied to the total quantity of the same variant of this product in your cart",
       TextApply: "Apply",
       TextBaseOn: "Base on",
       TextDiscountCode: "Discount code",
@@ -146,6 +147,7 @@ const INITIAL_STATE = {
       TextColorLimitTable: "#000000",
       BackgroundColorLimitTable: "#F7CA00",
     },
+    IsEnabledAppLoading: false,
     YourName: '',
     YourEmail: '',
     DescribeYourProblem: '',
@@ -361,6 +363,21 @@ const reducer = (state = INITIAL_STATE, action) => {
             Step: action.payload
           }
         }
+      };
+    case types.ENABLE_APP_EMBED:
+      return {
+        ...state,
+        CreateUpdateCampaign: {
+          ...state.CreateUpdateCampaign,
+          Setting: {
+            ...state.CreateUpdateCampaign.Setting,
+            IsEnableAppEmbed: action.payload.isEnable
+          },
+          IsEnabledAppLoading: false,
+          IsOpenSaveResult: true,
+          MessageSaveResult: action.payload.res ? "Successed" : "Failed",
+        }
+
       };
     default:
       return state;

@@ -76,6 +76,13 @@ export const setSetting = (data) => {
     payload: data,
   };
 };
+
+export const enableAppEmbed = (data) => {
+  return {
+    type: types.ENABLE_APP_EMBED,
+    payload: data,
+  };
+};
 // export const fetchCreateCampaignFailed = (data) => {
 //   return {
 //     type: types.FETCH_CREATE_CAMPAIGN_FAILED,

@@ -218,6 +218,29 @@ export const getProcess = (type) => {
 
     };
 };
+
+export const getProcessDiscountCode = (type) => {
+    return (dispatch, getState) => {
+
+        axios.get(config.rootLink + '/FrontEnd/GetProcess', {
+            params: {
+                shopID: getState().app.Shop?.ID,
+                shop: config.shop,
+                type: type,
+                token: config.token,
+            }
+        })
+            .then(function (response) {
+                const result = response?.data;
+                dispatch(actions.getProcessDiscountCodeCompleted(result));
+            })
+            .catch(function (error) {
+                const errorMsg = error.message;
+                dispatch(actions.getProcessDiscountCodeFailed(errorMsg));
+            })
+
+    };
+};
 export const synchronizeDiscountFromShopify = () => {
     return (dispatch, getState) => {
         axios.get(config.rootLink + '/FrontEnd/SynchronizeDiscountFromShopify', {
@@ -253,7 +276,7 @@ export const enableAppEmbed = (isEnable) => {
             .catch(function (error) {
                 const errorMsg = error.message;
                 console.log(errorMsg);
-                dispatch(actions.enableAppEmbed(false));
+                dispatch(actions.enableAppEmbed({res: false, isEnable : !isEnable}));
             })
 
     };
@@ -269,5 +292,6 @@ export default {
     synchronizeData,
     synchronizeDiscountFromShopify,
     getProcess,
-    enableAppEmbed
+    enableAppEmbed,
+    getProcessDiscountCode
 };

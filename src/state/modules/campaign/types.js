@@ -15,3 +15,4 @@ export const SET_TEXTSEARCHPRODUCT = "campaign/SET_TEXTSEARCHPRODUCT";
 export const SET_STEP = "campaign/SET_STEP";
 export const SET_LOADING_PAGE = "campaign/SET_LOADING_PAGE";
 export const SET_SETTING = "campaign/SET_SETTING";
+export const ENABLE_APP_EMBED = "setting/ENABLE_APP_EMBED";

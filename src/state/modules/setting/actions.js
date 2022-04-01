@@ -163,6 +163,19 @@ export const getProcessFailed = (data) => {
 };
 
 
+export const getProcessDiscountCodeCompleted = (data) => {
+  return {
+    type: types.GET_PROCESS_DISCOUNT_CODE_COMPLETED,
+    payload: data,
+  };
+};
+
+export const getProcessDiscountCodeFailed = (data) => {
+  return {
+    type: types.GET_PROCESS_DISCOUNT_CODE_FAILED,
+    payload: data,
+  };
+};
 export const synchronizeDiscountShopifyCompleted = (data) => {
   return {
     type: types.SYNCHRONIZE_DISCOUNT_SHOPIFY_COMPLETED,

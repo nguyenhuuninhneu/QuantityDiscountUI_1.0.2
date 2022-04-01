@@ -75,7 +75,7 @@ const INITIAL_STATE = {
 
       TextMinimumCartQuantity: "This discount is applied to the total quantity of products in your cart",
       TextMinimumSameProductQuantity: "This discount is applied to the total quantity of this product in your cart",
-      TextMinimumSameProductVariantQuantity: "This discount is applied to the total quantity of products in your cart",
+      TextMinimumSameProductVariantQuantity: "This discount is applied to the total quantity of the same variant of this product in your cart",
       TextApply: "Apply",
       TextBaseOn: "Base on",
       TextDiscountCode: "Discount code",
@@ -101,6 +101,7 @@ const INITIAL_STATE = {
     LoadingDiscountSync: false,
     DisplayProcess: false,
     DisplayProcessShopify: false,
+    TextProcessShopifyCompleted: '',
     ListLayout: [],
     TextCustomCode: '<div className="orichiCampaignCustom" data-productid="0" data-campaignid="0"></div>',
     IsOpenSaveToolbar: false,
@@ -122,6 +123,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           Setting: action.payload.setting,
           Setting2: action.payload.setting2,
           ListLayout: action.payload.listLayout,
+          TextProcessShopifyCompleted: '',
           // ListCampaign: action.payload.listCampaign,
           // ListProduct: action.payload.listProduct,
           // CampaignID: action.payload.listCampaign.length > 0 ? action.payload.listCampaign[0]?.ID : 0,
@@ -350,6 +352,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           Process: action.payload.process,
           LoadingDataSync: action.payload.displayprocess,
           DisplayProcess: action.payload.displayprocess,
+          TextProcessShopifyCompleted: ''
         }
       };
 
@@ -362,13 +365,34 @@ const reducer = (state = INITIAL_STATE, action) => {
         }
 
       };
+      case types.GET_PROCESS_DISCOUNT_CODE_COMPLETED:
+      return {
+        ...state,
+        ListSetting: {
+          ...state.ListSetting,
+          Process: action.payload.process,
+          LoadingDiscountSync: action.payload.displayprocess,
+          DisplayProcessShopify: action.payload.displayprocess,
+          TextProcessShopifyCompleted : !action.payload.displayprocess ? 'Completed' : ''
+        }
+      };
+
+    case types.GET_PROCESS_DISCOUNT_CODE_FAILED:
+      return {
+        ...state,
+        ListSetting: {
+          ...state.ListSetting,
+          LoadingDiscountSync: false,
+        }
+
+      };
     case types.SYNCHRONIZE_DISCOUNT_SHOPIFY_COMPLETED:
       return {
         ...state,
         ListSetting: {
           ...state.ListSetting,
           LoadingDiscountSync: action.payload.res,
-          DisplayProcess: true,
+          DisplayProcessShopify: true,
         }
       };
 
@@ -378,7 +402,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         ListSetting: {
           ...state.ListSetting,
           LoadingDiscountSync: false,
-          DisplayProcess: false,
+          DisplayProcessShopify: false,
         }
 
       };
