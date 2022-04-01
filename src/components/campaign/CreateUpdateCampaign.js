@@ -20,11 +20,6 @@ import TableCollection from './TableCollection';
 import TableProduct from './TableProduct';
 import Select from 'react-select';
 import axios from 'axios';
-import CardOrange2 from '../../assets/images/card-orange-2.svg';
-import CardOrange3 from '../../assets/images/card-orange-3.svg';
-import CardBorder2 from '../../assets/images/card-border-2.svg';
-import CardBorder3 from '../../assets/images/card-border-3.svg';
-import { hexToCSSFilter } from 'hex-to-css-filter';
 
 
 const dateObj = new Date();
@@ -1534,16 +1529,130 @@ const CreateUpdateCampaign = (props) => {
                                                                         {
                                                                             rowsPreview.map((item, index) => {
                                                                                 return (
-                                                                                    <>
-                                                                                        <div className='card-orange' style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>
-                                                                                            <img src={campaignState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: hexToCSSFilter(campaignState.Setting2.BackgroundColorCard || '#E48227').filter.replace(';', '') }} className="Polaris-CalloutCard__Image" />
-                                                                                            <img src={campaignState.Setting2.CardTheme == 0 ? CardBorder2 : CardBorder3} className="card-border" alt="" />
-                                                                                            <p className="buy">{campaignState.Setting.TextBuy} {item.Quantity}{campaignState.Setting.TextPLus}</p>
-                                                                                            <p className="get" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{campaignState.Setting2.TextGet}</p>
-                                                                                            <p className="off-card" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard }}>{item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'}{campaign.PriceType === 3 ? '/' + campaignState.Setting.TextEach : ' ' + campaignState.Setting2.TextOff}</p>
+                                                                                    campaignState.Setting2.CardTheme == 0 ? <>
+                                                                                    <div className='card-orange' style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>
+                                                                                      <div className="card-left-right" style={{ backgroundColor: campaignState.Setting2.BackgroundColorCard }}>
+                                                                                        <div className="card-inside">
+                                                                                          <p className="buy" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>{campaignState.Setting.TextBuy} {item.Quantity}{campaignState.Setting.TextPlus}</p>
+                                                                                          <p className="get" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>{campaignState.Setting2.TextGet}</p>
+                                                                                          <p className="off-card" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {campaignState.Setting2.TextOff}</p>
                                                                                         </div>
-
-                                                                                    </>
+                                                                                        <div className="corner-left" style={{ backgroundColor: campaignState.Setting2.BackgroundColorCard }}>
+                                                                                          <div style={{
+                                                                                            content: '',
+                                                                                            position: 'absolute',
+                                                                                            top: '0',
+                                                                                            left: '-10%',
+                                                                                            width: '60%',
+                                                                                            height: '100%',
+                                                                                            backgroundColor: '#fff'
+                                                                                          }}></div>
+                                              
+                                                                                          <div className="half-cỉcle">
+                                                                                            <div style={{
+                                                                                              content: '',
+                                                                                              position: 'absolute',
+                                                                                              top: '-3px',
+                                                                                              left: '50%',
+                                                                                              width: '5px',
+                                                                                              height: '5px',
+                                                                                              backgroundColor: campaignState.Setting2.BackgroundColorCard
+                                                                                            }}></div>
+                                                                                            <div style={{
+                                                                                              content: '',
+                                                                                              position: 'absolute',
+                                                                                              top: '18px',
+                                                                                              left: '50%',
+                                                                                              width: '5px',
+                                                                                              height: '5px',
+                                                                                              backgroundColor: campaignState.Setting2.BackgroundColorCard
+                                                                                            }}></div>
+                                                                                          </div>
+                                                                                        </div>
+                                                                                        <div className="corner-right" style={{ backgroundColor: campaignState.Setting2.BackgroundColorCard }}>
+                                                                                          <div style={{
+                                                                                            content: '',
+                                                                                            position: 'absolute',
+                                                                                            top: '0',
+                                                                                            right: '-10%',
+                                                                                            width: '60%',
+                                                                                            height: '100%',
+                                                                                            backgroundColor: '#fff'
+                                                                                          }}></div>
+                                                                                          <div className="half-cỉcle">
+                                                                                            <div style={{
+                                                                                              content: '',
+                                                                                              position: 'absolute',
+                                                                                              top: '-3px',
+                                                                                              right: '50%',
+                                                                                              width: '5px',
+                                                                                              height: '5px',
+                                                                                              backgroundColor: campaignState.Setting2.BackgroundColorCard
+                                                                                            }}></div>
+                                                                                            <div style={{
+                                                                                              content: '',
+                                                                                              position: 'absolute',
+                                                                                              top: '18px',
+                                                                                              right: '50%',
+                                                                                              width: '5px',
+                                                                                              height: '5px',
+                                                                                              backgroundColor: campaignState.Setting2.BackgroundColorCard
+                                                                                            }}></div>
+                                                                                          </div>
+                                                                                        </div>
+                                                                                      </div>
+                                                                                      </div>
+                                              
+                                                                                  </> : <>
+                                                                                    <div className='card-orange' style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>
+                                                                                      <div className="card-four-side" style={{ backgroundColor: campaignState.Setting2.BackgroundColorCard }}>
+                                                                                        <div className="card-inside">
+                                                                                          <p className="buy" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>{campaignState.Setting.TextBuy} {item.Quantity}{campaignState.Setting.TextPlus}</p>
+                                                                                          <p className="get" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>{campaignState.Setting2.TextGet}</p>
+                                                                                          <p className="off-card" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>{item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'}{campaign.PriceType === 3 ? '/' + campaignState.Setting.TextEach : ' ' + campaignState.Setting2.TextOff}</p>
+                                                                                        </div>
+                                                                                        <div className="corner-1" style={{
+                                                                                          position: 'absolute',
+                                                                                          display: 'flex',
+                                                                                          alignItems: 'center',
+                                                                                          width: '20px',
+                                                                                          height: '20px',
+                                                                                          top: '-1px',
+                                                                                          left: '-1px',
+                                                                                          backgroundColor: campaignState.Setting2.BackgroundColorCard,
+                                                                                          borderRadius: '50%',
+                                                                                          backgroundClip: 'content-box',
+                                                                                          borderRight: '3px dashed #fff',
+                                                                                          borderTopRightRadius: '50%',
+                                                                                          borderTopLeftRadius: '50%',
+                                                                                          transform: 'rotate(45deg)'
+                                                                                        }}>
+                                                                                          <div className="half-cỉcle">
+                                                                                            <div style={{ "content": "", "position": "absolute", "top": "7px", "left": "10px", "width": "5px", "height": "5px", "background": campaignState.Setting2.BackgroundColorCard }}></div>
+                                                                                            <div style={{ "content": "''", "position": "absolute", "top": "-5px", "left": "-3px", "width": "5px", "height": "5px", "background": campaignState.Setting2.BackgroundColorCard }}></div>
+                                                                                          </div>
+                                                                                        </div>
+                                                                                        <div className="corner-2" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "top": "1px", "right": "-1px", "backgroundColor": campaignState.Setting2.BackgroundColorCard, "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(135deg)" }}>
+                                                                                          <div className="half-cỉcle">
+                                                                                            <div style={{ "content": "", "position": "absolute", "top": "-5px", "right": "7px", "width": "5px", "height": "5px", "background": campaignState.Setting2.BackgroundColorCard }}></div>
+                                                                                            <div style={{ "content": "''", "position": "absolute", "top": "9px", "right": "-5px", "width": "5px", "height": "5px", "background": campaignState.Setting2.BackgroundColorCard }}></div>
+                                                                                          </div>
+                                                                                        </div>
+                                                                                        <div className="corner-3" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "bottom": "1px", "right": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(210deg)", "backgroundColor": campaignState.Setting2.BackgroundColorCard }}>
+                                                                                          <div className="half-cỉcle">
+                                                                                            <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "9px", "width": "5px", "height": "5px", "background": campaignState.Setting2.BackgroundColorCard }}></div>
+                                                                                            <div style={{ "content": "''", "position": "absolute", "top": "7px", "right": "-5px", "width": "5px", "height": "5px", "background": campaignState.Setting2.BackgroundColorCard }}></div>
+                                                                                          </div>
+                                                                                        </div>
+                                                                                        <div className="corner-4" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "22px", "height": "22px", "bottom": "1px", "left": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(300deg)", "backgroundColor": campaignState.Setting2.BackgroundColorCard }}>
+                                                                                          <div className="half-cỉcle">
+                                                                                            <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "8px", "width": "5px", "height": "5px", "background": campaignState.Setting2.BackgroundColorCard }}></div>
+                                                                                            <div style={{ "content": "''", "position": "absolute", "top": "10px", "right": "-5px", "width": "5px", "height": "5px", "background": campaignState.Setting2.BackgroundColorCard }}></div>
+                                                                                          </div>
+                                                                                        </div>
+                                                                                      </div>
+                                                                                    </div>
+                                                                                  </>
                                                                                 )
                                                                             })
                                                                         }

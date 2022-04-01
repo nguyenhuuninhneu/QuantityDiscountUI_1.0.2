@@ -55,6 +55,7 @@ const INITIAL_STATE = {
       TextPleaseFix: "Please select a valid number of products before checking out!",
       TextDiscountedPrice: "Discounted price",
       TextUpdateCart: "Update Cart",
+      AutoUpSale: false,
       CustomCssAlert: "",
       CustomJsAlert: "",
       FontSizeDiscountTitle: "16",

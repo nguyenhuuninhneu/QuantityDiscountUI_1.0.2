@@ -1367,13 +1367,19 @@ input.active+.slider .off {
     display: flex;
 }
 .card-orange{
-    height: 79;
+    height: 80;
     position: relative;
     margin-right: 10px;
     color: #fff;
     font-size: 13px;
     text-align: center;
     margin-bottom: 10px;
+    padding: 10px;
+    border: 3px solid transparent;
+    border-radius: 5px;
+}
+.card-orange:hover{
+    border: 3px solid #cdcdcd;
 }
 
 .buy{
@@ -1658,7 +1664,7 @@ background: yellow;
     border: 3px dashed #fff;
     text-align: center;
 }
-.card-four-side .corner-1{
+/* .card-four-side .corner-1{
     position: absolute;
     display: flex;
     align-items: center;
@@ -1673,7 +1679,7 @@ top: -2px;
     border-top-right-radius:50%;
     border-top-left-radius:50%;
     transform:rotate(45deg);
-}
+} */
 .card-four-side .corner-1::before{
    content: '';
    position:absolute;
@@ -1692,7 +1698,7 @@ transform: rotate(45deg);
 border-top-right-radius: 50%;
 }
 
-.card-four-side .corner-1 .half-cỉcle::before{
+/* .card-four-side .corner-1 .half-cỉcle::before{
     content: '';
 position: absolute;
 top: 7px;
@@ -1710,9 +1716,9 @@ left: -3px;
 width: 5px;
 height: 5px;
 background: yellow;
-}
+} */
 /*  */
-.card-four-side .corner-2{
+/* .card-four-side .corner-2{
     position: absolute;
 display: flex;
 align-items: center;
@@ -1727,7 +1733,7 @@ border-right: 3px dashed #fff;
 border-top-right-radius: 50%;
 border-top-left-radius: 50%;
 transform: rotate(135deg);
-}
+} */
 .card-four-side .corner-2::before{
    content: '';
    position:absolute;
@@ -1746,7 +1752,7 @@ transform: rotate(45deg);
 border-top-right-radius: 50%;
 }
 
-.card-four-side .corner-2 .half-cỉcle::before {
+/* .card-four-side .corner-2 .half-cỉcle::before {
     content: '';
 position: absolute;
 top: -5px;
@@ -1764,8 +1770,8 @@ right: -5px;
 width: 5px;
 height: 5px;
 background: yellow;
-}
-.card-four-side .corner-3{
+} */
+/* .card-four-side .corner-3{
     position: absolute;
 display: flex;
 align-items: center;
@@ -1773,14 +1779,15 @@ width: 20px;
 height: 20px;
 bottom: 2px;
     right: -1px;
-background-color: yellow;
 border-radius: 50%;
 background-clip: content-box;
 border-right: 3px dashed #fff;
 border-top-right-radius: 50%;
 border-top-left-radius: 50%;
 transform: rotate(210deg);
-}
+background-color: yellow;
+
+} */
 .card-four-side .corner-3::before{
    content: '';
    position:absolute;
@@ -1799,7 +1806,7 @@ transform: rotate(60deg);
 border-top-right-radius: 50%;
 }
 
-.card-four-side .corner-3 .half-cỉcle::before{
+/* .card-four-side .corner-3 .half-cỉcle::before{
     content: '';
 position: absolute;
 top: -5px;
@@ -1817,8 +1824,8 @@ right: -5px;
 width: 5px;
 height: 5px;
 background: yellow;
-}
-.card-four-side .corner-4{
+} */
+/* .card-four-side .corner-4{
     position: absolute;
 display: flex;
 align-items: center;
@@ -1826,14 +1833,15 @@ width: 20px;
 height: 20px;
 bottom: 1px;
 left: -1px;
-background-color: yellow;
 border-radius: 50%;
 background-clip: content-box;
 border-right: 3px dashed #fff;
 border-top-right-radius: 50%;
 border-top-left-radius: 50%;
 transform: rotate(300deg);
-}
+background-color: yellow;
+
+} */
 .card-four-side .corner-4::before{
    content: '';
    position:absolute;
@@ -1852,7 +1860,7 @@ transform: rotate(60deg);
 border-top-right-radius: 50%;
 }
 
-.card-four-side .corner-4 .half-cỉcle::before{
+/* .card-four-side .corner-4 .half-cỉcle::before{
     content: '';
 position: absolute;
 top: -5px;
@@ -1870,5 +1878,5 @@ right: -5px;
 width: 5px;
 height: 5px;
 background: yellow;
-}
+} */
 

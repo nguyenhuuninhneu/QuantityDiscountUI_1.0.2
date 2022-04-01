@@ -104,6 +104,7 @@ const INITIAL_STATE = {
       ShopID: 0,
       CheckLimitProPage: true,
       CheckLimitCartPage: true,
+      AutoUpSale: false,
       TextPurchaseLimit: "Purchase limit",
       TextMinimum: "Minimum",
       TextMaximum: "Maximum",

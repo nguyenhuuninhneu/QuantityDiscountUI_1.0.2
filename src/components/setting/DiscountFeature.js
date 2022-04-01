@@ -7,11 +7,6 @@ import { setSetting } from '../../state/modules/setting/actions';
 import { saveSetting, fetchSetting, synchronizeDiscountFromShopify, getProcessDiscountCode } from '../../state/modules/setting/operations';
 import { setMenu } from '../../state/modules/app/actions';
 import Select from 'react-select';
-import CardOrange2 from '../../assets/images/card-orange-2.svg';
-import CardOrange3 from '../../assets/images/card-orange-3.svg';
-import CardBorder2 from '../../assets/images/card-border-2.svg';
-import CardBorder3 from '../../assets/images/card-border-3.svg';
-import { hexToCSSFilter } from 'hex-to-css-filter';
 import config from '../../config/config';
 import axios from 'axios';
 import moreAppConfig from '../../config/moreAppConfig';
@@ -31,7 +26,6 @@ function DiscountFeature() {
   const [rowsPreview, setRowPreview] = useState(dataRowPreview);
   const [isOpenDiscountCode, setIsOpenDiscountCode] = useState(false);
   const [isShowPopupUpgrade, setIsShowPopupUpgrade] = useState(false);
-  const [filterBackgroundColorCard, setFilterBackgroundColorCard] = useState(hexToCSSFilter(settingState.Setting2.BackgroundColorCard || '#E48227').filter);
   const getDiscountCode = async () => {
     await axios.get(config.rootLink + '/FrontEnd/GetDiscountCode', {
       params: {
@@ -331,7 +325,7 @@ function DiscountFeature() {
                                     }}>
                                       <div className="card-left-right" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
                                         <div className="card-inside">
-                                          <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
+                                          <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
                                           <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
                                           <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
                                         </div>
@@ -399,9 +393,7 @@ function DiscountFeature() {
                                           </div>
                                         </div>
                                       </div>
-                                      {/* <img src={CardOrange2} alt="" style={{ filter: filterBackgroundColorCard.replace(';', '') }} />
-                                      <img src={CardBorder2} className="card-border" alt="" /> */}
-                                      <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
+                                      <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
                                       <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
                                       <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
                                     </Button>
@@ -421,21 +413,48 @@ function DiscountFeature() {
                                       <img src={CardBorder3} className="card-border" alt="" /> */}
                                       <div className="card-four-side" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
                                         <div className="card-inside">
-                                          <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
+                                          <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
                                           <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
                                           <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
                                         </div>
-                                        <div className="corner-1">
-                                          <div className="half-cỉcle"></div>
+                                        <div className="corner-1" style={{
+                                          position: 'absolute',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          width: '20px',
+                                          height: '20px',
+                                          top: '-1px',
+                                          left: '-1px',
+                                          backgroundColor: settingState.Setting2.BackgroundColorCard,
+                                          borderRadius: '50%',
+                                          backgroundClip: 'content-box',
+                                          borderRight: '3px dashed #fff',
+                                          borderTopRightRadius: '50%',
+                                          borderTopLeftRadius: '50%',
+                                          transform: 'rotate(45deg)'
+                                        }}>
+                                          <div className="half-cỉcle">
+                                            <div style={{ "content": "", "position": "absolute", "top": "7px", "left": "10px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                            <div style={{ "content": "''", "position": "absolute", "top": "-5px", "left": "-3px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                          </div>
                                         </div>
-                                        <div className="corner-2">
-                                          <div className="half-cỉcle"></div>
+                                        <div className="corner-2" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "top": "1px", "right": "-1px", "backgroundColor": settingState.Setting2.BackgroundColorCard, "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(135deg)" }}>
+                                          <div className="half-cỉcle">
+                                            <div style={{ "content": "", "position": "absolute", "top": "-5px", "right": "7px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                            <div style={{ "content": "''", "position": "absolute", "top": "9px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                          </div>
                                         </div>
-                                        <div className="corner-3">
-                                          <div className="half-cỉcle"></div>
+                                        <div className="corner-3" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "bottom": "1px", "right": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(210deg)", "backgroundColor": settingState.Setting2.BackgroundColorCard }}>
+                                          <div className="half-cỉcle">
+                                            <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "9px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                            <div style={{ "content": "''", "position": "absolute", "top": "7px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                          </div>
                                         </div>
-                                        <div className="corner-4">
-                                          <div className="half-cỉcle"></div>
+                                        <div className="corner-4" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "22px", "height": "22px", "bottom": "1px", "left": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(300deg)", "backgroundColor": settingState.Setting2.BackgroundColorCard }}>
+                                          <div className="half-cỉcle">
+                                            <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "8px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                            <div style={{ "content": "''", "position": "absolute", "top": "10px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                          </div>
                                         </div>
                                       </div>
 
@@ -926,8 +945,6 @@ function DiscountFeature() {
                                             },
                                             IsOpenSaveToolbar: true
                                           }))
-                                          setFilterBackgroundColorCard(hexToCSSFilter(e.target.value == '' ? '#FFFFFF' : e.target.value.toUpperCase()).filter)
-                                          console.log(hexToCSSFilter(e.target.value == '' ? '#FFFFFF' : e.target.value.toUpperCase()).filter)
                                         }} />
                                       </div>
 
@@ -1382,9 +1399,9 @@ function DiscountFeature() {
 
                             <Stack>
                               <Checkbox
-                                id='UseUpdateOnCartPage'
+                                id='AutoUpSale'
                                 label="Use upsale on cart page"
-                                checked={settingState.Setting.UseUpdateOnCartPage}
+                                checked={settingState.Setting2.AutoUpSale}
                                 onChange={(e) => {
                                   if (appState.PlanNumber === 0) {
                                     setIsShowPopupUpgrade(true);
@@ -1392,9 +1409,9 @@ function DiscountFeature() {
                                   else {
                                     dispatch(setSetting({
                                       ...settingState,
-                                      Setting: {
-                                        ...settingState.Setting,
-                                        UseUpdateOnCartPage: e,
+                                      Setting2: {
+                                        ...settingState.Setting2,
+                                        AutoUpSale: e,
                                       },
                                       IsOpenSaveToolbar: true
                                     }))
@@ -1567,27 +1584,138 @@ function DiscountFeature() {
                           settingState.Setting.LayoutInProductPage == 3 ? <>
 
                             <div className="Polaris-CalloutCard__Buttons" style={{ display: 'flex' }}>
-                              <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
-                                <img src={settingState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: filterBackgroundColorCard.replace(';', '') }} className="Polaris-CalloutCard__Image" />
-                                <img src={settingState.Setting2.CardTheme == 0 ? CardBorder2 : CardBorder3} className="card-border" alt="" />
-                                <p className="buy">{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPLus}</p>
-                                <p className="get">{settingState.Setting2.TextGet}</p>
-                                <p className="off-card">{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
-                              </div>
-                              <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
-                                <img src={settingState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: filterBackgroundColorCard.replace(';', '') }} className="Polaris-CalloutCard__Image" />
-                                <img src={settingState.Setting2.CardTheme == 0 ? CardBorder2 : CardBorder3} className="card-border" alt="" />
-                                <p className="buy">{settingState.Setting.TextBuy} {rowsPreview[1][0]}{settingState.Setting.TextPLus}</p>
-                                <p className="get">{settingState.Setting2.TextGet}</p>
-                                <p className="off-card">{rowsPreview[1][1]}% {settingState.Setting2.TextOff}</p>
-                              </div>
-                              <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
-                                <img src={settingState.Setting2.CardTheme == 0 ? CardOrange2 : CardOrange3} alt="" style={{ marginLeft: '0', filter: filterBackgroundColorCard.replace(';', '') }} className="Polaris-CalloutCard__Image" />
-                                <img src={settingState.Setting2.CardTheme == 0 ? CardBorder2 : CardBorder3} className="card-border" alt="" />
-                                <p className="buy">{settingState.Setting.TextBuy} {rowsPreview[2][0]}{settingState.Setting.TextPLus}</p>
-                                <p className="get">{settingState.Setting2.TextGet}</p>
-                                <p className="off-card">{rowsPreview[2][1]}% {settingState.Setting2.TextOff}</p>
-                              </div>
+                              {
+                                rowsPreview.map((item, index) => {
+                                  return (
+                                    settingState.Setting2.CardTheme == 0 ? <>
+                                      <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
+                                        <div className="card-left-right" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
+                                          <div className="card-inside">
+                                            <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
+                                            <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
+                                            <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
+                                          </div>
+                                          <div className="corner-left" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
+                                            <div style={{
+                                              content: '',
+                                              position: 'absolute',
+                                              top: '0',
+                                              left: '-10%',
+                                              width: '60%',
+                                              height: '100%',
+                                              backgroundColor: '#fff'
+                                            }}></div>
+
+                                            <div className="half-cỉcle">
+                                              <div style={{
+                                                content: '',
+                                                position: 'absolute',
+                                                top: '-3px',
+                                                left: '50%',
+                                                width: '5px',
+                                                height: '5px',
+                                                backgroundColor: settingState.Setting2.BackgroundColorCard
+                                              }}></div>
+                                              <div style={{
+                                                content: '',
+                                                position: 'absolute',
+                                                top: '18px',
+                                                left: '50%',
+                                                width: '5px',
+                                                height: '5px',
+                                                backgroundColor: settingState.Setting2.BackgroundColorCard
+                                              }}></div>
+                                            </div>
+                                          </div>
+                                          <div className="corner-right" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
+                                            <div style={{
+                                              content: '',
+                                              position: 'absolute',
+                                              top: '0',
+                                              right: '-10%',
+                                              width: '60%',
+                                              height: '100%',
+                                              backgroundColor: '#fff'
+                                            }}></div>
+                                            <div className="half-cỉcle">
+                                              <div style={{
+                                                content: '',
+                                                position: 'absolute',
+                                                top: '-3px',
+                                                right: '50%',
+                                                width: '5px',
+                                                height: '5px',
+                                                backgroundColor: settingState.Setting2.BackgroundColorCard
+                                              }}></div>
+                                              <div style={{
+                                                content: '',
+                                                position: 'absolute',
+                                                top: '18px',
+                                                right: '50%',
+                                                width: '5px',
+                                                height: '5px',
+                                                backgroundColor: settingState.Setting2.BackgroundColorCard
+                                              }}></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                    </> : <>
+                                      <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
+                                        <div className="card-four-side" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
+                                          <div className="card-inside">
+                                            <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
+                                            <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
+                                            <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
+                                          </div>
+                                          <div className="corner-1" style={{
+                                            position: 'absolute',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            width: '20px',
+                                            height: '20px',
+                                            top: '-1px',
+                                            left: '-1px',
+                                            backgroundColor: settingState.Setting2.BackgroundColorCard,
+                                            borderRadius: '50%',
+                                            backgroundClip: 'content-box',
+                                            borderRight: '3px dashed #fff',
+                                            borderTopRightRadius: '50%',
+                                            borderTopLeftRadius: '50%',
+                                            transform: 'rotate(45deg)'
+                                          }}>
+                                            <div className="half-cỉcle">
+                                              <div style={{ "content": "", "position": "absolute", "top": "7px", "left": "10px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                              <div style={{ "content": "''", "position": "absolute", "top": "-5px", "left": "-3px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                            </div>
+                                          </div>
+                                          <div className="corner-2" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "top": "1px", "right": "-1px", "backgroundColor": settingState.Setting2.BackgroundColorCard, "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(135deg)" }}>
+                                            <div className="half-cỉcle">
+                                              <div style={{ "content": "", "position": "absolute", "top": "-5px", "right": "7px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                              <div style={{ "content": "''", "position": "absolute", "top": "9px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                            </div>
+                                          </div>
+                                          <div className="corner-3" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "bottom": "1px", "right": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(210deg)", "backgroundColor": settingState.Setting2.BackgroundColorCard }}>
+                                            <div className="half-cỉcle">
+                                              <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "9px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                              <div style={{ "content": "''", "position": "absolute", "top": "7px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                            </div>
+                                          </div>
+                                          <div className="corner-4" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "22px", "height": "22px", "bottom": "1px", "left": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(300deg)", "backgroundColor": settingState.Setting2.BackgroundColorCard }}>
+                                            <div className="half-cỉcle">
+                                              <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "8px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                              <div style={{ "content": "''", "position": "absolute", "top": "10px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </>
+
+                                  )
+                                })
+                              }
+
                             </div>
                           </>
                             : <></>
