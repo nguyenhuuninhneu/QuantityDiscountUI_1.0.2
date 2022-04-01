@@ -1563,7 +1563,7 @@ left: -8px;
    height: 100%;
    background:#fff;     
 } */
-.card-left-right .corner-left .half-cỉcle{
+.card-left-right .corner-left .half-circle{
     
     width: 50%;
     height: 50%;
@@ -1572,7 +1572,7 @@ left: -8px;
     border-radius: 50%;
 }
 
-/* .card-left-right .corner-left .half-cỉcle::before{
+/* .card-left-right .corner-left .half-circle::before{
     content: '';
 position: absolute;
 top: -3px;
@@ -1582,7 +1582,7 @@ height: 5px;
 background: yellow; 
 }
 
-.card-left-right .corner-left .half-cỉcle::after{
+.card-left-right .corner-left .half-circle::after{
     content: '';
 position: absolute;
 top: 18px;
@@ -1617,7 +1617,7 @@ right: -9px;
    height: 100%;
    background:#fff;     
 } */
-.card-left-right .corner-right .half-cỉcle{
+.card-left-right .corner-right .half-circle{
     
     width: 50%;
     height: 50%;
@@ -1625,7 +1625,7 @@ right: -9px;
     background-color: #fff;
     border-radius: 50%;
 }
-/* .card-left-right .corner-right .half-cỉcle::before{
+/* .card-left-right .corner-right .half-circle::before{
 content: '';
 position: absolute;
 top: -3px;
@@ -1635,7 +1635,7 @@ height: 5px;
 background: yellow; 
 }
 
-.card-left-right .corner-right .half-cỉcle::after{
+.card-left-right .corner-right .half-circle::after{
     content: '';
 position: absolute;
 top: 18px;
@@ -1689,7 +1689,7 @@ top: -2px;
    height: 100%;
    background:#fff;     
 }
-.card-four-side .corner-1 .half-cỉcle{
+.card-four-side .corner-1 .half-circle{
     width: 50%;
 height: 50%;
 margin: auto;
@@ -1697,8 +1697,8 @@ background-color: #fff;
 transform: rotate(45deg);
 border-top-right-radius: 50%;
 }
-
-/* .card-four-side .corner-1 .half-cỉcle::before{
+/*
+ .card-four-side .corner-1 .half-circle::before{
     content: '';
 position: absolute;
 top: 7px;
@@ -1708,7 +1708,7 @@ height: 5px;
 background: yellow;
 }
 
-.card-four-side .corner-1 .half-cỉcle::after{
+.card-four-side .corner-1 .half-circle::after{
     content: '';
 position: absolute;
 top: -5px;
@@ -1743,7 +1743,7 @@ transform: rotate(135deg);
    height: 100%;
    background:#fff;     
 }
-.card-four-side .corner-2 .half-cỉcle{
+.card-four-side .corner-2 .half-circle{
     width: 50%;
 height: 50%;
 margin: auto;
@@ -1752,7 +1752,7 @@ transform: rotate(45deg);
 border-top-right-radius: 50%;
 }
 
-/* .card-four-side .corner-2 .half-cỉcle::before {
+/* .card-four-side .corner-2 .half-circle::before {
     content: '';
 position: absolute;
 top: -5px;
@@ -1762,7 +1762,7 @@ height: 5px;
 background: yellow;
 }
 
-.card-four-side .corner-2 .half-cỉcle::after{
+.card-four-side .corner-2 .half-circle::after{
     content: '';
 position: absolute;
 top: 9px;
@@ -1797,7 +1797,7 @@ background-color: yellow;
    height: 100%;
    background:#fff;     
 }
-.card-four-side .corner-3 .half-cỉcle{
+.card-four-side .corner-3 .half-circle{
     width: 50%;
 height: 50%;
 margin: auto;
@@ -1806,7 +1806,7 @@ transform: rotate(60deg);
 border-top-right-radius: 50%;
 }
 
-/* .card-four-side .corner-3 .half-cỉcle::before{
+/* .card-four-side .corner-3 .half-circle::before{
     content: '';
 position: absolute;
 top: -5px;
@@ -1816,7 +1816,7 @@ height: 5px;
 background: yellow;
 }
 
-.card-four-side .corner-3 .half-cỉcle::after{
+.card-four-side .corner-3 .half-circle::after{
     content: '';
 position: absolute;
 top: 7px;
@@ -1851,7 +1851,7 @@ background-color: yellow;
    height: 100%;
    background:#fff;     
 }
-.card-four-side .corner-4 .half-cỉcle{
+.card-four-side .corner-4 .half-circle{
     width: 50%;
 height: 50%;
 margin: auto;
@@ -1860,7 +1860,7 @@ transform: rotate(60deg);
 border-top-right-radius: 50%;
 }
 
-/* .card-four-side .corner-4 .half-cỉcle::before{
+/* .card-four-side .corner-4 .half-circle::before{
     content: '';
 position: absolute;
 top: -5px;
@@ -1870,7 +1870,7 @@ height: 5px;
 background: yellow;
 }
 
-.card-four-side .corner-4 .half-cỉcle::after{
+.card-four-side .corner-4 .half-circle::after{
     content: '';
 position: absolute;
 top: 10px;

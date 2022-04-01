@@ -340,7 +340,7 @@ function DiscountFeature() {
                                             backgroundColor: '#fff'
                                           }}></div>
 
-                                          <div className="half-cỉcle">
+                                          <div className="half-circle">
                                             <div style={{
                                               content: '',
                                               position: 'absolute',
@@ -371,7 +371,7 @@ function DiscountFeature() {
                                             height: '100%',
                                             backgroundColor: '#fff'
                                           }}></div>
-                                          <div className="half-cỉcle">
+                                          <div className="half-circle">
                                             <div style={{
                                               content: '',
                                               position: 'absolute',
@@ -433,25 +433,25 @@ function DiscountFeature() {
                                           borderTopLeftRadius: '50%',
                                           transform: 'rotate(45deg)'
                                         }}>
-                                          <div className="half-cỉcle">
+                                          <div className="half-circle">
                                             <div style={{ "content": "", "position": "absolute", "top": "7px", "left": "10px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                             <div style={{ "content": "''", "position": "absolute", "top": "-5px", "left": "-3px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                           </div>
                                         </div>
                                         <div className="corner-2" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "top": "1px", "right": "-1px", "backgroundColor": settingState.Setting2.BackgroundColorCard, "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(135deg)" }}>
-                                          <div className="half-cỉcle">
+                                          <div className="half-circle">
                                             <div style={{ "content": "", "position": "absolute", "top": "-5px", "right": "7px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                             <div style={{ "content": "''", "position": "absolute", "top": "9px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                           </div>
                                         </div>
                                         <div className="corner-3" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "bottom": "1px", "right": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(210deg)", "backgroundColor": settingState.Setting2.BackgroundColorCard }}>
-                                          <div className="half-cỉcle">
+                                          <div className="half-circle">
                                             <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "9px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                             <div style={{ "content": "''", "position": "absolute", "top": "7px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                           </div>
                                         </div>
                                         <div className="corner-4" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "22px", "height": "22px", "bottom": "1px", "left": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(300deg)", "backgroundColor": settingState.Setting2.BackgroundColorCard }}>
-                                          <div className="half-cỉcle">
+                                          <div className="half-circle">
                                             <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "8px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                             <div style={{ "content": "''", "position": "absolute", "top": "10px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                           </div>
@@ -1603,10 +1603,12 @@ function DiscountFeature() {
                                               left: '-10%',
                                               width: '60%',
                                               height: '100%',
-                                              backgroundColor: '#fff'
+                                              backgroundColor: '#F4F6F8'
                                             }}></div>
 
-                                            <div className="half-cỉcle">
+                                            <div className="half-circle" style={{
+                                              backgroundColor: '#F4F6F8'
+                                            }}>
                                               <div style={{
                                                 content: '',
                                                 position: 'absolute',
@@ -1635,9 +1637,11 @@ function DiscountFeature() {
                                               right: '-10%',
                                               width: '60%',
                                               height: '100%',
-                                              backgroundColor: '#fff'
+                                              backgroundColor: '#F4F6F8'
                                             }}></div>
-                                            <div className="half-cỉcle">
+                                            <div className="half-circle" style={{
+                                              backgroundColor: '#F4F6F8'
+                                            }}>
                                               <div style={{
                                                 content: '',
                                                 position: 'absolute',
@@ -1685,25 +1689,38 @@ function DiscountFeature() {
                                             borderTopLeftRadius: '50%',
                                             transform: 'rotate(45deg)'
                                           }}>
-                                            <div className="half-cỉcle">
+                                            <div style={{"content":"''","position":"absolute","top":"0","left":"-10%","width":"60%","height":"100%","background":"#F4F6F8" }}></div>
+                                            <div className="half-circle" style={{
+                                              backgroundColor: '#F4F6F8'
+                                            }}>
                                               <div style={{ "content": "", "position": "absolute", "top": "7px", "left": "10px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                               <div style={{ "content": "''", "position": "absolute", "top": "-5px", "left": "-3px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                             </div>
                                           </div>
                                           <div className="corner-2" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "top": "1px", "right": "-1px", "backgroundColor": settingState.Setting2.BackgroundColorCard, "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(135deg)" }}>
-                                            <div className="half-cỉcle">
+                                          <div style={{"content":"''","position":"absolute","top":"0","left":"-10%","width":"60%","height":"100%","background":"#F4F6F8" }}></div>
+                                            <div className="half-circle" style={{
+                                              backgroundColor: '#F4F6F8'
+                                            }}>
                                               <div style={{ "content": "", "position": "absolute", "top": "-5px", "right": "7px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                               <div style={{ "content": "''", "position": "absolute", "top": "9px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                             </div>
                                           </div>
                                           <div className="corner-3" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "bottom": "1px", "right": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(210deg)", "backgroundColor": settingState.Setting2.BackgroundColorCard }}>
-                                            <div className="half-cỉcle">
+                                          <div style={{"content":"''","position":"absolute","top":"0","left":"-10%","width":"60%","height":"100%","background":"#F4F6F8" }}></div>
+                                            <div className="half-circle" style={{
+                                              backgroundColor: '#F4F6F8'
+                                            }}>
                                               <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "9px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                               <div style={{ "content": "''", "position": "absolute", "top": "7px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                             </div>
                                           </div>
                                           <div className="corner-4" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "22px", "height": "22px", "bottom": "1px", "left": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(300deg)", "backgroundColor": settingState.Setting2.BackgroundColorCard }}>
-                                            <div className="half-cỉcle">
+                                          <div style={{"content":"''","position":"absolute","top":"0","left":"-10%","width":"60%","height":"100%","background":"#F4F6F8" }}></div>
+                                            <div className="half-circle" style={{
+                                              backgroundColor: '#F4F6F8'
+                                            }}>
+                                              <div style={{ }}></div>
                                               <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "8px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                               <div style={{ "content": "''", "position": "absolute", "top": "10px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
                                             </div>
