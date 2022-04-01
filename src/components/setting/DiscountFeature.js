@@ -1234,7 +1234,7 @@ function DiscountFeature() {
                                     dispatch(synchronizeDiscountFromShopify());
                                   }}>Sync discounts from Shopify</Button>
                                 {
-                                  settingState.TextProcessShopifyCompleted != '' ? <span className="ml-10"> {settingState.TextProcessShopifyCompleted}</span> : settingState.DisplayProcessShopify ? <span className="ml-10">Loading {settingState.Process}</span> : null
+                                  settingState.TextProcessShopifyCompleted != '' ? <span className="ml-10"> {settingState.TextProcessShopifyCompleted}</span> : settingState.DisplayProcessShopify ? <span className="ml-10" style={{fontStyle:'italic'}}>Loading {settingState.Process}%</span> : null
                                 }
 
                               </div>
