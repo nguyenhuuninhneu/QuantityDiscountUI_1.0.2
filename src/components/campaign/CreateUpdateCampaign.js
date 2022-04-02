@@ -153,7 +153,7 @@ const CreateUpdateCampaign = (props) => {
 
 
                 }
-                getSettingOne();
+                getSettingOne(shopID);
 
 
             })
@@ -161,10 +161,10 @@ const CreateUpdateCampaign = (props) => {
                 err => console.log(err)
             );
     }
-    const getSettingOne = async () => {
+    const getSettingOne = async (shopID) => {
         await axios.get(config.rootLink + '/FrontEnd/GetSettingOne', {
             params: {
-                shopID: appState?.Shop?.ID,
+                shopID: shopID,
                 shop: config.shop,
                 token: config.token,
             }
