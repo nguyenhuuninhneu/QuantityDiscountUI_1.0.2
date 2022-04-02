@@ -399,6 +399,7 @@ const Report = (props) => {
                                                 ]}
                                                 headings={[
                                                     'ID',
+                                                    'Create time',
                                                     'Campaign title',
                                                     'Total discount',
                                                     'Total order value',
@@ -410,6 +411,7 @@ const Report = (props) => {
                                                 rows={reportState.Paginate.CurrentItems != null && reportState.Paginate.CurrentItems.length > 0 ? reportState.Paginate.CurrentItems.map((report, index) => {
                                                     return [
                                                         report.CampaignID,
+                                                        report.CreateTime,
                                                         report.Title,
                                                         utils.ShopifyMoney(report.TotalDiscount * 100, reportState.FormatMoney),
                                                         utils.ShopifyMoney(report.TotalPrice * 100, reportState.FormatMoney),

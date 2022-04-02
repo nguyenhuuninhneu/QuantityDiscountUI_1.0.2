@@ -1567,8 +1567,8 @@ const CreateUpdateCampaign = (props) => {
 
                                                             campaignState.Setting.LayoutInProductPage === 3 ? <>
 
-                                                                <div className="Polaris-CalloutCard__Buttons">
-                                                                    <div className={rowsPreview != null && rowsPreview != undefined && rowsPreview.length > 3 ? 'list-card-scroll' : 'list-card'}>
+                                                                <div className="Polaris-CalloutCard__Buttons" style={{ marginTop: 0 }}>
+                                                                    <div className={rowsPreview != null && rowsPreview != undefined && rowsPreview.length > 2 ? 'list-card-scroll' : 'list-card'}>
                                                                         {
                                                                             rowsPreview.map((item, index) => {
                                                                                 return (

@@ -42,6 +42,7 @@ const utils = {
                 value = formatWithDelimiters(cents, 0, '.', ',');
                 break;
         }
+        debugger;
         return formatString.replace(placeholderRegex, value);
     }
 }

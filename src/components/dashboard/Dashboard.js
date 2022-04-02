@@ -475,7 +475,7 @@ function Dashboard() {
             </div>
 
             <div className='chart'>
-              <Heading>Revenue of total orders vs revenue of applied discount orders</Heading>
+              <Heading>Value of total orders vs revenue of applied discount orders</Heading>
               <Line
                 data={dashboardState.DataChart}
                 width={300}

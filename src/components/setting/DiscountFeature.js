@@ -1234,7 +1234,7 @@ function DiscountFeature() {
                                     dispatch(synchronizeDiscountFromShopify());
                                   }}>Sync discounts from Shopify</Button>
                                 {
-                                  settingState.TextProcessShopifyCompleted != '' ? <span className="ml-10"> {settingState.TextProcessShopifyCompleted}</span> : settingState.DisplayProcessShopify ? <span className="ml-10" style={{fontStyle:'italic'}}>Loading {settingState.Process}%</span> : null
+                                  settingState.TextProcessShopifyCompleted != '' ? <span className="ml-10"> {settingState.TextProcessShopifyCompleted}</span> : settingState.DisplayProcessShopify ? <span className="ml-10" style={{ fontStyle: 'italic' }}>Loading {settingState.Process}%</span> : null
                                 }
 
                               </div>
@@ -1582,158 +1582,160 @@ function DiscountFeature() {
                         {
 
                           settingState.Setting.LayoutInProductPage == 3 ? <>
-
-                            <div className="Polaris-CalloutCard__Buttons" style={{ display: 'flex' }}>
-                              {
-                                rowsPreview.map((item, index) => {
-                                  return (
-                                    settingState.Setting2.CardTheme == 0 ? <>
-                                      <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
-                                        <div className="card-left-right" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
-                                          <div className="card-inside">
-                                            <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
-                                            <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
-                                            <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
-                                          </div>
-                                          <div className="corner-left" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
-                                            <div style={{
-                                              content: '',
-                                              position: 'absolute',
-                                              top: '0',
-                                              left: '-10%',
-                                              width: '60%',
-                                              height: '100%',
-                                              backgroundColor: '#F4F6F8'
-                                            }}></div>
-
-                                            <div className="half-circle" style={{
-                                              backgroundColor: '#F4F6F8'
-                                            }}>
-                                              <div style={{
-                                                content: '',
-                                                position: 'absolute',
-                                                top: '-3px',
-                                                left: '50%',
-                                                width: '5px',
-                                                height: '5px',
-                                                backgroundColor: settingState.Setting2.BackgroundColorCard
-                                              }}></div>
-                                              <div style={{
-                                                content: '',
-                                                position: 'absolute',
-                                                top: '18px',
-                                                left: '50%',
-                                                width: '5px',
-                                                height: '5px',
-                                                backgroundColor: settingState.Setting2.BackgroundColorCard
-                                              }}></div>
+                            <div className="Polaris-CalloutCard__Buttons" style={{ display: 'flex',marginTop: 0 }}>
+                              <div className={rowsPreview.length > 2 ?"list-card-scroll" :''}>
+                                {
+                                  rowsPreview.map((item, index) => {
+                                    return (
+                                      settingState.Setting2.CardTheme == 0 ? <>
+                                        <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
+                                          <div className="card-left-right" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
+                                            <div className="card-inside">
+                                              <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
+                                              <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
+                                              <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
                                             </div>
-                                          </div>
-                                          <div className="corner-right" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
-                                            <div style={{
-                                              content: '',
-                                              position: 'absolute',
-                                              top: '0',
-                                              right: '-10%',
-                                              width: '60%',
-                                              height: '100%',
-                                              backgroundColor: '#F4F6F8'
-                                            }}></div>
-                                            <div className="half-circle" style={{
-                                              backgroundColor: '#F4F6F8'
-                                            }}>
+                                            <div className="corner-left" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
                                               <div style={{
                                                 content: '',
                                                 position: 'absolute',
-                                                top: '-3px',
-                                                right: '50%',
-                                                width: '5px',
-                                                height: '5px',
-                                                backgroundColor: settingState.Setting2.BackgroundColorCard
+                                                top: '0',
+                                                left: '-10%',
+                                                width: '60%',
+                                                height: '100%',
+                                                backgroundColor: '#F4F6F8'
                                               }}></div>
+
+                                              <div className="half-circle" style={{
+                                                backgroundColor: '#F4F6F8'
+                                              }}>
+                                                <div style={{
+                                                  content: '',
+                                                  position: 'absolute',
+                                                  top: '-3px',
+                                                  left: '50%',
+                                                  width: '5px',
+                                                  height: '5px',
+                                                  backgroundColor: settingState.Setting2.BackgroundColorCard
+                                                }}></div>
+                                                <div style={{
+                                                  content: '',
+                                                  position: 'absolute',
+                                                  top: '18px',
+                                                  left: '50%',
+                                                  width: '5px',
+                                                  height: '5px',
+                                                  backgroundColor: settingState.Setting2.BackgroundColorCard
+                                                }}></div>
+                                              </div>
+                                            </div>
+                                            <div className="corner-right" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
                                               <div style={{
                                                 content: '',
                                                 position: 'absolute',
-                                                top: '18px',
-                                                right: '50%',
-                                                width: '5px',
-                                                height: '5px',
-                                                backgroundColor: settingState.Setting2.BackgroundColorCard
+                                                top: '0',
+                                                right: '-10%',
+                                                width: '60%',
+                                                height: '100%',
+                                                backgroundColor: '#F4F6F8'
                                               }}></div>
+                                              <div className="half-circle" style={{
+                                                backgroundColor: '#F4F6F8'
+                                              }}>
+                                                <div style={{
+                                                  content: '',
+                                                  position: 'absolute',
+                                                  top: '-3px',
+                                                  right: '50%',
+                                                  width: '5px',
+                                                  height: '5px',
+                                                  backgroundColor: settingState.Setting2.BackgroundColorCard
+                                                }}></div>
+                                                <div style={{
+                                                  content: '',
+                                                  position: 'absolute',
+                                                  top: '18px',
+                                                  right: '50%',
+                                                  width: '5px',
+                                                  height: '5px',
+                                                  backgroundColor: settingState.Setting2.BackgroundColorCard
+                                                }}></div>
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
-                                      </div>
 
-                                    </> : <>
-                                      <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
-                                        <div className="card-four-side" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
-                                          <div className="card-inside">
-                                            <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
-                                            <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
-                                            <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
-                                          </div>
-                                          <div className="corner-1" style={{
-                                            position: 'absolute',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            width: '20px',
-                                            height: '20px',
-                                            top: '-1px',
-                                            left: '-1px',
-                                            backgroundColor: settingState.Setting2.BackgroundColorCard,
-                                            borderRadius: '50%',
-                                            backgroundClip: 'content-box',
-                                            borderRight: '3px dashed #fff',
-                                            borderTopRightRadius: '50%',
-                                            borderTopLeftRadius: '50%',
-                                            transform: 'rotate(45deg)'
-                                          }}>
-                                            <div style={{"content":"''","position":"absolute","top":"0","left":"-10%","width":"60%","height":"100%","background":"#F4F6F8" }}></div>
-                                            <div className="half-circle" style={{
-                                              backgroundColor: '#F4F6F8'
-                                            }}>
-                                              <div style={{ "content": "", "position": "absolute", "top": "7px", "left": "10px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
-                                              <div style={{ "content": "''", "position": "absolute", "top": "-5px", "left": "-3px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                      </> : <>
+                                        <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
+                                          <div className="card-four-side" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
+                                            <div className="card-inside">
+                                              <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
+                                              <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
+                                              <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
                                             </div>
-                                          </div>
-                                          <div className="corner-2" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "top": "1px", "right": "-1px", "backgroundColor": settingState.Setting2.BackgroundColorCard, "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(135deg)" }}>
-                                          <div style={{"content":"''","position":"absolute","top":"0","left":"-10%","width":"60%","height":"100%","background":"#F4F6F8" }}></div>
-                                            <div className="half-circle" style={{
-                                              backgroundColor: '#F4F6F8'
+                                            <div className="corner-1" style={{
+                                              position: 'absolute',
+                                              display: 'flex',
+                                              alignItems: 'center',
+                                              width: '20px',
+                                              height: '20px',
+                                              top: '-1px',
+                                              left: '-1px',
+                                              backgroundColor: settingState.Setting2.BackgroundColorCard,
+                                              borderRadius: '50%',
+                                              backgroundClip: 'content-box',
+                                              borderRight: '3px dashed #fff',
+                                              borderTopRightRadius: '50%',
+                                              borderTopLeftRadius: '50%',
+                                              transform: 'rotate(45deg)'
                                             }}>
-                                              <div style={{ "content": "", "position": "absolute", "top": "-5px", "right": "7px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
-                                              <div style={{ "content": "''", "position": "absolute", "top": "9px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                              <div style={{ "content": "''", "position": "absolute", "top": "0", "left": "-10%", "width": "60%", "height": "100%", "background": "#F4F6F8" }}></div>
+                                              <div className="half-circle" style={{
+                                                backgroundColor: '#F4F6F8'
+                                              }}>
+                                                <div style={{ "content": "", "position": "absolute", "top": "7px", "left": "10px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                                <div style={{ "content": "''", "position": "absolute", "top": "-5px", "left": "-3px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                              </div>
                                             </div>
-                                          </div>
-                                          <div className="corner-3" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "bottom": "1px", "right": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(210deg)", "backgroundColor": settingState.Setting2.BackgroundColorCard }}>
-                                          <div style={{"content":"''","position":"absolute","top":"0","left":"-10%","width":"60%","height":"100%","background":"#F4F6F8" }}></div>
-                                            <div className="half-circle" style={{
-                                              backgroundColor: '#F4F6F8'
-                                            }}>
-                                              <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "9px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
-                                              <div style={{ "content": "''", "position": "absolute", "top": "7px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                            <div className="corner-2" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "top": "1px", "right": "-1px", "backgroundColor": settingState.Setting2.BackgroundColorCard, "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(135deg)" }}>
+                                              <div style={{ "content": "''", "position": "absolute", "top": "0", "left": "-10%", "width": "60%", "height": "100%", "background": "#F4F6F8" }}></div>
+                                              <div className="half-circle" style={{
+                                                backgroundColor: '#F4F6F8'
+                                              }}>
+                                                <div style={{ "content": "", "position": "absolute", "top": "-5px", "right": "7px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                                <div style={{ "content": "''", "position": "absolute", "top": "9px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                              </div>
                                             </div>
-                                          </div>
-                                          <div className="corner-4" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "22px", "height": "22px", "bottom": "1px", "left": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(300deg)", "backgroundColor": settingState.Setting2.BackgroundColorCard }}>
-                                          <div style={{"content":"''","position":"absolute","top":"0","left":"-10%","width":"60%","height":"100%","background":"#F4F6F8" }}></div>
-                                            <div className="half-circle" style={{
-                                              backgroundColor: '#F4F6F8'
-                                            }}>
-                                              <div style={{ }}></div>
-                                              <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "8px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
-                                              <div style={{ "content": "''", "position": "absolute", "top": "10px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                            <div className="corner-3" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "20px", "height": "20px", "bottom": "1px", "right": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(210deg)", "backgroundColor": settingState.Setting2.BackgroundColorCard }}>
+                                              <div style={{ "content": "''", "position": "absolute", "top": "0", "left": "-10%", "width": "60%", "height": "100%", "background": "#F4F6F8" }}></div>
+                                              <div className="half-circle" style={{
+                                                backgroundColor: '#F4F6F8'
+                                              }}>
+                                                <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "9px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                                <div style={{ "content": "''", "position": "absolute", "top": "7px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                              </div>
+                                            </div>
+                                            <div className="corner-4" style={{ "position": "absolute", "display": "flex", "alignItems": "center", "width": "22px", "height": "22px", "bottom": "1px", "left": "-2px", "borderRadius": "50%", "backgroundClip": "content-box", "borderRight": "3px dashed #fff", "borderTopRightRadius": "50%", "borderTopLeftRadius": "50%", "transform": "rotate(300deg)", "backgroundColor": settingState.Setting2.BackgroundColorCard }}>
+                                              <div style={{ "content": "''", "position": "absolute", "top": "0", "left": "-10%", "width": "60%", "height": "100%", "background": "#F4F6F8" }}></div>
+                                              <div className="half-circle" style={{
+                                                backgroundColor: '#F4F6F8'
+                                              }}>
+                                                <div style={{}}></div>
+                                                <div style={{ "content": "''", "position": "absolute", "top": "-5px", "right": "8px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                                <div style={{ "content": "''", "position": "absolute", "top": "10px", "right": "-5px", "width": "5px", "height": "5px", "background": settingState.Setting2.BackgroundColorCard }}></div>
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
-                                      </div>
-                                    </>
+                                      </>
 
-                                  )
-                                })
-                              }
+                                    )
+                                  })
+                                }
 
+                              </div>
                             </div>
+
                           </>
                             : <></>
                         }
