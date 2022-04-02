@@ -279,7 +279,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         },
         CreateUpdateCampaign: {
           ...state.CreateUpdateCampaign,
-          IsOpenSaveToolbar: !action.payload.IsSuccess,
+          IsOpenSaveToolbar: action.payload.isFirstCampaign ? true : !action.payload.IsSuccess,
           IsSaveLoading: false,
           IsLoadingPage: false,
           IsShowSendSupport: false,

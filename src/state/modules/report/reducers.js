@@ -84,6 +84,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           IsLoadingPage: false,
           IsOpenReportDetail: true,
           IsLoadingSpinner: false,
+          IsOpenReportDetail: true,
           ReportDetail: action.payload.listDetail,
         },
 

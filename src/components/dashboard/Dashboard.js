@@ -450,7 +450,7 @@ function Dashboard() {
                   <div className='group group-discount'>
                     <div className='item'>
                       <div className='number'>
-                        {utils.ShopifyMoney(dashboardState.DashboardData.TotalDiscount, dashboardState.DashboardData.FormatMoney)}
+                        {utils.ShopifyMoney(dashboardState.DashboardData.TotalDiscount * 100, dashboardState.DashboardData.FormatMoney)}
                       </div>
                       <div className='description'>
                         Total discount
@@ -458,7 +458,7 @@ function Dashboard() {
                     </div>
                     <div className='item'>
                       <div className='number'>
-                      {utils.ShopifyMoney(dashboardState.DashboardData.TotalOrderValue, dashboardState.DashboardData.FormatMoney)}
+                      {utils.ShopifyMoney(dashboardState.DashboardData.TotalOrderValue  * 100, dashboardState.DashboardData.FormatMoney)}
                       </div>
                       <div className='description'>
                         Total order value

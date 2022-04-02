@@ -42,10 +42,30 @@ const CreateUpdateCampaign = (props) => {
     const scrollToCampaignDetail = () => myRefCampaignDetail.current.scrollIntoView();
     const scrollToDate = () => myRefDate.current.scrollIntoView();
     const getOptions = async (input) => {
+        if (appState?.Shop?.ID == undefined || appState?.Shop?.ID == null) {
+            axios.get(config.rootLink + '/FrontEnd/GetShopID', {
+                params: {
+                    shop: config.shop,
+                    token: config.token,
+                }
+            })
+                .then(function (response) {
+                    const result = response?.data;
+                    SearchVariant(input, result.ShopID)
+                })
+                .catch(function (error) {
+                    const errorMsg = error.message;
+                })
+        } else {
+            SearchVariant(input, appState?.Shop.ID)
+        }
+
+    };
+    const SearchVariant = async (input, shopID) => {
         await axios.get(config.rootLink + '/FrontEnd/SearchProductPaginateVariant', {
             params: {
                 search: input,
-                shopID: appState?.Shop.ID,
+                shopID: shopID,
                 shop: config.shop,
                 page: 1,
                 pagezise: 100,
@@ -140,7 +160,7 @@ const CreateUpdateCampaign = (props) => {
             .catch(
                 err => console.log(err)
             );
-    };
+    }
     const getSettingOne = async () => {
         await axios.get(config.rootLink + '/FrontEnd/GetSettingOne', {
             params: {
@@ -194,14 +214,26 @@ const CreateUpdateCampaign = (props) => {
 
     function ChangeStep(step) {
         setIsLoadingStep(true);
-        dispatch(setCreateUpdateCampaign({
-            ...campaignState,
-            campaign: {
-                ...campaign,
-                Step: step
-            },
-            IsOpenSaveToolbar: true
-        }))
+        if (step == 3) {
+            dispatch(setCreateUpdateCampaign({
+                ...campaignState,
+                campaign: {
+                    ...campaign,
+                    Step: step
+                },
+                IsOpenSaveToolbar: false
+            }))
+        }else {
+            dispatch(setCreateUpdateCampaign({
+                ...campaignState,
+                campaign: {
+                    ...campaign,
+                    Step: step
+                },
+                IsOpenSaveToolbar: true
+            }))
+        }
+        
         setIsLoadingStep(false);
     }
 
@@ -682,23 +714,28 @@ const CreateUpdateCampaign = (props) => {
                                             saveAction={{
                                                 content: isFirstCampaign ? (campaign.Step === 2 ? "Save" : "Next Step") : "Save",
                                                 onAction: () => {
-                                                    if (isFirstCampaign) {
-                                                        if (ValidForm()) {
-                                                            if (campaign.Step === 2) {
-                                                                dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
-                                                            } else {
-                                                                ChangeStep(2);
-                                                            }
-                                                            // dispatch(setCreateUpdateCampaign({
-                                                            //     ...campaignState,
-                                                            //     IsOpenSaveToolbar: true
-                                                            // }))
-                                                        }
-                                                    }
-                                                    else {
-                                                        if (ValidForm()) {
-                                                            dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
-                                                        }
+                                                    // if (isFirstCampaign) {
+                                                    //     if (ValidForm()) {
+                                                    //         if (campaign.Step === 1) {
+                                                    //             dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
+                                                    //             // ChangeStep(2);
+                                                    //         } 
+                                                    //         // else {
+                                                    //         //     ChangeStep(2);
+                                                    //         // }
+                                                    //         // dispatch(setCreateUpdateCampaign({
+                                                    //         //     ...campaignState,
+                                                    //         //     IsOpenSaveToolbar: true
+                                                    //         // }))
+                                                    //     }
+                                                    // }
+                                                    // else {
+                                                    //     if (ValidForm()) {
+                                                    //         dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
+                                                    //     }
+                                                    // }
+                                                    if (ValidForm()) {
+                                                        dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
                                                     }
 
                                                 },
@@ -711,20 +748,25 @@ const CreateUpdateCampaign = (props) => {
                                             <ContextualSaveBar
                                                 message={isFirstCampaign ? "" : "Unsaved changes"}
                                                 saveAction={{
-                                                    content: isFirstCampaign ? (campaign.Step === 2 ? "Save" : "Next Step") : "Save",
+                                                    content: isFirstCampaign ? (campaign.Step === 2 ? "Next Step" : "Save") : "Save",
                                                     onAction: () => {
                                                         if (isFirstCampaign) {
-                                                            if (ValidForm()) {
-                                                                if (campaign.Step === 2) {
-                                                                    dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
-                                                                } else {
-                                                                    ChangeStep(2);
-                                                                }
-                                                                // dispatch(setCreateUpdateCampaign({
-                                                                //     ...campaignState,
-                                                                //     IsOpenSaveToolbar: true
-                                                                // }))
-                                                            }
+                                                            // if (ValidForm()) {
+                                                            //     if (campaign.Step === 2) {
+
+                                                            //     } else {
+                                                            //         dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
+                                                            //     }
+                                                            //     // dispatch(setCreateUpdateCampaign({
+                                                            //     //     ...campaignState,
+                                                            //     //     IsOpenSaveToolbar: true
+                                                            //     // }))
+                                                            // }
+                                                            dispatch(setCreateUpdateCampaign({
+                                                                ...campaignState,
+                                                                IsOpenSaveToolbar: false
+                                                            }))
+                                                            ChangeStep(3);
                                                         }
                                                         else {
                                                             if (ValidForm()) {
@@ -736,11 +778,12 @@ const CreateUpdateCampaign = (props) => {
                                                     loading: campaignState.IsSaveLoading,
                                                 }}
                                                 discardAction={{
-                                                    content: campaign.Step == 2 && isFirstCampaign ? "Prev Step" : "Discard",
+                                                    content: campaign.Step == 2 && isFirstCampaign ? "Edit Campaign" : "Discard",
                                                     onAction: () => {
                                                         if (isFirstCampaign) {
                                                             if (campaign.Step == 2) {
                                                                 ChangeStep(1);
+                                                                setIsFirstCampaign(true);
                                                             } else {
                                                                 dispatch(setCreateUpdateCampaign({
                                                                     ...campaignState,
@@ -1753,7 +1796,8 @@ const CreateUpdateCampaign = (props) => {
                                                     }}>Send support request</Button>
                                                     <Button primary={true} onClick={() => {
                                                         //save campaign
-                                                        dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
+                                                        //dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate));
+                                                        ChangeStep(3)
                                                     }}>Save campaign</Button>
                                                 </div>
                                                 {
@@ -1930,6 +1974,7 @@ const CreateUpdateCampaign = (props) => {
                                                         dispatch(setIsNoCampaign(false))
                                                     }}>Manage campaign</Button>
                                                     <Button primary={true} onClick={() => {
+                                                        window.open('https://apps.shopify.com/quantity-break-limit-purchase', '_blank');
                                                     }}>Rate us in Shopify</Button>
                                                 </div>
 

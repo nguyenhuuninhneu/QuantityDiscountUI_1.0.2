@@ -29,13 +29,15 @@ export const fetchList = (start, end) => {
   };
 };
 
-export const reportDetail = (campaignid) => {
+export const reportDetail = (campaignid, start, end) => {
   return (dispatch, getState) => {
     // dispatch(actions.setIsLoadingPage());
     axios.get(config.rootLink + '/FrontEnd/ReportDetail', {
       params: {
         shopID: getState().app.Shop?.ID,
         shop: config.shop,
+        startDate: start,
+        endDate: end,
         campaignID: campaignid,
         token: config.token,
 

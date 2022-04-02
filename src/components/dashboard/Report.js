@@ -11,7 +11,7 @@ import Loading from '../../components/plugins/Loading';
 import Select from 'react-select';
 import axios from 'axios';
 import config from '../../config/config';
-import  utils  from '../../config/utils';
+import utils from '../../config/utils';
 
 const Report = (props) => {
     const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const Report = (props) => {
     useEffect(() => {
         var strDateToday = today.getFullYear() + '-' + (today.getMonth() < 9 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1) + '-' + (today.getDate() < 10 ? '0' + today.getDate() : today.getDate());
         dispatch(fetchList(strDateToday, strDateToday));
-        
+
 
     }, []);
     const [{ month, year }, setDate] = useState({ month: today.getMonth(), year: today.getFullYear() });
@@ -214,7 +214,7 @@ const Report = (props) => {
                 shopID: appState.Shop?.ID,
                 shop: config.shop,
                 startDate: strStart,
-        endDate: strEnd,
+                endDate: strEnd,
                 page: event.selected + 1,
                 pagezise: 10,
                 token: config.token,
@@ -411,8 +411,8 @@ const Report = (props) => {
                                                     return [
                                                         report.CampaignID,
                                                         report.Title,
-                                                        utils.ShopifyMoney(report.TotalDiscount, reportState.FormatMoney),
-                                                        utils.ShopifyMoney(Math.floor(report.TotalPrice, 2), reportState.FormatMoney),
+                                                        utils.ShopifyMoney(report.TotalDiscount * 100, reportState.FormatMoney),
+                                                        utils.ShopifyMoney(report.TotalPrice * 100, reportState.FormatMoney),
                                                         report.ViewProduct,
                                                         report.ViewCart,
                                                         <>
@@ -424,8 +424,10 @@ const Report = (props) => {
                                                                             ...reportState,
                                                                             IsLoadingSpinner: true
                                                                         }))
-                                                                        dispatch(reportDetail(report.CampaignID));
-                                                                    }} accessibilityLabel="Detail" > 
+                                                                        var strStart = selectedDates.start.getFullYear() + '-' + (selectedDates.start.getMonth() < 9 ? '0' + (selectedDates.start.getMonth() + 1) : selectedDates.start.getMonth() + 1) + '-' + (selectedDates.start.getDate() < 10 ? '0' + selectedDates.start.getDate() : selectedDates.start.getDate());
+                                                                        var strEnd = selectedDates.end.getFullYear() + '-' + (selectedDates.end.getMonth() < 9 ? '0' + (selectedDates.end.getMonth() + 1) : selectedDates.end.getMonth() + 1) + '-' + (selectedDates.end.getDate() < 10 ? '0' + selectedDates.end.getDate() : selectedDates.end.getDate());
+                                                                        dispatch(reportDetail(report.CampaignID, strStart, strEnd));
+                                                                    }} accessibilityLabel="Detail" >
                                                                     Detail
                                                                     {/* {
                                                                         reportState.IsLoadingSpinner ? <>
@@ -462,7 +464,7 @@ const Report = (props) => {
 
 
                                     </Card>
-                                <p className="time-zone-note">*Timezone is set according to your store’s timezone</p>
+                                    <p className="time-zone-note">*Timezone is set according to your store’s timezone</p>
                                     {
                                         reportState.Paginate.CurrentItems !== undefined && reportState.Paginate.CurrentItems !== null && reportState.Paginate.CurrentItems.length > 0 ? <>
                                             <div className='paging-area'>
@@ -545,8 +547,8 @@ const Report = (props) => {
                                                 order.OrderID,
                                                 order.CustomerName,
                                                 order.CustomerPhone,
-                                                utils.ShopifyMoney(order.TotalDiscount, reportState.FormatMoney),
-                                                utils.ShopifyMoney(order.TotalPrice, reportState.FormatMoney),
+                                                utils.ShopifyMoney(order.TotalDiscount * 100, reportState.FormatMoney),
+                                                utils.ShopifyMoney(order.TotalPrice * 100, reportState.FormatMoney),
 
                                             ];
                                         }) : []}

@@ -106,22 +106,25 @@ const AppFrame = () => {
                     <ul className="Polaris-Navigation__List">
                       <li className="Polaris-Navigation__ListItem">
                         <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.DASHBOARD ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} aria-disabled="false" onClick={() => {
-                          if (appState.PlanNumber === 0) {
-                            setIsShowPopupUpgrade(true)
-                          }
-                          else {
-                            setActiveMenu(moreAppConfig.Menu.DASHBOARD)
-                          }
+                          // if (appState.PlanNumber === 0) {
+                          //   setIsShowPopupUpgrade(true)
+                          // }
+                          // else {
+                          //   setActiveMenu(moreAppConfig.Menu.DASHBOARD)
+                          // }
+                          setActiveMenu(moreAppConfig.Menu.DASHBOARD)
                         }} data-polaris-unstyled="true"><span className="Polaris-Navigation__Text">Dashboard</span></a></div>
                       </li>
                       <li className="Polaris-Navigation__ListItem">
                         <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.REPORT ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} aria-disabled="false" onClick={() => { 
-                          if (appState.PlanNumber === 0) {
-                            setIsShowPopupUpgrade(true)
-                          }
-                          else {
-                            setActiveMenu(moreAppConfig.Menu.REPORT)
-                          } }} data-polaris-unstyled="true"><span className="Polaris-Navigation__Text">Report</span></a></div>
+                          // if (appState.PlanNumber === 0) {
+                          //   setIsShowPopupUpgrade(true)
+                          // }
+                          // else {
+                          //   setActiveMenu(moreAppConfig.Menu.REPORT)
+                          //} 
+                          setActiveMenu(moreAppConfig.Menu.REPORT)
+                          }} data-polaris-unstyled="true"><span className="Polaris-Navigation__Text">Report</span></a></div>
                       </li>
                     </ul>
                   </div>
