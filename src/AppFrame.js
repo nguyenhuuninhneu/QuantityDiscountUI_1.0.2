@@ -45,7 +45,7 @@ const AppFrame = () => {
     dispatch(setMenu(menu));
 
     dispatch(setIsEditCampaign(false))
-  
+
     if (menu !== moreAppConfig.Menu.CREATECAMPAIGN) {
       dispatch(setNoCallTwices(false));
       if (campaignListState.TotalCampaign > 0) {
@@ -93,25 +93,25 @@ const AppFrame = () => {
 
     const script2 = document.createElement("script");
     script2.innerHTML = ` (function() {
-    function onTidioChatApiReady() {
-      tidioChatApi.setVisitorData({ 
-        name: "${config.shop}",  
-        tags: ["Tiktok"]
-      });
-    }
-    if (window.tidioChatApi) {
-      window.tidioChatApi.on("ready", onTidioChatApiReady);
-    } else {
-      document.addEventListener("tidioChat-ready", onTidioChatApiReady);
-    }
-  })();` ;
+  function onTidioChatApiReady() {
+    tidioChatApi.setVisitorData({ 
+      name: "${config.shop}",  
+      tags: ["QuantityDiscount"]
+    });
+  }
+  if (window.tidioChatApi) {
+    window.tidioChatApi.on("ready", onTidioChatApiReady);
+  } else {
+    document.addEventListener("tidioChat-ready", onTidioChatApiReady);
+  }
+})();` ;
     document.body.appendChild(script2);
 
   }
   return (
 
     <>
-      <div style={ (appState.Menu == moreAppConfig.Menu.CREATECAMPAIGN && campaignState.IsOpenSaveToolbar) || (appState.Menu == moreAppConfig.Menu.SETTING && settingState.IsOpenSaveToolbar) ? { marginTop: '65px' } : {}}></div>
+      <div style={(appState.Menu == moreAppConfig.Menu.CREATECAMPAIGN && campaignState.IsOpenSaveToolbar) || (appState.Menu == moreAppConfig.Menu.SETTING && settingState.IsOpenSaveToolbar) ? { marginTop: '65px' } : {}}></div>
       <div className='orichi-quantity-discount'>
 
         <>
