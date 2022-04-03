@@ -26,7 +26,7 @@ const tabs = [
     content: 'Limit purchase feature'
   }
 ]
-function Setting() {
+function Setting(props) {
   const dispatch = useDispatch();
   const settingState = useSelector((state) => state.setting);
   useEffect(() => {

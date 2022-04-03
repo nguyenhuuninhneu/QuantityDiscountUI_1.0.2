@@ -223,7 +223,7 @@ const CreateUpdateCampaign = (props) => {
                 },
                 IsOpenSaveToolbar: false
             }))
-        }else {
+        } else {
             dispatch(setCreateUpdateCampaign({
                 ...campaignState,
                 campaign: {
@@ -233,7 +233,7 @@ const CreateUpdateCampaign = (props) => {
                 IsOpenSaveToolbar: true
             }))
         }
-        
+
         setIsLoadingStep(false);
     }
 
@@ -597,11 +597,11 @@ const CreateUpdateCampaign = (props) => {
     }
     const AddProduct = () => {
         var listOld = campaign.ListVariants !== undefined && campaign.ListVariants !== null ? campaign.ListVariants : [];
-        var firstProduct = campaignState.SelectOptionProducts;
+        var firstProduct = campaignState.SelectOptionProducts.filter(p=> !listOld.map(x=>x.ProductID).includes(p.value));
         var listVariant = firstProduct !== undefined ? firstProduct.map(m => m.ListVariant)[0] : [];
         var item = {
             ID: Math.floor(100000000 + Math.random() * 900000000),
-            ProductID: firstProduct !== undefined ? firstProduct.ID : 0,
+            ProductID: firstProduct !== undefined ? firstProduct[0].ProductID : 0,
             VariantID: 0,
             ListVariant: listVariant,
             ListVariantSelected: []
@@ -1153,7 +1153,7 @@ const CreateUpdateCampaign = (props) => {
                                                                                 {campaign.ListVariants !== undefined && campaign.ListVariants !== null && campaign.ListVariants
                                                                                     .map(
                                                                                         ({ ID, ProductID, VariantID, ListVariant, ListVariantSelected }, index) => (
-                                                                                            <div className='node'>
+                                                                                            <div className='node' key={index}>
                                                                                                 <Stack wrap={false} alignment="leading" spacing="loose">
                                                                                                     <Stack.Item fill>
                                                                                                         <FormLayout>
@@ -1180,12 +1180,15 @@ const CreateUpdateCampaign = (props) => {
                                                                                                                     value={campaignState.SelectOptionProducts != null && campaignState.SelectOptionProducts.filter(p => p.ProductID == ProductID)[0] || campaignState.SelectOptionProducts != null && campaignState.SelectOptionProducts[0]}
                                                                                                                 />
                                                                                                                 <Card>
-                                                                                                                    <OptionList
-                                                                                                                        onChange={(e) => { handleChangeCheckVariantByProduct(e, ProductID, index) }}
-                                                                                                                        options={ListVariant}
-                                                                                                                        selected={ListVariantSelected}
-                                                                                                                        allowMultiple
-                                                                                                                    />
+                                                                                                                    <div className={ListVariant != undefined && ListVariant != null && ListVariant.length > 7 ?"scroll-variant":"" }>
+                                                                                                                        <OptionList
+                                                                                                                            onChange={(e) => { handleChangeCheckVariantByProduct(e, ProductID, index) }}
+                                                                                                                            options={ListVariant}
+                                                                                                                            selected={ListVariantSelected}
+                                                                                                                            allowMultiple
+                                                                                                                        />
+                                                                                                                    </div>
+
                                                                                                                 </Card>
                                                                                                             </FormLayout.Group>
                                                                                                         </FormLayout>
@@ -1237,7 +1240,7 @@ const CreateUpdateCampaign = (props) => {
                                                                     {campaign.ListDetails != null && campaign.ListDetails != undefined && campaign.ListDetails
                                                                         .map(
                                                                             ({ ID, Quantity, PercentOrPrice }, index) => (
-                                                                                <div className='node'>
+                                                                                <div className='node' key={index}>
                                                                                     <Stack wrap={false} alignment="leading" spacing="loose">
                                                                                         <Stack.Item fill>
                                                                                             <FormLayout>
@@ -1450,7 +1453,7 @@ const CreateUpdateCampaign = (props) => {
                                                                                         {
                                                                                             rowsPreview.map((item, index) => {
                                                                                                 return (
-                                                                                                    <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable">
+                                                                                                    <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable" key={index}>
                                                                                                         <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row" style={{ fontSize: campaignState.Setting2.FontSizeItemInTable + 'px', color: campaignState.Setting2.TextColorItemInTable, backgroundColor: campaignState.Setting2.BackgroundColorItemInTable }}>{campaignState.Setting.TextBuy + ' ' + item.Quantity + campaignState.Setting.TextPlus}</th>
                                                                                                         {
                                                                                                             campaign.PriceType != 3 ? <>
@@ -1492,7 +1495,7 @@ const CreateUpdateCampaign = (props) => {
                                                                                                 rowsPreview.map((item, index) => {
                                                                                                     return (
                                                                                                         <>
-                                                                                                            <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: campaignState.Setting2.FontSizeItemInTable + 'px', color: campaignState.Setting2.TextColorItemInTable, backgroundColor: campaignState.Setting2.BackgroundColorItemInTable }}>
+                                                                                                            <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" key={index} style={{ fontSize: campaignState.Setting2.FontSizeItemInTable + 'px', color: campaignState.Setting2.TextColorItemInTable, backgroundColor: campaignState.Setting2.BackgroundColorItemInTable }}>
                                                                                                                 {campaignState.Setting.TextBuy + ' ' + item.Quantity + campaignState.Setting.TextPlus}
                                                                                                             </td>
                                                                                                         </>
@@ -1513,7 +1516,7 @@ const CreateUpdateCampaign = (props) => {
                                                                                                         rowsPreview.map((item, index) => {
                                                                                                             return (
                                                                                                                 <>
-                                                                                                                    <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: campaignState.Setting2.FontSizeItemInTable + 'px', color: campaignState.Setting2.TextColorItemInTable, backgroundColor: campaignState.Setting2.BackgroundColorItemInTable }}>
+                                                                                                                    <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" key={index} style={{ fontSize: campaignState.Setting2.FontSizeItemInTable + 'px', color: campaignState.Setting2.TextColorItemInTable, backgroundColor: campaignState.Setting2.BackgroundColorItemInTable }}>
                                                                                                                         {(campaign.PriceType === 1 ? item.PercentOrPrice + '%' : campaign.PriceType === 2 ? item.PercentOrPrice + '$' : <></>)}
                                                                                                                     </td>
                                                                                                                 </>
@@ -1536,7 +1539,7 @@ const CreateUpdateCampaign = (props) => {
                                                                                                         rowsPreview.map((item, index) => {
                                                                                                             return (
                                                                                                                 <>
-                                                                                                                    <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: campaignState.Setting2.FontSizeItemInTable + 'px', color: campaignState.Setting2.TextColorItemInTable, backgroundColor: campaignState.Setting2.BackgroundColorItemInTable }}>
+                                                                                                                    <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" key={index} style={{ fontSize: campaignState.Setting2.FontSizeItemInTable + 'px', color: campaignState.Setting2.TextColorItemInTable, backgroundColor: campaignState.Setting2.BackgroundColorItemInTable }}>
                                                                                                                         {item.PercentOrPrice === 0 ? 0 : (campaign.PriceType === 1 ? Math.floor(100 * (1 - (item.PercentOrPrice / 100)), 2) : campaign.PriceType === 2 ? 100 - item.PercentOrPrice : campaign.PriceType === 3 ? item.PercentOrPrice : 0) + '$'}
                                                                                                                     </td>
                                                                                                                 </>
@@ -1573,7 +1576,7 @@ const CreateUpdateCampaign = (props) => {
                                                                             rowsPreview.map((item, index) => {
                                                                                 return (
                                                                                     campaignState.Setting2.CardTheme == 0 ? <>
-                                                                                        <div className='card-orange' style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>
+                                                                                        <div className='card-orange' key={index} style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>
                                                                                             <div className="card-left-right" style={{ backgroundColor: campaignState.Setting2.BackgroundColorCard }}>
                                                                                                 <div className="card-inside">
                                                                                                     <p className="buy" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>{campaignState.Setting.TextBuy} {item.Quantity}{campaignState.Setting.TextPlus}</p>
@@ -1650,7 +1653,7 @@ const CreateUpdateCampaign = (props) => {
                                                                                         </div>
 
                                                                                     </> : <>
-                                                                                        <div className='card-orange' style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>
+                                                                                        <div className='card-orange' key={index} style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>
                                                                                             <div className="card-four-side" style={{ backgroundColor: campaignState.Setting2.BackgroundColorCard }}>
                                                                                                 <div className="card-inside">
                                                                                                     <p className="buy" style={{ color: campaignState.Setting2.TextColorCard, fontSize: campaignState.Setting2.FontSizeCard + 'px' }}>{campaignState.Setting.TextBuy} {item.Quantity}{campaignState.Setting.TextPlus}</p>

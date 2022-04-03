@@ -16,7 +16,8 @@ function General() {
   const dispatch = useDispatch();
   const appState = useSelector((state) => state.app);
   const settingState = useSelector((state) => state.setting.ListSetting);
-  const wait = 100; 
+  const [options, setOption] = useState([]);
+  const wait = 100;
   const loadOptions = inputValue => getAsyncOptions(inputValue);
   const debouncedLoadOptions = _.debounce(loadOptions, wait, {
     leading: true
@@ -27,23 +28,58 @@ function General() {
   });
   const getAsyncOptions = (inputValue) => {
     return new Promise((resolve, reject) => {
-      axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginateSetting', {
-        params: {
-          search: inputValue,
-          shopID: appState?.Shop.ID,
-          shop: config.shop,
-          page: 1,
-          pagezise: 10,
-          token: config.token,
-        }
-      })
-        .then((res) => {
-          const result = res?.data;
-
-          resolve(result.campaigns);
+      var shopID = appState?.Shop?.ID;
+      if (shopID == undefined) {
+        axios.get(config.rootLink + '/FrontEnd/GetShopID', {
+          params: {
+            shop: config.shop,
+            token: config.token,
+          }
         })
-        .catch(err => console.log(err))
-      
+          .then(function (response) {
+            const result = response?.data;
+
+            axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginateSetting', {
+              params: {
+                search: inputValue,
+                shopID: result.ShopID,
+                shop: config.shop,
+                page: 1,
+                pagezise: 10,
+                token: config.token,
+              }
+            })
+              .then((res) => {
+                const result = res?.data;
+                setOption(result);
+                resolve(result.campaigns);
+              })
+              .catch(err => console.log(err))
+          })
+          .catch(function (error) {
+            const errorMsg = error.message;
+          })
+      }
+      else {
+        axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginateSetting', {
+          params: {
+            search: inputValue,
+            shopID: shopID,
+            shop: config.shop,
+            page: 1,
+            pagezise: 10,
+            token: config.token,
+          }
+        })
+          .then((res) => {
+            const result = res?.data;
+
+            resolve(result.campaigns);
+          })
+          .catch(err => console.log(err))
+      }
+
+
     });
   }
   const getAsyncOptionsProduct = (inputValue2) => {
@@ -67,16 +103,16 @@ function General() {
             }))
             const result = res?.data;
             resolve(result.listProduct);
-            
+
           })
           .catch(err => console.log(err))
-        
+
       });
     }
-    
+
   }
   useEffect(() => {
-    // getCampaign('');
+    getAsyncOptions('');
   }, [dispatch]);
 
   return (
@@ -102,14 +138,14 @@ function General() {
                           </div>
                           <div className="Polaris-CalloutCard__Buttons">
                             <Button primary={false}
-                            loading={settingState.IsEnabledAppLoading}
-                            onClick={() => {
-                              dispatch(setSetting({
-                                ...settingState,
-                                IsEnabledAppLoading: true
-                              }))
-                              dispatch(enableAppEmbed(!settingState.Setting.IsEnableAppEmbed))
-                            }}>{settingState.Setting.IsEnableAppEmbed ? 'Disable':'Enable'} app embed</Button>
+                              loading={settingState.IsEnabledAppLoading}
+                              onClick={() => {
+                                dispatch(setSetting({
+                                  ...settingState,
+                                  IsEnabledAppLoading: true
+                                }))
+                                dispatch(enableAppEmbed(!settingState.Setting.IsEnableAppEmbed))
+                              }}>{settingState.Setting.IsEnableAppEmbed ? 'Disable' : 'Enable'} app embed</Button>
 
                           </div>
                         </div>
@@ -192,7 +228,7 @@ function General() {
                             Synchronize data to app
                           </p>
                           <Button
-                            disabled={appState.DisplayProcess || settingState.LoadingDiscountSync|| settingState.LoadingDataSync}
+                            disabled={appState.DisplayProcess || settingState.LoadingDiscountSync || settingState.LoadingDataSync}
                             primary
                             onClick={() => {
                               dispatch(synchronizeData());
@@ -268,20 +304,20 @@ function General() {
                             Campaign
                           </div>
                           <div className='itemRight'>
-                            <AsyncSelect loadOptions={inputValue => debouncedLoadOptions(inputValue)}
-                            // options={options}
-                            onChange={(e) => {
-                              dispatch(setSetting({
-                                ...settingState,
-                                CampaignID: e.value,
-                                IsLoadNewProduct: true
-                                // ListProduct: settingState.ListCampaign.filter(p => p.ID == parseInt(e))[0].ListProducts
-                              }))
-                              getAsyncOptionsProduct('');
-                              // dispatch(loadProductByCampaign(e.value));
-                            }}
+                            <AsyncSelect cacheOptions defaultOptions loadOptions={inputValue => debouncedLoadOptions(inputValue)}
+                              placeholder='Search'
+                              onChange={(e) => {
+                                dispatch(setSetting({
+                                  ...settingState,
+                                  CampaignID: e.value,
+                                  IsLoadNewProduct: true
+                                  // ListProduct: settingState.ListCampaign.filter(p => p.ID == parseInt(e))[0].ListProducts
+                                }))
+                                getAsyncOptionsProduct('');
+                                // dispatch(loadProductByCampaign(e.value));
+                              }}
                             />
-                            
+
                           </div>
                           <div className='cb'>
                           </div>
@@ -290,14 +326,15 @@ function General() {
                           </div>
                           <div className='itemRight'>
                             <div className='relative'>
-                            <AsyncSelect loadOptions={inputValue2 => debouncedLoadOptionsProduct(inputValue2)}
-                            onChange={(e) => {
-                              dispatch(setSetting({
-                                ...settingState,
-                                ProductID: e.value
-                              }))
-                            }}
-                            />
+                              <AsyncSelect loadOptions={inputValue2 => debouncedLoadOptionsProduct(inputValue2)}
+                                placeholder='Search'
+                                onChange={(e) => {
+                                  dispatch(setSetting({
+                                    ...settingState,
+                                    ProductID: e.value
+                                  }))
+                                }}
+                              />
                               {/* <Select
                                 disabled={settingState.IsLoadNewProduct}
                                 options={settingState.ListProduct}
@@ -310,7 +347,7 @@ function General() {
                                 isSearchable={false}
                               // value={parseInt(settingState.ProductID)}
                               /> */}
-                              {
+                              {/* {
                                 settingState.IsLoadNewProduct ?
                                   <>
                                     <div className="spinner">
@@ -318,7 +355,7 @@ function General() {
                                     </div>
                                   </>
                                   : <></>
-                              }
+                              } */}
                             </div>
 
                           </div>

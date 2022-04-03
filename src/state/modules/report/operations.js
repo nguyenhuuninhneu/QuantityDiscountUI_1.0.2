@@ -5,52 +5,126 @@ import * as actions from "./actions";
 export const fetchList = (start, end) => {
   return (dispatch, getState) => {
     dispatch(actions.setIsLoadingPage());
-    axios.get(config.rootLink + '/FrontEnd/GetReports', {
-      params: {
-        shopID: getState().app.Shop?.ID,
-        shop: config.shop,
-        startDate: start,
-        endDate: end,
-        page: 1,
-        pagezise: 10,
-        token: config.token,
+    var shopID = getState().app.Shop?.ID;
+    if (shopID == undefined) {
+      axios.get(config.rootLink + '/FrontEnd/GetShopID', {
+        params: {
+          shop: config.shop,
+          token: config.token,
+        }
+      })
+        .then(function (response) {
+          const result = response?.data;
+          axios.get(config.rootLink + '/FrontEnd/GetReports', {
+            params: {
+              shopID: result.ShopID,
+              shop: config.shop,
+              startDate: start,
+              endDate: end,
+              page: 1,
+              pagezise: 10,
+              token: config.token,
 
-      }
-    })
-      .then(function (response) {
-        const result = response?.data;
-        dispatch(actions.fetchListCompleted(result));
+            }
+          })
+            .then(function (response) {
+              const result = response?.data;
+              dispatch(actions.fetchListCompleted(result));
+            })
+            .catch(function (error) {
+              const errorMsg = error.message;
+              dispatch(actions.fetchListFailed(errorMsg));
+            })
+        })
+        .catch(function (error) {
+          const errorMsg = error.message;
+        })
+    }
+    else {
+      axios.get(config.rootLink + '/FrontEnd/GetReports', {
+        params: {
+          shopID: shopID,
+          shop: config.shop,
+          startDate: start,
+          endDate: end,
+          page: 1,
+          pagezise: 10,
+          token: config.token,
+
+        }
       })
-      .catch(function (error) {
-        const errorMsg = error.message;
-        dispatch(actions.fetchListFailed(errorMsg));
-      })
+        .then(function (response) {
+          const result = response?.data;
+          dispatch(actions.fetchListCompleted(result));
+        })
+        .catch(function (error) {
+          const errorMsg = error.message;
+          dispatch(actions.fetchListFailed(errorMsg));
+        })
+    }
+
 
   };
 };
 
 export const reportDetail = (campaignid, start, end) => {
   return (dispatch, getState) => {
-    // dispatch(actions.setIsLoadingPage());
-    axios.get(config.rootLink + '/FrontEnd/ReportDetail', {
-      params: {
-        shopID: getState().app.Shop?.ID,
-        shop: config.shop,
-        startDate: start,
-        endDate: end,
-        campaignID: campaignid,
-        token: config.token,
+    var shopID = getState().app.Shop?.ID;
+    if (shopID == undefined) {
+      axios.get(config.rootLink + '/FrontEnd/GetShopID', {
+        params: {
+          shop: config.shop,
+          token: config.token,
+        }
+      })
+        .then(function (response) {
+          const result = response?.data;
+          axios.get(config.rootLink + '/FrontEnd/ReportDetail', {
+            params: {
+              shopID: result.ShopID,
+              shop: config.shop,
+              startDate: start,
+              endDate: end,
+              campaignID: campaignid,
+              token: config.token,
 
-      }
-    })
-      .then(function (response) {
-        const result = response?.data;
-        dispatch(actions.fetchReportDetailCompleted(result));
+            }
+          })
+            .then(function (response) {
+              const result = response?.data;
+              dispatch(actions.fetchReportDetailCompleted(result));
+            })
+            .catch(function (error) {
+              const errorMsg = error.message;
+              dispatch(actions.fetchReportDetailFailed(errorMsg));
+            })
+        })
+        .catch(function (error) {
+          const errorMsg = error.message;
+        })
+    }
+    else {
+      axios.get(config.rootLink + '/FrontEnd/ReportDetail', {
+        params: {
+          shopID: shopID,
+          shop: config.shop,
+          startDate: start,
+          endDate: end,
+          campaignID: campaignid,
+          token: config.token,
+
+        }
       })
-      .catch(function (error) {
-        const errorMsg = error.message;
-        dispatch(actions.fetchReportDetailFailed(errorMsg));
-      })
+        .then(function (response) {
+          const result = response?.data;
+          dispatch(actions.fetchReportDetailCompleted(result));
+        })
+        .catch(function (error) {
+          const errorMsg = error.message;
+          dispatch(actions.fetchReportDetailFailed(errorMsg));
+        })
+    }
+
 
   };
 };

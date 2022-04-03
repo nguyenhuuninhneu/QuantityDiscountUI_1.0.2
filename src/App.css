@@ -1880,3 +1880,18 @@ height: 5px;
 background: yellow;
 } */
 
+.scroll-variant{
+    overflow-y:scroll;
+    max-height: 215px;
+}
+
+.background-disabled{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #cdcdcd;
+    width: 91%;
+    height: 100%;
+    z-index: 99;
+    opacity: 20%;
+}

@@ -2,26 +2,61 @@ import axios from "axios";
 import config from "../../../config/config";
 import * as actions from "./actions";
 
-export const fetchDashboard = (start,end) => {
+export const fetchDashboard = (start, end) => {
   return (dispatch, getState) => {
     dispatch(actions.setIsLoadingPage(true));
-    axios.get(config.rootLink + '/FrontEnd/Dashboard', {
-      params: {
-        shopID: getState().app.Shop?.ID,
-        shop: config.shop,
-        startDate: start,
-        endDate: end,
-        token: config.token,
-      }
-    })
-      .then(function (response) {
-        const result = response?.data;
-        dispatch(actions.fetchCompleted(result));
+    var shopID = getState().app.Shop?.ID;
+    if (shopID == undefined) {
+      axios.get(config.rootLink + '/FrontEnd/GetShopID', {
+        params: {
+          shop: config.shop,
+          token: config.token,
+        }
       })
-      .catch(function (error) {
-        const errorMsg = error.message;
-        dispatch(actions.fetchFailed(errorMsg));
+        .then(function (response) {
+          const result = response?.data;
+          axios.get(config.rootLink + '/FrontEnd/Dashboard', {
+            params: {
+              shopID: result.ShopID,
+              shop: config.shop,
+              startDate: start,
+              endDate: end,
+              token: config.token,
+            }
+          })
+            .then(function (response) {
+              const result = response?.data;
+              dispatch(actions.fetchCompleted(result));
+            })
+            .catch(function (error) {
+              const errorMsg = error.message;
+              dispatch(actions.fetchFailed(errorMsg));
+            })
+        })
+        .catch(function (error) {
+          const errorMsg = error.message;
+        })
+    }
+    else {
+      axios.get(config.rootLink + '/FrontEnd/Dashboard', {
+        params: {
+          shopID: shopID,
+          shop: config.shop,
+          startDate: start,
+          endDate: end,
+          token: config.token,
+        }
       })
+        .then(function (response) {
+          const result = response?.data;
+          dispatch(actions.fetchCompleted(result));
+        })
+        .catch(function (error) {
+          const errorMsg = error.message;
+          dispatch(actions.fetchFailed(errorMsg));
+        })
+    }
+
 
   };
 };

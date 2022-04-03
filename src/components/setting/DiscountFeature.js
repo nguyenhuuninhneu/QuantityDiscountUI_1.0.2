@@ -129,6 +129,7 @@ function DiscountFeature() {
                               <TextField
                                 id='TextMinimumCartQuantity'
                                 placeholder='This discount is applied to the total quantity of products in your cart'
+                                disabled={!settingState.Setting.ShowDescription}
                                 value={settingState.Setting2.TextMinimumCartQuantity}
                                 onChange={(e) => {
                                   dispatch(setSetting({
@@ -150,6 +151,7 @@ function DiscountFeature() {
                               <TextField
                                 id='TextMinimumSameProductQuantity'
                                 placeholder='This discount is applied to the total quantity of this product in your cart'
+                                disabled={!settingState.Setting.ShowDescription}
                                 value={settingState.Setting2.TextMinimumSameProductQuantity}
                                 onChange={(e) => {
                                   dispatch(setSetting({
@@ -172,6 +174,7 @@ function DiscountFeature() {
                               <TextField
                                 id='TextMinimumSameProductVariantQuantity'
                                 placeholder='This discount is applied to the total quantity of the same variant of this product in your cart'
+                                disabled={!settingState.Setting.ShowDescription}
                                 value={settingState.Setting2.TextMinimumSameProductVariantQuantity}
                                 onChange={(e) => {
                                   dispatch(setSetting({
@@ -231,23 +234,28 @@ function DiscountFeature() {
                               <div className='item'>
                                 <div className='itemLeft'>
                                   <p className='title'>Font size</p>
-                                  <TextField
-                                    id='FontSizeDiscountTitle'
-                                    placeholder='Font size'
-                                    value={settingState.Setting2.FontSizeDiscountTitle}
-                                    onChange={(e) => {
-                                      dispatch(setSetting({
-                                        ...settingState,
-                                        Setting2: {
-                                          ...settingState.Setting2,
-                                          FontSizeDiscountTitle: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
-                                        },
-                                        IsOpenSaveToolbar: true
-                                      }))
-                                    }}
-                                    type="number"
-                                    min={0}
-                                  />
+                                  <div className="relative">
+                                    <TextField
+                                      id='FontSizeDiscountTitle'
+                                      placeholder='Font size'
+                                      value={settingState.Setting2.FontSizeDiscountTitle}
+                                      onChange={(e) => {
+                                        dispatch(setSetting({
+                                          ...settingState,
+                                          Setting2: {
+                                            ...settingState.Setting2,
+                                            FontSizeDiscountTitle: e == '' ? '1' : validateNumber(e.trim()) ? e.trim() : "1",
+                                          },
+                                          IsOpenSaveToolbar: true
+                                        }))
+                                      }}
+                                      type="number"
+                                      min={1}
+                                      max={25}
+                                    />
+                                    <div className='background-disabled'></div>
+                                  </div>
+
                                 </div>
                                 <div className='itemRight'>
                                   <p className='title'>Text color</p>
@@ -589,23 +597,28 @@ function DiscountFeature() {
                                   <div className='item'>
                                     <div className='itemLeft'>
                                       <p className='title'>Font size</p>
-                                      <TextField
-                                        id='TableFontSizeHeading'
-                                        placeholder='Font size'
-                                        value={settingState.Setting.TableFontSizeHeading}
-                                        onChange={(e) => {
-                                          dispatch(setSetting({
-                                            ...settingState,
-                                            Setting: {
-                                              ...settingState.Setting,
-                                              TableFontSizeHeading: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
-                                            },
-                                            IsOpenSaveToolbar: true
-                                          }))
-                                        }}
-                                        type="number"
-                                        min={0}
-                                      />
+                                      <div className="relative">
+                                        <TextField
+                                          id='TableFontSizeHeading'
+                                          placeholder='Font size'
+                                          value={settingState.Setting.TableFontSizeHeading}
+                                          onChange={(e) => {
+                                            dispatch(setSetting({
+                                              ...settingState,
+                                              Setting: {
+                                                ...settingState.Setting,
+                                                TableFontSizeHeading: e == '' ? '1' : validateNumber(e.trim()) ? e.trim() : "1",
+                                              },
+                                              IsOpenSaveToolbar: true
+                                            }))
+                                          }}
+                                          type="number"
+                                          min={1}
+                                          max={25}
+                                        />
+                                        <div className='background-disabled'></div>
+                                      </div>
+
                                     </div>
                                     <div className='cb'>
 
@@ -857,23 +870,28 @@ function DiscountFeature() {
                                   <div className='item'>
                                     <div className='itemLeft'>
                                       <p className='title'>Font size</p>
-                                      <TextField
-                                        id='FontSizeCard'
-                                        placeholder='Font size'
-                                        value={settingState.Setting2.FontSizeCard}
-                                        onChange={(e) => {
-                                          dispatch(setSetting({
-                                            ...settingState,
-                                            Setting2: {
-                                              ...settingState.Setting2,
-                                              FontSizeCard: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
-                                            },
-                                            IsOpenSaveToolbar: true
-                                          }))
-                                        }}
-                                        type="number"
-                                        min={0}
-                                      />
+                                      <div className="relative">
+                                        <TextField
+                                          id='FontSizeCard'
+                                          placeholder='Font size'
+                                          value={settingState.Setting2.FontSizeCard}
+                                          onChange={(e) => {
+                                            dispatch(setSetting({
+                                              ...settingState,
+                                              Setting2: {
+                                                ...settingState.Setting2,
+                                                FontSizeCard: e == '' ? '1' : validateNumber(e.trim()) ? e.trim() : "1",
+                                              },
+                                              IsOpenSaveToolbar: true
+                                            }))
+                                          }}
+                                          type="number"
+                                          min={1}
+                                          max={25}
+                                        />
+                                        <div className='background-disabled'></div>
+                                      </div>
+
                                     </div>
                                     <div className='cb'>
 
@@ -961,44 +979,54 @@ function DiscountFeature() {
                                   <div className='item'>
                                     <div className='itemLeft'>
                                       <p className='title'>Font size</p>
-                                      <TextField
-                                        id='FontSizeItemInTable'
-                                        placeholder='Font size'
-                                        value={settingState.Setting2.FontSizeItemInTable}
-                                        onChange={(e) => {
-                                          dispatch(setSetting({
-                                            ...settingState,
-                                            Setting2: {
-                                              ...settingState.Setting2,
-                                              FontSizeItemInTable: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
-                                            },
-                                            IsOpenSaveToolbar: true
-                                          }))
-                                        }}
-                                        type="number"
-                                        min={0}
-                                      />
+                                      <div className="relative">
+                                        <TextField
+                                          id='FontSizeItemInTable'
+                                          placeholder='Font size'
+                                          value={settingState.Setting2.FontSizeItemInTable}
+                                          onChange={(e) => {
+                                            dispatch(setSetting({
+                                              ...settingState,
+                                              Setting2: {
+                                                ...settingState.Setting2,
+                                                FontSizeItemInTable: e == '' ? '1' : validateNumber(e.trim()) ? e.trim() : "1",
+                                              },
+                                              IsOpenSaveToolbar: true
+                                            }))
+                                          }}
+                                          type="number"
+                                          min={1}
+                                          max={25}
+                                        />
+                                        <div className='background-disabled'></div>
+                                      </div>
+
                                     </div>
 
                                     <div className='itemRight'>
                                       <p className='title'>Border size table</p>
-                                      <TextField
-                                        id='TableBorderSize'
-                                        placeholder='Border size table'
-                                        value={settingState.Setting.TableBorderSize.toString()}
-                                        onChange={(e) => {
-                                          dispatch(setSetting({
-                                            ...settingState,
-                                            Setting: {
-                                              ...settingState.Setting,
-                                              TableBorderSize: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
-                                            },
-                                            IsOpenSaveToolbar: true
-                                          }))
-                                        }}
-                                        type="number"
-                                        min={0}
-                                      />
+                                      <div className="relative">
+                                        <TextField
+                                          id='TableBorderSize'
+                                          placeholder='Border size table'
+                                          value={settingState.Setting.TableBorderSize.toString()}
+                                          onChange={(e) => {
+                                            dispatch(setSetting({
+                                              ...settingState,
+                                              Setting: {
+                                                ...settingState.Setting,
+                                                TableBorderSize: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
+                                              },
+                                              IsOpenSaveToolbar: true
+                                            }))
+                                          }}
+                                          type="number"
+                                          min={1}
+                                          max={25}
+                                        />
+                                        <div className='background-disabled'></div>
+                                      </div>
+
                                     </div>
                                     <div className='cb'>
 
@@ -1228,7 +1256,7 @@ function DiscountFeature() {
                             <div className='element-general-child'>
                               <div className="flex flex-align-center">
                                 <Button
-                                  disabled={appState.DisplayProcessShopify || settingState.LoadingDiscountSync || settingState.LoadingDataSync}
+                                  disabled={!settingState.Setting.UseDiscountCodeOnCart || appState.DisplayProcessShopify || settingState.LoadingDiscountSync || settingState.LoadingDataSync}
                                   primary
                                   onClick={() => {
                                     dispatch(synchronizeDiscountFromShopify());
@@ -1243,8 +1271,9 @@ function DiscountFeature() {
                               <div className="flex flex-align-center">
                                 <span className="mr-10"> Total: {settingState.TotalDiscountCode} discount codes</span> <Button onClick={() => {
                                   setIsOpenDiscountCode(true);
-
-                                }}>Detail</Button>
+                                }}
+                                  disabled={!settingState.Setting.UseDiscountCodeOnCart}
+                                >Detail</Button>
                               </div>
                               <div className="break-line"></div>
                               <p className='only-text'>Discount code prefix</p>
@@ -1513,7 +1542,7 @@ function DiscountFeature() {
                                         {
                                           rowsPreview.map((item, index) => {
                                             return (
-                                              <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable">
+                                              <tr className="Polaris-DataTable__TableRow Polaris-DataTable--hoverable" key={index}>
                                                 <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn" scope="row" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{settingState.Setting.TextBuy + ' ' + item[0] + settingState.Setting.TextPlus}</th>
                                                 <td className="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop" style={{ fontSize: settingState.Setting2.FontSizeItemInTable + 'px', color: settingState.Setting2.TextColorItemInTable, backgroundColor: settingState.Setting2.BackgroundColorItemInTable }}>{item[1] + '%'}</td>
                                                 {
@@ -1582,13 +1611,13 @@ function DiscountFeature() {
                         {
 
                           settingState.Setting.LayoutInProductPage == 3 ? <>
-                            <div className="Polaris-CalloutCard__Buttons" style={{ display: 'flex',marginTop: 0 }}>
-                              <div className={rowsPreview.length > 2 ?"list-card-scroll" :''}>
+                            <div className="Polaris-CalloutCard__Buttons" style={{ display: 'flex', marginTop: 0 }}>
+                              <div className={rowsPreview.length > 2 ? "list-card-scroll" : ''}>
                                 {
                                   rowsPreview.map((item, index) => {
                                     return (
                                       settingState.Setting2.CardTheme == 0 ? <>
-                                        <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
+                                        <div className='card-orange' key={index} style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
                                           <div className="card-left-right" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
                                             <div className="card-inside">
                                               <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>

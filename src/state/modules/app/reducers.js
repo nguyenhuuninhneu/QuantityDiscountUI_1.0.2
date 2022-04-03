@@ -1,6 +1,5 @@
 import * as types from "./types";
 import moreAppConfig from "../../../config/moreAppConfig";
-
 const INITIAL_STATE = {
   Shop: null,
   Setting: null,
@@ -11,7 +10,7 @@ const INITIAL_STATE = {
   IsNoCampaign: false,
   IsCreatingCampaign: false,
   IsEditCampaign: false,
-  Menu: moreAppConfig.Menu.CREATECAMPAIGN,
+  Menu: localStorage.getItem('menu') ? parseInt(localStorage.getItem('menu')) : moreAppConfig.Menu.CREATECAMPAIGN,
   Process: 0,
   DisplayProcess: false,
   NoCallTwiceTime: false,
@@ -58,7 +57,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         // Collections: action.payload.collects,
         PlanNumber: action.payload.planNumber,
         IsNoCampaign: !action.payload.hasCampaign,
-        Menu:  moreAppConfig.Menu.CREATECAMPAIGN,
+        Menu:  localStorage.getItem('menu') ? parseInt(localStorage.getItem('menu')) : moreAppConfig.Menu.CREATECAMPAIGN,
         DisplayProcess: action.payload.displayprocess,
         // Menu: !action.payload.hasCampaign ? moreAppConfig.Menu.CREATECAMPAIGN : moreAppConfig.Menu.MANAGECAMPAIGN,
       };

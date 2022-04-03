@@ -17,10 +17,10 @@ export const fetchShop = () => {
         if (response.data.ConfirmationUrl != '' && response.data.ConfirmationUrl != undefined) {
           window.open(response.data.ConfirmationUrl, "_blank");
         }
-        dispatch(actions.fetchShopCompleted(result)); 
+        dispatch(actions.fetchShopCompleted(result));
         if (result.displayprocess) {
           dispatch(getProcess("Create"));
-        } 
+        }
         dispatch(operationsCampaign.fetchList());
       })
       .catch(function (error) {
@@ -32,23 +32,56 @@ export const fetchShop = () => {
 };
 export const getProcess = (type) => {
   return (dispatch, getState) => {
-
-      axios.get(config.rootLink + '/FrontEnd/GetProcess', {
-          params: {
-              shopID: getState().app.Shop?.ID,
+    var shopID = getState().app.Shop?.ID;
+    if (shopID == undefined) {
+      axios.get(config.rootLink + '/FrontEnd/GetShopID', {
+        params: {
+          shop: config.shop,
+          token: config.token,
+        }
+      })
+        .then(function (response) {
+          const result = response?.data;
+          axios.get(config.rootLink + '/FrontEnd/GetProcess', {
+            params: {
+              shopID: result.ShopID,
               shop: config.shop,
               type: type,
               token: config.token,
-          }
-      })
-          .then(function (response) {
+            }
+          })
+            .then(function (response) {
               const result = response?.data;
               dispatch(actions.getProcessCompleted(result));
-          })
-          .catch(function (error) {
+            })
+            .catch(function (error) {
               const errorMsg = error.message;
               dispatch(actions.getProcessFailed(errorMsg));
-          })
+            })
+        })
+        .catch(function (error) {
+          const errorMsg = error.message;
+        })
+    }
+    else {
+      axios.get(config.rootLink + '/FrontEnd/GetProcess', {
+        params: {
+          shopID: shopID,
+          shop: config.shop,
+          type: type,
+          token: config.token,
+        }
+      })
+        .then(function (response) {
+          const result = response?.data;
+          dispatch(actions.getProcessCompleted(result));
+        })
+        .catch(function (error) {
+          const errorMsg = error.message;
+          dispatch(actions.getProcessFailed(errorMsg));
+        })
+    }
+
 
   };
 };

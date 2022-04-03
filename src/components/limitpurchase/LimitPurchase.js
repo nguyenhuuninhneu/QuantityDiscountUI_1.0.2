@@ -355,7 +355,7 @@ const LimitPurchase = () => {
                                 rows={limitPurchaseState.Paginate.CurrentItems != null && limitPurchaseState.Paginate.CurrentItems.length > 0 ? limitPurchaseState.Paginate.CurrentItems.map((limitpurchase, index) => {
                                     return [
                                         <>
-                                            <p>
+                                            <p key={index}>
                                                 <a href={'https://'+appState?.Shop?.Domain+'/products/' + limitpurchase.Handle} target="_blank">{limitpurchase.Title}</a>
                                             </p>
                                         </>

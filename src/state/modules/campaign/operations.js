@@ -1,5 +1,8 @@
 import axios from "axios";
 import config from "../../../config/config";
+import utils from "../../../config/utils";
+import moreAppConfig from "../../../config/moreAppConfig";
+import { setMenu } from '../app/actions';
 import * as actions from "./actions";
 
 const dateObj = new Date();
@@ -8,16 +11,52 @@ const day = String(dateObj.getDate()).padStart(2, '0');
 const year = dateObj.getFullYear();
 const todayStr = year + '-' + month + '-' + day;
 
+
 export const fetchList = () => {
 
   return (dispatch, getState) => {
-    if (getState().app.Shop != null && getState().app.Shop != undefined) {
-      dispatch(actions.fetchListLoading());
+    var shopID = getState().app.Shop?.ID;
+    dispatch(actions.fetchListLoading());
+
+    if (shopID == undefined) {
+      axios.get(config.rootLink + '/FrontEnd/GetShopID', {
+        params: {
+          shop: config.shop,
+          token: config.token,
+        }
+      })
+        .then(function (response) {
+          const result = response?.data;
+          axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginate', {
+            params: {
+              search: '',
+              discounttype: 0,
+              shopID: result.ShopID,
+              shop: config.shop,
+              page: 1,
+              pagezise: 10,
+              token: config.token,
+            }
+          })
+            .then(function (response) {
+              const result = response?.data;
+              dispatch(actions.fetchListCompleted(result));
+            })
+            .catch(function (error) {
+              const errorMsg = error.message;
+              console.log(errorMsg);
+            })
+        })
+        .catch(function (error) {
+          const errorMsg = error.message;
+        })
+    }
+    else {
       axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginate', {
         params: {
           search: '',
           discounttype: 0,
-          shopID: getState().app.Shop?.ID,
+          shopID: shopID,
           shop: config.shop,
           page: 1,
           pagezise: 10,
@@ -70,6 +109,11 @@ export const createCampaign = () => {
           EndDate: todayStr,
           StartDateEdit: todayStr,
           EndDateEdit: todayStr,
+          EndDateEditEmpty: '',
+          IsSpecificCollect: false,
+          IsSpecificProduct: false,
+          IsVariantProduct: false,
+          AllProducts: false,
           Step: 1
         },
         EndTimeValidation: null,
@@ -93,23 +137,10 @@ export const editCampaign = (campaign) => {
         EndTimeValidation: null,
         IsOpenSaveResult: false
       }));
-    // axios.get(config.rootLink + '/FrontEnd/CreateEditCampaign', {
-    //   params: {
-    //     shopID: getState().app.Shop?.ID
-    //   }
-    // })
-    //   .then(function (response) {
-    //     const result = response?.data;
-    //     dispatch(actions.fetchEditCampaignCompleted(result, campaign));
-    //   })
-    //   .catch(function (error) {
-    //     const errorMsg = error.message;
-    //     dispatch(actions.fetchEditCampaignFailed(errorMsg));
-    //   })
   }
 }
 
-export const saveCampaign = (isFirstCampaign = false,isEndDate = false) => {
+export const saveCampaign = (isFirstCampaign = false, isEndDate = false) => {
   return (dispatch, getState) => {
     dispatch(actions.setIsSaveLoading(true));
     dispatch(actions.setIsLoadingPage(true));
@@ -144,6 +175,9 @@ export const saveCampaign = (isFirstCampaign = false,isEndDate = false) => {
                 WholeCampaignNumber: getState().campaign.ListCampaign.WholeCampaignNumber + 1,
               }));
           }
+          if (!result.isFirstCampaign) {
+            dispatch(setMenu(moreAppConfig.Menu.MANAGECAMPAIGN));
+          }
         } else {
           dispatch(actions.saveCampaignFailed(result));
         }
@@ -158,21 +192,21 @@ export const saveCampaign = (isFirstCampaign = false,isEndDate = false) => {
 }
 export const enableAppEmbed = (isEnable) => {
   return (dispatch, getState) => {
-      axios.get(config.rootLink + '/FrontEnd/AppEmbed', {
-          params: {
-              isEnable: isEnable,
-              shop: config.shop,
-          }
+    axios.get(config.rootLink + '/FrontEnd/AppEmbed', {
+      params: {
+        isEnable: isEnable,
+        shop: config.shop,
+      }
+    })
+      .then(function (response) {
+        const result = response?.data;
+        dispatch(actions.enableAppEmbed(result));
       })
-          .then(function (response) {
-              const result = response?.data;
-              dispatch(actions.enableAppEmbed(result));
-          })
-          .catch(function (error) {
-              const errorMsg = error.message;
-              console.log(errorMsg);
-              dispatch(actions.enableAppEmbed({res: false, isEnable : !isEnable}));
-          })
+      .catch(function (error) {
+        const errorMsg = error.message;
+        console.log(errorMsg);
+        dispatch(actions.enableAppEmbed({ res: false, isEnable: !isEnable }));
+      })
 
   };
 };

@@ -299,12 +299,12 @@ const ListCampaign = (props) => {
                                                 </>
                                                 ,
                                                 (campaign.DiscountType === 1 ? "Minimum Cart Quantity" : campaign.DiscountType === 2 ? "Minimum Same Product Quantity" : campaign.DiscountType === 3 ? "Minimum Same Variant Quantity" : ""),
-                                                <List type="bullet">
+                                                <List type="bullet" key={index}>
                                                     {
                                                         campaign.ListDetails != undefined && campaign.ListDetails != null && campaign.ListDetails.length ? campaign.ListDetails.map((item, index) => {
                                                             return (
                                                                 index <= 1 ?
-                                                                    <List.Item>Buy {item.Quantity}+ {campaign.PriceType !== 3 ? 'discount' : 'fixed price'} {item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'} </List.Item> : <></>
+                                                                    <List.Item key={index}>Buy {item.Quantity}+ {campaign.PriceType !== 3 ? 'discount' : 'fixed price'} {item.PercentOrPrice}{campaign.PriceType === 1 ? '%' : '$'} </List.Item> : <></>
                                                             )
 
                                                         }) : <></>

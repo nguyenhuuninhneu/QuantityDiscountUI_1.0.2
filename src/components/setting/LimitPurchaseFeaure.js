@@ -131,23 +131,28 @@ function LimitPurchaseFeature() {
                               <div className='item'>
                                 <div className='itemLeft'>
                                   <p className='title'>Font size</p>
-                                  <TextField
-                                    id='FontSizeTitlePurchaseLimit'
-                                    placeholder='Font size'
-                                    value={settingState.Setting2.FontSizeTitlePurchaseLimit}
-                                    onChange={(e) => {
-                                      dispatch(setSetting({
-                                        ...settingState,
-                                        Setting2: {
-                                          ...settingState.Setting2,
-                                          FontSizeTitlePurchaseLimit: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
-                                        },
-                                        IsOpenSaveToolbar: true
-                                      }))
-                                    }}
-                                    type="number"
-                                    min={0}
-                                  />
+                                  <div className="relative">
+                                    <TextField
+                                      id='FontSizeTitlePurchaseLimit'
+                                      placeholder='Font size'
+                                      value={settingState.Setting2.FontSizeTitlePurchaseLimit}
+                                      onChange={(e) => {
+                                        dispatch(setSetting({
+                                          ...settingState,
+                                          Setting2: {
+                                            ...settingState.Setting2,
+                                            FontSizeTitlePurchaseLimit: e == '' ? '1' : validateNumber(e.trim()) ? e.trim() : "1",
+                                          },
+                                          IsOpenSaveToolbar: true
+                                        }))
+                                      }}
+                                      type="number"
+                                      min={1}
+                                      max={25}
+                                    />
+                                    <div className='background-disabled'></div>
+                                  </div>
+
                                 </div>
                                 <div className='itemRight'>
                                   <p className='title'>Text color</p>
@@ -296,23 +301,28 @@ function LimitPurchaseFeature() {
                               <div className='item'>
                                 <div className='itemLeft'>
                                   <p className='title'>Font size</p>
-                                  <TextField
-                                    id='FontSizeLimitTable'
-                                    placeholder='Font size'
-                                    value={settingState.Setting2.FontSizeLimitTable}
-                                    onChange={(e) => {
-                                      dispatch(setSetting({
-                                        ...settingState,
-                                        Setting2: {
-                                          ...settingState.Setting2,
-                                          FontSizeLimitTable: e == '' ? '0' : validateNumber(e.trim()) ? e.trim() : "0",
-                                        },
-                                        IsOpenSaveToolbar: true
-                                      }))
-                                    }}
-                                    type="number"
-                                    min={0}
-                                  />
+                                  <div className="relative">
+                                    <TextField
+                                      id='FontSizeLimitTable'
+                                      placeholder='Font size'
+                                      value={settingState.Setting2.FontSizeLimitTable}
+                                      onChange={(e) => {
+                                        dispatch(setSetting({
+                                          ...settingState,
+                                          Setting2: {
+                                            ...settingState.Setting2,
+                                            FontSizeLimitTable: e == '' ? '1' : validateNumber(e.trim()) ? e.trim() : "1",
+                                          },
+                                          IsOpenSaveToolbar: true
+                                        }))
+                                      }}
+                                      type="number"
+                                      min={1}
+                                      max={25}
+                                    />
+                                    <div className='background-disabled'></div>
+                                  </div>
+
                                 </div>
                                 <div className='cb'>
 

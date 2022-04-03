@@ -1,3 +1,5 @@
+
+
 const utils = {
     ShopifyMoney : (cents, format) => {
         if (typeof cents === 'string') {
@@ -42,7 +44,6 @@ const utils = {
                 value = formatWithDelimiters(cents, 0, '.', ',');
                 break;
         }
-        debugger;
         return formatString.replace(placeholderRegex, value);
     }
 }
