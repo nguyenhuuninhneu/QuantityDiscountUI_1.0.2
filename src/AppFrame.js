@@ -139,7 +139,7 @@ const AppFrame = () => {
                       <ul className="Polaris-Navigation__List">
                         <li className="Polaris-Navigation__ListItem">
                           <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.DASHBOARD ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} aria-disabled="false" onClick={() => {
-                            if (appState.PlanNumber === 1) {
+                            if (appState.PlanNumber === 0) {
                               setIsShowPopupUpgrade(true)
                             }
                             else {
@@ -149,7 +149,7 @@ const AppFrame = () => {
                         </li>
                         <li className="Polaris-Navigation__ListItem">
                           <div className="Polaris-Navigation__ItemWrapper"><a className={appState.Menu === moreAppConfig.Menu.REPORT ? "Polaris-Navigation__Item Polaris-Navigation__Item--selected Polaris-Navigation--subNavigationActive" : "Polaris-Navigation__Item"} aria-disabled="false" onClick={() => {
-                            if (appState.PlanNumber === 1) {
+                            if (appState.PlanNumber === 0) {
                               setIsShowPopupUpgrade(true)
                             }
                             else {
