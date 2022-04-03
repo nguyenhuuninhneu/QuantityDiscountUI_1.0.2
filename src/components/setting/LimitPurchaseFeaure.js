@@ -141,13 +141,13 @@ function LimitPurchaseFeature() {
                                           ...settingState,
                                           Setting2: {
                                             ...settingState.Setting2,
-                                            FontSizeTitlePurchaseLimit: e == '' ? '1' : validateNumber(e.trim()) ? e.trim() : "1",
+                                            FontSizeTitlePurchaseLimit: e == '' ? '11' : validateNumber(e.trim()) ? e.trim() : "11",
                                           },
                                           IsOpenSaveToolbar: true
                                         }))
                                       }}
                                       type="number"
-                                      min={1}
+                                      min={11}
                                       max={25}
                                     />
                                     <div className='background-disabled'></div>
@@ -311,13 +311,13 @@ function LimitPurchaseFeature() {
                                           ...settingState,
                                           Setting2: {
                                             ...settingState.Setting2,
-                                            FontSizeLimitTable: e == '' ? '1' : validateNumber(e.trim()) ? e.trim() : "1",
+                                            FontSizeLimitTable: e == '' ? '11' : validateNumber(e.trim()) ? e.trim() : "11",
                                           },
                                           IsOpenSaveToolbar: true
                                         }))
                                       }}
                                       type="number"
-                                      min={1}
+                                      min={11}
                                       max={25}
                                     />
                                     <div className='background-disabled'></div>

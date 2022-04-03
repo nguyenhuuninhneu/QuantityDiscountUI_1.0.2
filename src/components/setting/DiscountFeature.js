@@ -244,13 +244,13 @@ function DiscountFeature() {
                                           ...settingState,
                                           Setting2: {
                                             ...settingState.Setting2,
-                                            FontSizeDiscountTitle: e == '' ? '1' : validateNumber(e.trim()) ? e.trim() : "1",
+                                            FontSizeDiscountTitle: e == '' ? '11' : validateNumber(e.trim()) ? e.trim() : "11",
                                           },
                                           IsOpenSaveToolbar: true
                                         }))
                                       }}
                                       type="number"
-                                      min={1}
+                                      min={11}
                                       max={25}
                                     />
                                     <div className='background-disabled'></div>
@@ -607,13 +607,13 @@ function DiscountFeature() {
                                               ...settingState,
                                               Setting: {
                                                 ...settingState.Setting,
-                                                TableFontSizeHeading: e == '' ? '1' : validateNumber(e.trim()) ? e.trim() : "1",
+                                                TableFontSizeHeading: e == '' ? '11' : validateNumber(e.trim()) ? e.trim() : "11",
                                               },
                                               IsOpenSaveToolbar: true
                                             }))
                                           }}
                                           type="number"
-                                          min={1}
+                                          min={11}
                                           max={25}
                                         />
                                         <div className='background-disabled'></div>
@@ -880,13 +880,13 @@ function DiscountFeature() {
                                               ...settingState,
                                               Setting2: {
                                                 ...settingState.Setting2,
-                                                FontSizeCard: e == '' ? '1' : validateNumber(e.trim()) ? e.trim() : "1",
+                                                FontSizeCard: e == '' ? '11' : validateNumber(e.trim()) ? e.trim() : "11",
                                               },
                                               IsOpenSaveToolbar: true
                                             }))
                                           }}
                                           type="number"
-                                          min={1}
+                                          min={11}
                                           max={25}
                                         />
                                         <div className='background-disabled'></div>
@@ -989,13 +989,13 @@ function DiscountFeature() {
                                               ...settingState,
                                               Setting2: {
                                                 ...settingState.Setting2,
-                                                FontSizeItemInTable: e == '' ? '1' : validateNumber(e.trim()) ? e.trim() : "1",
+                                                FontSizeItemInTable: e == '' ? '11' : validateNumber(e.trim()) ? e.trim() : "11",
                                               },
                                               IsOpenSaveToolbar: true
                                             }))
                                           }}
                                           type="number"
-                                          min={1}
+                                          min={11}
                                           max={25}
                                         />
                                         <div className='background-disabled'></div>
