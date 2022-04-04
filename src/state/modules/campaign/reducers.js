@@ -147,6 +147,8 @@ const INITIAL_STATE = {
       FontSizeLimitTable: "14",
       TextColorLimitTable: "#000000",
       BackgroundColorLimitTable: "#F7CA00",
+      ShowDiscountedPriceEachCard: false,
+      TextDiscountedPriceEachCard: "Total: {total_amount} ({price_per_item}/each)"
     },
     IsEnabledAppLoading: false,
     YourName: '',

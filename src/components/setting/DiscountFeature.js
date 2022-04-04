@@ -23,7 +23,12 @@ function DiscountFeature() {
     ['4', '15', '320'],
     ['5', '20', '350']
   ]
+  const dataRowCardPreview = [
+    ['3', '10', '270'],
+    ['4', '15', '320'],
+  ]
   const [rowsPreview, setRowPreview] = useState(dataRowPreview);
+  const [rowsCardPreview, setRowCardPreview] = useState(dataRowCardPreview);
   const [isOpenDiscountCode, setIsOpenDiscountCode] = useState(false);
   const [isShowPopupUpgrade, setIsShowPopupUpgrade] = useState(false);
   const getDiscountCode = async () => {
@@ -333,9 +338,9 @@ function DiscountFeature() {
                                     }}>
                                       <div className="card-left-right" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
                                         <div className="card-inside">
-                                          <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
+                                          <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsCardPreview[1][0]}{settingState.Setting.TextPlus}</p>
                                           <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
-                                          <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
+                                          <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsCardPreview[1][1]}% {settingState.Setting2.TextOff}</p>
                                         </div>
                                         <div className="corner-left" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
                                           <div style={{
@@ -401,9 +406,7 @@ function DiscountFeature() {
                                           </div>
                                         </div>
                                       </div>
-                                      <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
-                                      <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
-                                      <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
+                                      
                                     </Button>
                                   </div>
                                   <div className={settingState.Setting2.CardTheme == 1 ? 'item-card-theme active' : 'item-card-theme'}>
@@ -421,9 +424,9 @@ function DiscountFeature() {
                                       <img src={CardBorder3} className="card-border" alt="" /> */}
                                       <div className="card-four-side" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
                                         <div className="card-inside">
-                                          <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
+                                          <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[1][0]}{settingState.Setting.TextPlus}</p>
                                           <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
-                                          <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
+                                          <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[1][1]}% {settingState.Setting2.TextOff}</p>
                                         </div>
                                         <div className="corner-1" style={{
                                           position: 'absolute',
@@ -1113,6 +1116,55 @@ function DiscountFeature() {
                             }
                           </div>
                         </Card.Section>
+                        {
+                          settingState.Setting.LayoutInProductPage === 3 ? <>
+                            <Card.Section>
+                              <div className='element-general'>
+                                <div className="break-line"></div>
+                                <Stack>
+                                  <Checkbox
+                                    id='ShowDiscountedPriceEachCard'
+                                    label="Show discounted price below after select each card"
+                                    checked={settingState.Setting2.ShowDiscountedPriceEachCard}
+                                    onChange={(e) => {
+                                      dispatch(setSetting({
+                                        ...settingState,
+                                        Setting2: {
+                                          ...settingState.Setting2,
+                                          ShowDiscountedPriceEachCard: e,
+                                        },
+                                        IsOpenSaveToolbar: true
+                                      }))
+
+                                    }}
+                                  />
+                                </Stack>
+                                <div className="break-line"></div>
+                                <div className='element-general-child'>
+                                  <TextField
+                                    id='TextDiscountedPriceEachCard'
+                                    placeholder='Total: {total_amount} ({price_per_item}/each)'
+                                    disabled={!settingState.Setting2.ShowDiscountedPriceEachCard}
+                                    value={settingState.Setting2.TextDiscountedPriceEachCard}
+                                    onChange={(e) => {
+                                      dispatch(setSetting({
+                                        ...settingState,
+                                        Setting2: {
+                                          ...settingState.Setting2,
+                                          TextDiscountedPriceEachCard: e,
+                                        },
+                                        IsOpenSaveToolbar: true
+                                      }))
+                                    }}
+                                    type="text"
+                                  />
+                                </div>
+                              </div>
+                            </Card.Section>
+                          </> : <>
+
+                          </>
+                        }
                         {/* CSS JS */}
                         <Card.Section>
                           <div className='element-general'>
@@ -1254,28 +1306,32 @@ function DiscountFeature() {
                             </Stack>
                             <div className="break-line"></div>
                             <div className='element-general-child'>
-                              <div className="flex flex-align-center">
-                                <Button
-                                  disabled={!settingState.Setting.UseDiscountCodeOnCart || appState.DisplayProcessShopify || settingState.LoadingDiscountSync || settingState.LoadingDataSync}
-                                  primary
-                                  onClick={() => {
-                                    dispatch(synchronizeDiscountFromShopify());
-                                  }}>Sync discounts from Shopify</Button>
-                                {
-                                  settingState.TextProcessShopifyCompleted != '' ? <span className="ml-10"> {settingState.TextProcessShopifyCompleted}</span> : settingState.DisplayProcessShopify ? <span className="ml-10" style={{ fontStyle: 'italic' }}>Loading {settingState.Process}%</span> : null
-                                }
+                              {
+                                settingState.Setting.UseDiscountCodeOnCart ? <>
+                                  <div className="flex flex-align-center">
+                                    <Button
+                                      disabled={appState.DisplayProcessShopify || settingState.LoadingDiscountSync || settingState.LoadingDataSync}
+                                      primary
+                                      onClick={() => {
+                                        dispatch(synchronizeDiscountFromShopify());
+                                      }}>Sync discounts from Shopify</Button>
+                                    {
+                                      settingState.TextProcessShopifyCompleted != '' ? <span className="ml-10"> {settingState.TextProcessShopifyCompleted}</span> : settingState.DisplayProcessShopify ? <span className="ml-10" style={{ fontStyle: 'italic' }}>Loading {settingState.Process}%</span> : null
+                                    }
 
-                              </div>
+                                  </div>
 
-                              <div className="break-line"></div>
-                              <div className="flex flex-align-center">
-                                <span className="mr-10"> Total: {settingState.TotalDiscountCode} discount codes</span> <Button onClick={() => {
-                                  setIsOpenDiscountCode(true);
-                                }}
-                                  disabled={!settingState.Setting.UseDiscountCodeOnCart}
-                                >Detail</Button>
-                              </div>
-                              <div className="break-line"></div>
+                                  <div className="break-line"></div>
+                                  <div className="flex flex-align-center">
+                                    <span className="mr-10"> Total: {settingState.TotalDiscountCode} discount codes</span> <Button onClick={() => {
+                                      setIsOpenDiscountCode(true);
+                                    }}
+                                    >Detail</Button>
+                                  </div>
+                                  <div className="break-line"></div>
+                                </> : <></>
+                              }
+
                               <p className='only-text'>Discount code prefix</p>
                               <TextField
                                 id='DisCountCodePrefix'
@@ -1612,17 +1668,18 @@ function DiscountFeature() {
 
                           settingState.Setting.LayoutInProductPage == 3 ? <>
                             <div className="Polaris-CalloutCard__Buttons" style={{ display: 'flex', marginTop: 0 }}>
-                              <div className={rowsPreview.length > 2 ? "list-card-scroll" : ''}>
+                              
+                              <div className={rowsCardPreview.length > 2 ? "list-card-scroll" : 'list-card'}>
                                 {
-                                  rowsPreview.map((item, index) => {
+                                  rowsCardPreview.map((item, index) => {
                                     return (
                                       settingState.Setting2.CardTheme == 0 ? <>
                                         <div className='card-orange' key={index} style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
                                           <div className="card-left-right" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
                                             <div className="card-inside">
-                                              <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
+                                              <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {item[0]}{settingState.Setting.TextPlus}</p>
                                               <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
-                                              <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
+                                              <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{item[1]}% {settingState.Setting2.TextOff}</p>
                                             </div>
                                             <div className="corner-left" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
                                               <div style={{
@@ -1698,9 +1755,9 @@ function DiscountFeature() {
                                         <div className='card-orange' style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>
                                           <div className="card-four-side" style={{ backgroundColor: settingState.Setting2.BackgroundColorCard }}>
                                             <div className="card-inside">
-                                              <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {rowsPreview[0][0]}{settingState.Setting.TextPlus}</p>
+                                              <p className="buy" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting.TextBuy} {item[0]}{settingState.Setting.TextPlus}</p>
                                               <p className="get" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{settingState.Setting2.TextGet}</p>
-                                              <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{rowsPreview[0][1]}% {settingState.Setting2.TextOff}</p>
+                                              <p className="off-card" style={{ color: settingState.Setting2.TextColorCard, fontSize: settingState.Setting2.FontSizeCard + 'px' }}>{item[1]}% {settingState.Setting2.TextOff}</p>
                                             </div>
                                             <div className="corner-1" style={{
                                               position: 'absolute',
@@ -1768,6 +1825,10 @@ function DiscountFeature() {
                           </>
                             : <></>
                         }
+                        {settingState.Setting.LayoutInProductPage == 3 && settingState.Setting2.ShowDiscountedPriceEachCard ? <>
+                          <p style={{ marginTop: '10px' }}>{settingState.Setting2.TextDiscountedPriceEachCard.replace('{total_amount}', '$' + (rowsCardPreview[0][0] * (100-rowsCardPreview[0][1]))).replace('{price_per_item}', '$' + (100 - rowsCardPreview[0][1]))}</p>
+
+                        </> : <></>}
                         {settingState.Setting.ShowDescription ? <>
                           <p style={{ marginTop: '10px' }}>This discount is applied to the total quantity of products in your cart</p>
 

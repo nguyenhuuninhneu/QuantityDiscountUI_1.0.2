@@ -183,16 +183,6 @@ const CreateUpdateCampaign = (props) => {
     }, []);
 
 
-    const numberWithCommas = (x) => {
-        return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
-    }
-
-    const makeMoney = (x, expect) => {
-        const result = numberWithCommas(x);
-        const pass = result === expect;
-        console.log(`${pass ? "✓" : "ERROR ====>"} ${x} => ${result}`);
-        return result;
-    }
     const [IsOpenAdSpecificCollectionModal, setIsOpenAddSpecificCollectionModal] = useState(false);
     const [IsOpenAdSpecificProductModal, setIsOpenAddSpecificProductModal] = useState(false);
     const [IsHideNotification, setIsHideNotification] = useState(false);
@@ -597,7 +587,7 @@ const CreateUpdateCampaign = (props) => {
     }
     const AddProduct = () => {
         var listOld = campaign.ListVariants !== undefined && campaign.ListVariants !== null ? campaign.ListVariants : [];
-        var firstProduct = campaignState.SelectOptionProducts.filter(p=> !listOld.map(x=>x.ProductID).includes(p.value));
+        var firstProduct = campaignState.SelectOptionProducts.filter(p => !listOld.map(x => x.ProductID).includes(p.value));
         var listVariant = firstProduct !== undefined ? firstProduct.map(m => m.ListVariant)[0] : [];
         var item = {
             ID: Math.floor(100000000 + Math.random() * 900000000),
@@ -1180,7 +1170,7 @@ const CreateUpdateCampaign = (props) => {
                                                                                                                     value={campaignState.SelectOptionProducts != null && campaignState.SelectOptionProducts.filter(p => p.ProductID == ProductID)[0] || campaignState.SelectOptionProducts != null && campaignState.SelectOptionProducts[0]}
                                                                                                                 />
                                                                                                                 <Card>
-                                                                                                                    <div className={ListVariant != undefined && ListVariant != null && ListVariant.length > 7 ?"scroll-variant":"" }>
+                                                                                                                    <div className={ListVariant != undefined && ListVariant != null && ListVariant.length > 7 ? "scroll-variant" : ""}>
                                                                                                                         <OptionList
                                                                                                                             onChange={(e) => { handleChangeCheckVariantByProduct(e, ProductID, index) }}
                                                                                                                             options={ListVariant}
@@ -1723,6 +1713,10 @@ const CreateUpdateCampaign = (props) => {
                                                                 : <></>
                                                         }
                                                         <div className="cb"></div>
+                                                        {campaignState.Setting.LayoutInProductPage == 3 && campaignState.Setting2.ShowDiscountedPriceEachCard ? <>
+                          <p style={{ marginTop: '10px' }}>{rowsPreview.length > 0 ? campaignState.Setting2.TextDiscountedPriceEachCard.replace('{total_amount}', '$' + (rowsPreview[0].Quantity * (100-rowsPreview[0].PercentOrPrice))).replace('{price_per_item}', '$' + (100 - rowsPreview[0].PercentOrPrice)) : campaignState.Setting2.TextDiscountedPriceEachCard}</p>
+
+                        </> : <></>}
                                                         {
                                                             campaignState.Setting.ShowDescription ? <>
                                                                 <p className='discount-applied'> {

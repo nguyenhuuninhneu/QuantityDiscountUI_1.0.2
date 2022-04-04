@@ -3,7 +3,7 @@
     width: calc((100% - 30px) / 2);
 }
 
-.create-update-limit-purchase .item:nth-child(2n) {
+.create-update-limit-purchase .item:last-child {
     margin-left: 30px;
 }
 

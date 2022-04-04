@@ -574,7 +574,7 @@ const LimitPurchase = () => {
                                             type="text"
                                         />
                                     </div>
-                                    <div className='item'>
+                                    <div className='item' style={{marginLeft: '30px' }}>
                                         <TextField
                                             label="Max limit purchase"
                                             value={createLimitPurchaseState.BulkUpdate.Max !== null ? createLimitPurchaseState.BulkUpdate.Max.toString() : '0'}
