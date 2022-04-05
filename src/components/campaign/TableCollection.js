@@ -14,7 +14,7 @@ function TableCollection(props) {
   const [textSearch, setTextSearch] = useState('');
   const [nextPage, setNextPage] = useState(1);
   const [wholeSelected, setWholeSelected] = React.useState(props.ItemSelected || []);
-  const [selectedRows, setSelectedRows] = React.useState([]);//props.ItemSelected || 
+  const [selectedRows, setSelectedRows] = React.useState(props.ItemSelected || []);//props.ItemSelected || 
   const [data, setData] = useState([]);
   const columns = [
     {
@@ -104,7 +104,7 @@ function TableCollection(props) {
         campaign:
         {
           ...campaign,
-          ListCollects: wholeSelected
+          ListCollects: selectedRows.length > 0 ? selectedRows : wholeSelected
         },
         IsOpenSaveToolbar: true
       }));
@@ -142,7 +142,7 @@ function TableCollection(props) {
             placeholder='Search Collection'
           />
           <div className="selected-item">
-            {wholeSelected.length} collection selected
+            {selectedRows.length} collection selected
           </div>
 
         </div>
@@ -151,7 +151,7 @@ function TableCollection(props) {
           data={data}
           selectableRows
           onSelectedRowsChange={handleRowSelected}
-          selectableRowSelected={row => wholeSelected != undefined && wholeSelected.map(p => p.CollectID).indexOf(row.CollectID) >= 0}
+          selectableRowSelected={row => props.ItemSelected != null && props.ItemSelected.length > 0 && selectedRows.length > 0 ? selectedRows.map(p => p.CollectID).indexOf(row.CollectID) >= 0 :  wholeSelected != undefined && wholeSelected.map(p => p.CollectID).indexOf(row.CollectID) >= 0}
         />
       </Modal.Section>
 

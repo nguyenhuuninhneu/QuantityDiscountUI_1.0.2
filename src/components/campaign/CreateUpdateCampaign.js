@@ -186,7 +186,7 @@ const CreateUpdateCampaign = (props) => {
     const [IsOpenAdSpecificCollectionModal, setIsOpenAddSpecificCollectionModal] = useState(false);
     const [IsOpenAdSpecificProductModal, setIsOpenAddSpecificProductModal] = useState(false);
     const [IsHideNotification, setIsHideNotification] = useState(false);
-
+    
 
     const handleSelectChangeDiscountType = (value) => {
         dispatch(setCreateUpdateCampaign({
