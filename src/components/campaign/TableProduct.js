@@ -16,7 +16,6 @@ function TableProduct(props) {
     const campaignState = useSelector((state) => state.campaign.CreateUpdateCampaign);
     const campaign = campaignState.campaign;
 
-debugger;
     const [textSearch, setTextSearch] = useState('');
     const [textLoading, setTextLoading] = useState('');
     const [nextPage, setNextPage] = useState(1);
@@ -114,7 +113,6 @@ debugger;
 
     }, []);
     function AddProductToInput() {
-        debugger;
         var arrAdd = props.ItemSelected.concat(selectedRows);
         var newData = [];
         newData = data.filter(p=> !selectedRows.map(x=>x.ProductID).includes(p.ProductID));
