@@ -22,6 +22,7 @@ function Dashboard() {
 
   useEffect(() => {
     var strDateToday = today.getFullYear() + '-' + (today.getMonth() < 9 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1) + '-' + (today.getDate() < 10 ? '0' + today.getDate() : today.getDate());
+    handleChangeSetDate({start: today ,end : today});
     dispatch(fetchDashboard(strDateToday, strDateToday));
   }, [dispatch]);
   const [{ month, year }, setDate] = useState({ month: today.getMonth(), year: today.getFullYear() });
@@ -428,7 +429,7 @@ function Dashboard() {
                         {dashboardState.DashboardData.ProductsAppliedDiscount}/{dashboardState.DashboardData.TotalProduct}
                       </div>
                       <div className='percent'>
-                        ~{dashboardState.DashboardData.ProductsAppliedDiscountPercentage * 100}%
+                        ~{dashboardState.DashboardData.ProductsAppliedDiscountPercentage}%
                       </div>
                       <div className='cb'>
                       </div>

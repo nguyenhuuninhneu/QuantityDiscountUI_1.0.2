@@ -139,6 +139,12 @@ function Plan() {
                                         </div>
                                         <div className='col col3'>
                                             {
+                                                planState.PlanNumber === 1 ?
+                                                <>
+                                                    <Button disabled={true} onClick={() => {
+
+                                                    }}>Current plan</Button>
+                                                </>: 
                                                 planState.StartFreeTrial == 0 ? <>
                                                     <Button primary onClick={() => {
                                                         dispatch(setPlan({
@@ -146,13 +152,7 @@ function Plan() {
                                                             IsOpenStartFreeTrial: true
                                                         }))
                                                     }}>Start free trial</Button>
-                                                </> : planState.PlanNumber === 1 ?
-                                                    <>
-                                                        <Button disabled={true} onClick={() => {
-
-                                                        }}>Current plan</Button>
-                                                    </>
-                                                    :
+                                                </> : 
                                                     <>
                                                         <Button primary onClick={() => {
                                                             dispatch(setPlan({

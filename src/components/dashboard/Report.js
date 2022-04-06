@@ -23,6 +23,7 @@ const Report = (props) => {
     var optionsDate = { year: 'numeric', month: 'short', day: 'numeric' };
     useEffect(() => {
         var strDateToday = today.getFullYear() + '-' + (today.getMonth() < 9 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1) + '-' + (today.getDate() < 10 ? '0' + today.getDate() : today.getDate());
+        handleChangeSetDate({start: today ,end : today});
         dispatch(fetchList(strDateToday, strDateToday));
 
 

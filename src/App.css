@@ -1502,7 +1502,7 @@ input[type="color"]::-webkit-color-swatch {
 .group-card-theme .item-card-theme .Polaris-Button {
     box-sizing: border-box;
     box-shadow: none;
-    padding: 10px;
+    padding: 12px;
     border: 3px solid #DADADA;
     border-radius: 4px;
 }
@@ -1894,4 +1894,9 @@ background: yellow;
     height: 100%;
     z-index: 99;
     opacity: 20%;
+}
+
+.group-card-theme .item-card-theme .Polaris-Button:hover{
+    background: #fff !important;
+
 }

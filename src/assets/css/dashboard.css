@@ -54,10 +54,9 @@ color: #202223;
 }
 
 .dashboard .group-sales .item .number,.dashboard .group-sales .item .percent{
-    float: left;
-    width: 50%;
+    min-width: 50%;
+    display: inline-block;
 }
-
 
 .dashboard .group-discount .item {
     background: #E5E5E5;

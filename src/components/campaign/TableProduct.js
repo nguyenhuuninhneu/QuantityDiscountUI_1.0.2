@@ -16,11 +16,10 @@ function TableProduct(props) {
     const campaignState = useSelector((state) => state.campaign.CreateUpdateCampaign);
     const campaign = campaignState.campaign;
 
-
+debugger;
     const [textSearch, setTextSearch] = useState('');
     const [textLoading, setTextLoading] = useState('');
     const [nextPage, setNextPage] = useState(1);
-    const [wholeSelected, setWholeSelected] = React.useState(props.ItemSelected || []);
     const [selectedRows, setSelectedRows] = React.useState([]);//props.ItemSelected ||
     const [data, setData] = useState([]);
 
@@ -52,7 +51,11 @@ function TableProduct(props) {
         })
             .then(function (response) {
                 const result = response?.data;
-                setData(result.products)
+                var product = result.products;
+                if (props.ItemSelected !=undefined && props.ItemSelected != null && result.products != undefined && result.products != null) {
+                    product = product.filter(p=> !props.ItemSelected.map(x=>x.ProductID).includes(p.ProductID));
+                }
+                setData(product)
                 // setTotalPage(result.totalpage);
                 if (result.page < result.totalpage) {
                     setNextPage(result.page + 1)
@@ -87,6 +90,9 @@ function TableProduct(props) {
                 } else {
                     setNextPage(0)
                 }
+                var newData = [];
+                var newData = data.filter(p=> !selectedRows.map(x=>x.ProductID).includes(p.ProductID));
+        setData(newData);
             })
             .catch(function (error) {
                 const errorMsg = error.message;
@@ -95,30 +101,35 @@ function TableProduct(props) {
     };
     const handleRowSelected = React.useCallback(state => {
         setSelectedRows(state.selectedRows);
-        if (wholeSelected.length === 0) {
-            setWholeSelected(...wholeSelected, state.selectedRows)
-        } else {
-            var arrWhole = wholeSelected;
-            var arrAdd = state.selectedRows.filter(x => !arrWhole.map(p=>p.ProductID).includes(x.ProductID));
-            if (arrAdd.length > 0) {
-                arrWhole = arrWhole.concat(arrAdd);
-            }
-            setWholeSelected(arrWhole)
-        }
+        // if (wholeSelected.length === 0) {
+        //     setWholeSelected(...wholeSelected, state.selectedRows)
+        // } else {
+        //     var arrWhole = wholeSelected;
+        //     var arrAdd = state.selectedRows.filter(x => !arrWhole.map(p=>p.ProductID).includes(x.ProductID));
+        //     if (arrAdd.length > 0) {
+        //         arrWhole = arrWhole.concat(arrAdd);
+        //     }
+        //     setWholeSelected(arrWhole)
+        // }
 
     }, []);
     function AddProductToInput() {
+        debugger;
+        var arrAdd = props.ItemSelected.concat(selectedRows);
+        var newData = [];
+        newData = data.filter(p=> !selectedRows.map(x=>x.ProductID).includes(p.ProductID));
+        setData(newData);
+        setSelectedRows([]);
         dispatch(setCreateUpdateCampaign(
             {
                 ...campaignState,
                 campaign:
                 {
                     ...campaign,
-                    ListProducts: wholeSelected
+                    ListProducts: arrAdd
                 },
-                IsOpenSaveToolbar: true
             }));
-        props.setIsOpenAddSpecificProductModal(false);
+        // props.setIsOpenAddSpecificProductModal(false);
 
     }
     // Invoke when user click to request another page.
@@ -179,14 +190,14 @@ function TableProduct(props) {
             onClose={() => { props.setIsOpenAddSpecificProductModal(false) }}
             title="Choose product"
             primaryAction={{
-                content: 'Done',
+                content: 'Add',
                 onAction: () => {
                     AddProductToInput()
                 },
             }}
             secondaryActions={[
                 {
-                    content: 'Cancel',
+                    content: 'Close',
                     onAction: () => { props.setIsOpenAddSpecificProductModal(false) },
                 },
             ]}
@@ -197,6 +208,7 @@ function TableProduct(props) {
                 hasMore={true}
                 // loader={textLoading}
                 height={420}
+                
                 marginTop={10}
             >
                 <Modal.Section>
@@ -211,7 +223,7 @@ function TableProduct(props) {
                             placeholder='Search Product'
                         />
                         <div className="selected-item">
-                            {wholeSelected.length} product selected
+                            {selectedRows.length} product selected
                         </div>
                         <div className="shadow">
                         </div>
@@ -222,7 +234,7 @@ function TableProduct(props) {
                         data={data}
                         selectableRows
                         onSelectedRowsChange={handleRowSelected}
-                        selectableRowSelected={row => wholeSelected != undefined && wholeSelected.map(p => p.ProductID).indexOf(row.ProductID) >= 0}
+                        // selectableRowSelected={row => selectedRows != undefined && selectedRows.map(p => p.ProductID).indexOf(row.ProductID) >= 0}
                     />
 
                     {/* {
