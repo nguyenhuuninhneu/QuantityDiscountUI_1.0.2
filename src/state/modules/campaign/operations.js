@@ -15,63 +15,25 @@ const todayStr = year + '-' + month + '-' + day;
 export const fetchList = () => {
 
   return (dispatch, getState) => {
-    var shopID = getState().app.Shop?.ID;
     dispatch(actions.fetchListLoading());
-
-    if (shopID == undefined) {
-      axios.get(config.rootLink + '/FrontEnd/GetShopID', {
-        params: {
-          shop: config.shop,
-          token: config.token,
-        }
+    axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginate', {
+      params: {
+        search: '',
+        discounttype: 0,
+        shop: config.shop,
+        page: 1,
+        pagezise: 10,
+        token: config.token,
+      }
+    })
+      .then(function (response) {
+        const result = response?.data;
+        dispatch(actions.fetchListCompleted(result));
       })
-        .then(function (response) {
-          const result = response?.data;
-          axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginate', {
-            params: {
-              search: '',
-              discounttype: 0,
-              shopID: result.ShopID,
-              shop: config.shop,
-              page: 1,
-              pagezise: 10,
-              token: config.token,
-            }
-          })
-            .then(function (response) {
-              const result = response?.data;
-              dispatch(actions.fetchListCompleted(result));
-            })
-            .catch(function (error) {
-              const errorMsg = error.message;
-              console.log(errorMsg);
-            })
-        })
-        .catch(function (error) {
-          const errorMsg = error.message;
-        })
-    }
-    else {
-      axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginate', {
-        params: {
-          search: '',
-          discounttype: 0,
-          shopID: shopID,
-          shop: config.shop,
-          page: 1,
-          pagezise: 10,
-          token: config.token,
-        }
+      .catch(function (error) {
+        const errorMsg = error.message;
+        console.log(errorMsg);
       })
-        .then(function (response) {
-          const result = response?.data;
-          dispatch(actions.fetchListCompleted(result));
-        })
-        .catch(function (error) {
-          const errorMsg = error.message;
-          console.log(errorMsg);
-        })
-    }
 
   };
 };
@@ -145,19 +107,11 @@ export const saveCampaign = (isFirstCampaign = false, isEndDate = false) => {
     dispatch(actions.setIsSaveLoading(true));
     dispatch(actions.setIsLoadingPage(true));
     var campaign = getState().campaign.CreateUpdateCampaign.campaign;
-    var createcampaign = getState().campaign.CreateUpdateCampaign;
-    var yourname = createcampaign.YourName;
-    var youremail = createcampaign.YourEmail;
-    var describe = createcampaign.DescribeYourProblem;
     axios.post(config.rootLink + '/FrontEnd/SaveCampaign', {
       campaign: campaign,
       shop: config.shop,
       isFirstCampaign: isFirstCampaign,
       isEndDate: isEndDate,
-      shopID: campaign.ShopID,
-      yourname: yourname,
-      youremail: youremail,
-      describe: describe,
       token: config.token,
     })
       .then(function (response) {
@@ -210,6 +164,33 @@ export const enableAppEmbed = (isEnable) => {
 
   };
 };
+
+export const sendSupportRequest = (yourname,youremail,describe) => {
+  return (dispatch, getState) => {
+    dispatch(actions.setIsSaveLoading(true));
+    axios.post(config.rootLink + '/FrontEnd/SendSupportRequest', {
+      shop: config.shop,
+      yourname: yourname,
+      youremail: youremail,
+      describe: describe,
+    })
+      .then(function (response) {
+
+        const result = response?.data;
+        if (result.IsSuccess) {
+          dispatch(actions.sendSupportRequestCompleted(result));
+        } else {
+          dispatch(actions.sendSupportRequestFailed(result));
+        }
+
+      })
+      .catch(function (error) {
+        const errorMsg = error.message;
+        dispatch(actions.sendSupportRequestFailed({IsSuccess: false, Message: errorMsg}));
+      })
+
+  }
+}
 export default {
   fetchList,
   createCampaign,

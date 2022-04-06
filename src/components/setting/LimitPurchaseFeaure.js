@@ -717,10 +717,10 @@ function LimitPurchaseFeature() {
       </> :
         <></>
       }
-      {settingState.IsOpenSaveResult ? <Toast content={settingState.MessageSaveResult} duration={4000} onDismiss={() => {
+      {settingState.IsOpenSaveResult ? <Toast content={settingState.MessageSaveResult} duration={1600} onDismiss={() => {
         dispatch(setSetting({
           ...settingState,
-          IsOpenSaveResult: null
+          IsOpenSaveResult: false
         }))
       }} /> : null}
 

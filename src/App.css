@@ -1900,3 +1900,12 @@ background: yellow;
     background: #fff !important;
 
 }
+
+.bound-infinitive {
+    margin-top: 20px;
+}
+
+.infinite-scroll-component .Polaris-Modal-Section{
+    padding-top: 0 !important;
+}
+

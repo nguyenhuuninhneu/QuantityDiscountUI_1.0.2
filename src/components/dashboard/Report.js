@@ -20,18 +20,23 @@ const Report = (props) => {
     const reportState = useSelector((state) => state.report.ListReport);
     const [Alert, setAlert] = useState(null);
     var today = new Date();
+    var startdate = new Date();
+    var enddate = new Date();
+    startdate = localStorage.getItem('startdate_report') ? new Date(localStorage.getItem('startdate_report')) : today;
+    enddate = localStorage.getItem('enddate_report') ? new Date(localStorage.getItem('enddate_report')) : today;
     var optionsDate = { year: 'numeric', month: 'short', day: 'numeric' };
     useEffect(() => {
-        var strDateToday = today.getFullYear() + '-' + (today.getMonth() < 9 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1) + '-' + (today.getDate() < 10 ? '0' + today.getDate() : today.getDate());
-        handleChangeSetDate({start: today ,end : today});
-        dispatch(fetchList(strDateToday, strDateToday));
+        var strStartDateToday = startdate.getFullYear() + '-' + (startdate.getMonth() < 9 ? '0' + (startdate.getMonth() + 1) : startdate.getMonth() + 1) + '-' + (startdate.getDate() < 10 ? '0' + startdate.getDate() : startdate.getDate());
+        var strEndDateToday = enddate.getFullYear() + '-' + (enddate.getMonth() < 9 ? '0' + (enddate.getMonth() + 1) : enddate.getMonth() + 1) + '-' + (enddate.getDate() < 10 ? '0' + enddate.getDate() : enddate.getDate());
+        handleChangeSetDate({ start: startdate, end: enddate });
+        dispatch(fetchList(strStartDateToday, strEndDateToday));
 
 
     }, []);
-    const [{ month, year }, setDate] = useState({ month: today.getMonth(), year: today.getFullYear() });
+    const [{ month, year }, setDate] = useState({ month: startdate.getMonth(), year: startdate.getFullYear() });
     const [selectedDates, setSelectedDates] = useState({
-        start: new Date(),
-        end: new Date()
+        start: startdate,
+        end: enddate
     });
 
     const handleMonthChange = useCallback(
@@ -212,7 +217,6 @@ const Report = (props) => {
         var strEnd = selectedDates.end.getFullYear() + '-' + (selectedDates.end.getMonth() < 9 ? '0' + (selectedDates.end.getMonth() + 1) : selectedDates.end.getMonth() + 1) + '-' + (selectedDates.end.getDate() < 10 ? '0' + selectedDates.end.getDate() : selectedDates.end.getDate());
         axios.get(config.rootLink + '/FrontEnd/GetReports', {
             params: {
-                shopID: appState.Shop?.ID,
                 shop: config.shop,
                 startDate: strStart,
                 endDate: strEnd,
@@ -351,6 +355,8 @@ const Report = (props) => {
                                                     ...reportState,
                                                     IsOpenDateRange: false
                                                 }))
+                                                window.localStorage.setItem('startdate_report', selectedDates.start);
+                                                window.localStorage.setItem('enddate_report', selectedDates.end);
                                                 var strStart = selectedDates.start.getFullYear() + '-' + (selectedDates.start.getMonth() < 9 ? '0' + (selectedDates.start.getMonth() + 1) : selectedDates.start.getMonth() + 1) + '-' + (selectedDates.start.getDate() < 10 ? '0' + selectedDates.start.getDate() : selectedDates.start.getDate());
                                                 var strEnd = selectedDates.end.getFullYear() + '-' + (selectedDates.end.getMonth() < 9 ? '0' + (selectedDates.end.getMonth() + 1) : selectedDates.end.getMonth() + 1) + '-' + (selectedDates.end.getDate() < 10 ? '0' + selectedDates.end.getDate() : selectedDates.end.getDate());
                                                 dispatch(fetchList(strStart, strEnd))

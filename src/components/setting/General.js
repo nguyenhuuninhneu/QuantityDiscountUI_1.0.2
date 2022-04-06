@@ -28,57 +28,20 @@ function General() {
   });
   const getAsyncOptions = (inputValue) => {
     return new Promise((resolve, reject) => {
-      var shopID = appState?.Shop?.ID;
-      if (shopID == undefined) {
-        axios.get(config.rootLink + '/FrontEnd/GetShopID', {
-          params: {
-            shop: config.shop,
-            token: config.token,
-          }
+      axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginateSetting', {
+        params: {
+          search: inputValue,
+          shop: config.shop,
+          page: 1,
+          pagezise: 10,
+          token: config.token,
+        }
+      })
+        .then((res) => {
+          const result = res?.data;
+          resolve(result.campaigns);
         })
-          .then(function (response) {
-            const result = response?.data;
-
-            axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginateSetting', {
-              params: {
-                search: inputValue,
-                shopID: result.ShopID,
-                shop: config.shop,
-                page: 1,
-                pagezise: 10,
-                token: config.token,
-              }
-            })
-              .then((res) => {
-                const result = res?.data;
-                setOption(result);
-                resolve(result.campaigns);
-              })
-              .catch(err => console.log(err))
-          })
-          .catch(function (error) {
-            const errorMsg = error.message;
-          })
-      }
-      else {
-        axios.get(config.rootLink + '/FrontEnd/SearchCampaignPaginateSetting', {
-          params: {
-            search: inputValue,
-            shopID: shopID,
-            shop: config.shop,
-            page: 1,
-            pagezise: 10,
-            token: config.token,
-          }
-        })
-          .then((res) => {
-            const result = res?.data;
-
-            resolve(result.campaigns);
-          })
-          .catch(err => console.log(err))
-      }
-
+        .catch(err => console.log(err))
 
     });
   }
@@ -89,7 +52,6 @@ function General() {
           params: {
             search: inputValue2,
             campaignID: settingState.CampaignID,
-            shopID: appState?.Shop.ID,
             shop: config.shop,
             page: 1,
             pagezise: 10,
@@ -436,10 +398,10 @@ function General() {
       </> :
         <></>
       }
-      {settingState.IsOpenSaveResult ? <Toast content={settingState.MessageSaveResult} duration={4000} onDismiss={() => {
+      {settingState.IsOpenSaveResult ? <Toast content={settingState.MessageSaveResult} duration={1600} onDismiss={() => {
         dispatch(setSetting({
           ...settingState,
-          IsOpenSaveResult: null
+          IsOpenSaveResult: false
         }))
       }} /> : null}
 

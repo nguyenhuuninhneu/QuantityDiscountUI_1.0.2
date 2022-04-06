@@ -32,7 +32,6 @@ const ListCampaign = (props) => {
             params: {
                 search: campaignState.TextSearchProduct,
                 discounttype: campaignState.DiscountTypeSelected.value,
-                shopID: appState.Shop?.ID,
                 shop: config.shop,
                 page: event.selected + 1,
                 pagezise: 10,
@@ -72,7 +71,6 @@ const ListCampaign = (props) => {
                             params: {
                                 search: campaignState.TextSearchProduct,
                                 discounttype: campaignState.DiscountTypeSelected.value,
-                                shopID: appState.Shop?.ID,
                                 shop: appState.Shop?.Domain,
                                 page: 1,
                                 pagezise: 10,
@@ -99,7 +97,7 @@ const ListCampaign = (props) => {
                                     dispatch(setIsNoCampaign(false));
                                 }
                                 dispatch(setIsCreatingCampaign(false));
-                                setAlert(<Toast content={'The campaign: ' + Campaign.Title + ' deleted successfully'} duration={3000} onDismiss={() => {
+                                setAlert(<Toast content={'The campaign: ' + Campaign.Title + ' deleted successfully'} duration={1600} onDismiss={() => {
                                     setAlert(null);
                                 }} />);
                             })
@@ -126,7 +124,6 @@ const ListCampaign = (props) => {
             params: {
                 search: textSearch,
                 discounttype: discountType.value,
-                shopID: appState.Shop?.ID,
                 shop: config.shop,
                 page: 1,
                 pagezise: 10,
@@ -185,7 +182,7 @@ const ListCampaign = (props) => {
                     //     ...p,
                     //     Active: !campaign.Active
                     // } : p)))
-                    setAlert(<Toast content={'The campaign: ' + campaign.Title + ' update status successfully'} duration={3000} onDismiss={() => {
+                    setAlert(<Toast content={'The campaign: ' + campaign.Title + ' update status successfully'} duration={1600} onDismiss={() => {
                         setAlert(null);
                     }} />);
                 }

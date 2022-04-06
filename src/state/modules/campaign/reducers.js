@@ -382,6 +382,30 @@ const reducer = (state = INITIAL_STATE, action) => {
         }
 
       };
+      case types.SEND_SUPPORT_REQUEST_COMPLETED:
+      return {
+        ...state,
+        CreateUpdateCampaign: {
+          ...state.CreateUpdateCampaign,
+          IsSaveLoading: false,
+          IsLoadingPage: false,
+          IsShowSendSupport: false,
+          IsOpenSaveResult: true,
+          MessageSaveResult: action.payload.IsSuccess ? 'Send the support request is saved successfully.' : action.payload.Message,
+          
+        }
+      };
+    case types.SEND_SUPPORT_REQUEST_FAILED:
+      return {
+        ...state,
+        CreateUpdateCampaign: {
+          ...state.CreateUpdateCampaign,
+          IsOpenSaveToolbar: false,
+          IsShowSendSupport: false,
+          IsSaveLoading: false,
+          MessageSaveResult: action.payload.Message,
+        }
+      };
     default:
       return state;
   }

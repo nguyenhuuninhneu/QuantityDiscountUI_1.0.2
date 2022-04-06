@@ -262,10 +262,10 @@ function Plan() {
             >
 
             </Modal>
-            {planState.IsOpenSaveResult ? <Toast content={planState.MessageSaveResult} duration={4000} onDismiss={() => {
+            {planState.IsOpenSaveResult ? <Toast content={planState.MessageSaveResult} duration={1600} onDismiss={() => {
                 dispatch(setPlan({
                     ...planState,
-                    IsOpenSaveResult: null
+                    IsOpenSaveResult: false
                 }))
             }} /> : null}
         </>

@@ -32,7 +32,6 @@ function TableCollection(props) {
     axios.get(config.rootLink + '/FrontEnd/GetCollectPaginate', {
       params: {
         search: e,
-        shopID: appState.Shop?.ID,
         shop: config.shop,
         page: 1,
         pagezise: 10,
@@ -61,7 +60,6 @@ function TableCollection(props) {
     axios.get(config.rootLink + '/FrontEnd/GetCollectPaginate', {
       params: {
         search: textSearch,
-        shopID: appState.Shop?.ID,
         shop: config.shop,
         page: 1,
         pagezise: 10,

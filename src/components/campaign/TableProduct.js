@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Modal, TextField } from '@shopify/polaris';
+import { Modal, TextField,Toast } from '@shopify/polaris';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCreateUpdateCampaign } from '../../state/modules/campaign/actions';
 import '../../assets/css/paginate.css';
@@ -21,6 +21,8 @@ function TableProduct(props) {
     const [nextPage, setNextPage] = useState(1);
     const [selectedRows, setSelectedRows] = React.useState([]);//props.ItemSelected ||
     const [data, setData] = useState([]);
+    const [isOpenToast, setIsOpenToast] = useState(false);
+    const [numberOfSelected, setNumberOfSelected] = useState(0);
 
     const columns = [
         {
@@ -40,8 +42,8 @@ function TableProduct(props) {
         axios.get(config.rootLink + '/FrontEnd/SearchProductPaginate', {
             params: {
                 search: textSearch,
-                shopID: appState.Shop?.ID,
                 shop: config.shop,
+                selectedstr: campaignState.campaign.ListProducts.map(p => p.ProductID).toString(),
                 page: 1,
                 pagezise: 10,
                 token: config.token,
@@ -51,9 +53,9 @@ function TableProduct(props) {
             .then(function (response) {
                 const result = response?.data;
                 var product = result.products;
-                if (props.ItemSelected !=undefined && props.ItemSelected != null && result.products != undefined && result.products != null) {
-                    product = product.filter(p=> !props.ItemSelected.map(x=>x.ProductID).includes(p.ProductID));
-                }
+                // if (props.ItemSelected != undefined && props.ItemSelected != null && result.products != undefined && result.products != null) {
+                //     product = product.filter(p => !props.ItemSelected.map(x => x.ProductID).includes(p.ProductID));
+                // }
                 setData(product)
                 // setTotalPage(result.totalpage);
                 if (result.page < result.totalpage) {
@@ -68,14 +70,18 @@ function TableProduct(props) {
             })
 
     }, []);
-    const handleChangeTextSearch = (e) => {
+    const handleChangeTextSearch = (e, arrAdd) => {
+        var checkselect = campaignState.campaign.ListProducts;
+        if (arrAdd != undefined && arrAdd != null) {
+            checkselect = checkselect.concat(arrAdd);
+        }
         setTextSearch(e);
         setNextPage(1)
         axios.get(config.rootLink + '/FrontEnd/SearchProductPaginate', {
             params: {
                 search: e,
-                shopID: appState.Shop?.ID,
                 shop: config.shop,
+                selectedstr: checkselect.map(p => p.ProductID).toString(),
                 page: 1,
                 pagezise: 10,
                 token: config.token,
@@ -83,15 +89,17 @@ function TableProduct(props) {
         })
             .then(function (response) {
                 const result = response?.data;
-                setData(result.products)
+                var product = result.products;
+                // if (props.ItemSelected != undefined && props.ItemSelected != null && result.products != undefined && result.products != null) {
+                //     product = product.filter(p => !props.ItemSelected.map(x => x.ProductID).includes(p.ProductID));
+                // }
+                setData(product)
                 if (result.page < result.totalpage) {
                     setNextPage(result.page + 1)
                 } else {
                     setNextPage(0)
                 }
-                var newData = [];
-                var newData = data.filter(p=> !selectedRows.map(x=>x.ProductID).includes(p.ProductID));
-        setData(newData);
+
             })
             .catch(function (error) {
                 const errorMsg = error.message;
@@ -114,9 +122,11 @@ function TableProduct(props) {
     }, []);
     function AddProductToInput() {
         var arrAdd = props.ItemSelected.concat(selectedRows);
-        var newData = [];
-        newData = data.filter(p=> !selectedRows.map(x=>x.ProductID).includes(p.ProductID));
-        setData(newData);
+        // var newData = [];
+        // newData = data.filter(p => !selectedRows.map(x => x.ProductID).includes(p.ProductID));
+        // setData(newData);
+        setIsOpenToast(true);
+        setNumberOfSelected(selectedRows.length);
         setSelectedRows([]);
         dispatch(setCreateUpdateCampaign(
             {
@@ -127,8 +137,7 @@ function TableProduct(props) {
                     ListProducts: arrAdd
                 },
             }));
-        // props.setIsOpenAddSpecificProductModal(false);
-
+        handleChangeTextSearch('', selectedRows);
     }
     // Invoke when user click to request another page.
     // const handlePageClick = (event) => {
@@ -155,8 +164,8 @@ function TableProduct(props) {
             axios.get(config.rootLink + '/FrontEnd/SearchProductPaginate', {
                 params: {
                     search: textSearch,
-                    shopID: appState.Shop?.ID,
                     shop: config.shop,
+                    selectedstr: campaignState.campaign.ListProducts.map(p => p.ProductID).toString(),
                     page: nextPage,
                     pagezise: 10,
                     token: config.token,
@@ -164,7 +173,11 @@ function TableProduct(props) {
             })
                 .then(function (response) {
                     const result = response?.data;
-                    var newArr = data.concat(result.products);
+                    var product = result.products;
+                    // if (props.ItemSelected != undefined && props.ItemSelected != null && result.products != undefined && result.products != null) {
+                    //     product = product.filter(p => !props.ItemSelected.map(x => x.ProductID).includes(p.ProductID));
+                    // }
+                    var newArr = data.concat(product);
                     setData(newArr)
                     if (result.page < result.totalpage) {
                         setNextPage(result.page + 1)
@@ -200,42 +213,43 @@ function TableProduct(props) {
                 },
             ]}
         >
-            <InfiniteScroll
-                dataLength={data.length}
-                next={fetchMoreData}
-                hasMore={true}
-                // loader={textLoading}
-                height={420}
-                
-                marginTop={10}
-            >
-                <Modal.Section>
+            <div className="bound-infinitive">
+                <InfiniteScroll
+                    dataLength={data.length}
+                    next={fetchMoreData}
+                    hasMore={true}
+                    // loader={textLoading}
+                    height={420}
 
-                    <div className='search-sticky'>
-                        <TextField
-                            value={textSearch}
-                            onChange={(e) => {
-                                handleChangeTextSearch(e)
-                            }}
-                            type="text"
-                            placeholder='Search Product'
+                    marginTop={10}
+                >
+                    <Modal.Section>
+
+                        <div className='search-sticky'>
+                            <TextField
+                                value={textSearch}
+                                onChange={(e) => {
+                                    handleChangeTextSearch(e)
+                                }}
+                                type="text"
+                                placeholder='Search Product'
+                            />
+                            <div className="selected-item">
+                                {selectedRows.length} product selected
+                            </div>
+                            <div className="shadow">
+                            </div>
+                        </div>
+
+                        <DataTable
+                            columns={columns}
+                            data={data}
+                            selectableRows
+                            onSelectedRowsChange={handleRowSelected}
+                        selectableRowSelected={row => selectedRows != undefined && selectedRows.map(p => p.ProductID).indexOf(row.ProductID) >= 0}
                         />
-                        <div className="selected-item">
-                            {selectedRows.length} product selected
-                        </div>
-                        <div className="shadow">
-                        </div>
-                    </div>
 
-                    <DataTable
-                        columns={columns}
-                        data={data}
-                        selectableRows
-                        onSelectedRowsChange={handleRowSelected}
-                        // selectableRowSelected={row => selectedRows != undefined && selectedRows.map(p => p.ProductID).indexOf(row.ProductID) >= 0}
-                    />
-
-                    {/* {
+                        {/* {
 data !== undefined && data !== null && data.length > 0 ? <>
 <div className='paging-area'>
 <ReactPaginate
@@ -262,9 +276,13 @@ renderOnZeroPageCount={null}
 </> : null
 } */}
 
-                </Modal.Section>
+                    </Modal.Section>
 
-            </InfiniteScroll>
+                </InfiniteScroll>
+            </div>
+            {isOpenToast ? <Toast content={"Add " + numberOfSelected + " product is successfully."} duration={1600} onDismiss={() => {
+                setIsOpenToast(false);
+            }} /> : null}
         </Modal>
     )
 }

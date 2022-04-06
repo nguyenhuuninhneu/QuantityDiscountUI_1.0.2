@@ -56,7 +56,6 @@ const LimitPurchase = () => {
             params: {
                 search: limitPurchaseState.TextSearchProduct,
                 typeselected: limitPurchaseState.ProductSelected,
-                shopID: appState.Shop?.ID,
                 shop: config.shop,
                 page: event.selected + 1,
                 pagezise: 10,
@@ -114,7 +113,6 @@ const LimitPurchase = () => {
                             params: {
                                 search: limitPurchaseState.TextSearchProduct,
                                 typeselected: limitPurchaseState.ProductSelected,
-                                shopID: appState.Shop?.ID,
                                 shop: config.shop,
                                 page: 1,
                                 pagezise: 10, 
@@ -138,7 +136,7 @@ const LimitPurchase = () => {
                                     ...createLimitPurchaseState,
                                     IsOpenSaveToolbar: false
                                 }))
-                                setAlert(<Toast content={'The limit purchase: ' + LimitPurchaseCurrent.Title + ' deleted successfully'} duration={3000} onDismiss={() => {
+                                setAlert(<Toast content={'The limit purchase: ' + LimitPurchaseCurrent.Title + ' deleted successfully'} duration={1600} onDismiss={() => {
                                     setAlert(null);
                                 }} />);
                             })
@@ -164,7 +162,6 @@ const LimitPurchase = () => {
             params: {
                 search: textSearch,
                 typeselected: productSelected,
-                shopID: appState.Shop?.ID,
                 shop: config.shop,
                 page: 1,
                 pagezise: 10,
@@ -618,7 +615,7 @@ const LimitPurchase = () => {
                                         type="text"
                                     />
                                 </div>
-                                <div className='item'>
+                                <div className='item' style={{marginLeft: '30px' }}>
                                     <TextField
                                         label="Max limit purchase"
                                         value={createLimitPurchaseState.limitpurchase.Max !== null ? createLimitPurchaseState.limitpurchase.Max.toString() : '0'}
@@ -652,10 +649,10 @@ const LimitPurchase = () => {
                 </> : <></>
             }
             {Alert}
-            {createLimitPurchaseState.IsOpenSaveResult ? <Toast content={createLimitPurchaseState.MessageSaveResult} duration={4000} onDismiss={() => {
+            {createLimitPurchaseState.IsOpenSaveResult ? <Toast content={createLimitPurchaseState.MessageSaveResult} duration={1600} onDismiss={() => {
                 dispatch(setCreateUpdateLimitPurchase({
                     ...createLimitPurchaseState,
-                    IsOpenSaveResult: null
+                    IsOpenSaveResult: false
                 }))
             }} /> : null}
         </>

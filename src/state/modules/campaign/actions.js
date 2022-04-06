@@ -83,6 +83,21 @@ export const enableAppEmbed = (data) => {
     payload: data,
   };
 };
+
+export const sendSupportRequestCompleted = (data) => {
+  return {
+    type: types.SEND_SUPPORT_REQUEST_COMPLETED,
+    payload: data,
+  };
+};
+
+
+export const sendSupportRequestFailed = (data) => {
+  return {
+    type: types.SEND_SUPPORT_REQUEST_FAILED,
+    payload: data,
+  };
+};
 // export const fetchCreateCampaignFailed = (data) => {
 //   return {
 //     type: types.FETCH_CREATE_CAMPAIGN_FAILED,

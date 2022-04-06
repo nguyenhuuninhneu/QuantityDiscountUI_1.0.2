@@ -16,3 +16,5 @@ export const SET_STEP = "campaign/SET_STEP";
 export const SET_LOADING_PAGE = "campaign/SET_LOADING_PAGE";
 export const SET_SETTING = "campaign/SET_SETTING";
 export const ENABLE_APP_EMBED = "setting/ENABLE_APP_EMBED";
+export const SEND_SUPPORT_REQUEST_COMPLETED = "campaign/SEND_SUPPORT_REQUEST_COMPLETED";
+export const SEND_SUPPORT_REQUEST_FAILED = "campaign/SEND_SUPPORT_REQUEST_FAILED";

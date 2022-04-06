@@ -4,58 +4,22 @@ import * as actions from "./actions";
 
 export const fetchSetting = () => {
     return (dispatch, getState) => {
-        var shopID = getState().app.Shop?.ID;
-        if (shopID == undefined) {
-            axios.get(config.rootLink + '/FrontEnd/GetShopID', {
-                params: {
-                    shop: config.shop,
-                    token: config.token,
-                }
+        axios.get(config.rootLink + '/FrontEnd/GetSetting', {
+            params: {
+                shop: config.shop,
+                token: config.token,
+
+            }
+        })
+            .then(function (response) {
+                const result = response?.data;
+                dispatch(actions.fetchCompleted(result));
+                // dispatch(loadProductByCampaign(result.ListCampaign[0].ID));
             })
-                .then(function (response) {
-                    const result = response?.data;
-                    axios.get(config.rootLink + '/FrontEnd/GetSetting', {
-                        params: {
-                            shop: config.shop,
-                            shopID: result.ShopID,
-                            token: config.token,
-
-                        }
-                    })
-                        .then(function (response) {
-                            const result = response?.data;
-                            dispatch(actions.fetchCompleted(result));
-                            // dispatch(loadProductByCampaign(result.ListCampaign[0].ID));
-                        })
-                        .catch(function (error) {
-                            const errorMsg = error.message;
-                            dispatch(actions.fetchFailed(errorMsg));
-                        })
-                })
-                .catch(function (error) {
-                    const errorMsg = error.message;
-                })
-        }
-        else {
-            axios.get(config.rootLink + '/FrontEnd/GetSetting', {
-                params: {
-                    shop: config.shop,
-                    shopID: shopID,
-                    token: config.token,
-
-                }
+            .catch(function (error) {
+                const errorMsg = error.message;
+                dispatch(actions.fetchFailed(errorMsg));
             })
-                .then(function (response) {
-                    const result = response?.data;
-                    dispatch(actions.fetchCompleted(result));
-                    // dispatch(loadProductByCampaign(result.ListCampaign[0].ID));
-                })
-                .catch(function (error) {
-                    const errorMsg = error.message;
-                    dispatch(actions.fetchFailed(errorMsg));
-                })
-        }
-
 
         // dispatch(actions.setIsLoadingPage(true));
 
@@ -87,67 +51,26 @@ export const saveActive = () => {
         dispatch(actions.setIsLoadingPage(true));
         dispatch(actions.setIsSaveLoading(true));
         var settingState = getState().setting.ListSetting.Setting;
-        var shopID = getState().app.Shop?.ID;
-        if (shopID == undefined) {
-            axios.get(config.rootLink + '/FrontEnd/GetShopID', {
-                params: {
-                    shop: config.shop,
-                    token: config.token,
+        axios.post(config.rootLink + '/FrontEnd/ChangeActive', {
+            shop: config.shop,
+            active: settingState.Active,
+            token: config.token,
+
+        })
+            .then(function (response) {
+
+                const result = response?.data;
+                if (result.IsSuccess) {
+                    dispatch(actions.saveActiveCompleted(result));
+                } else {
+                    dispatch(actions.saveActiveFailed(result));
                 }
-            })
-                .then(function (response) {
-                    const result = response?.data;
-
-                    axios.post(config.rootLink + '/FrontEnd/ChangeActive', {
-                        shop: config.shop,
-                        shopID: result.ShopID,
-                        active: settingState.Active,
-                        token: config.token,
-
-                    })
-                        .then(function (response) {
-
-                            const result = response?.data;
-                            if (result.IsSuccess) {
-                                dispatch(actions.saveActiveCompleted(result));
-                            } else {
-                                dispatch(actions.saveActiveFailed(result));
-                            }
-
-                        })
-                        .catch(function (error) {
-                            const errorMsg = error.message;
-                            dispatch(actions.saveActiveFailed(errorMsg));
-                        })
-                })
-                .catch(function (error) {
-                    const errorMsg = error.message;
-                })
-        }
-        else {
-            axios.post(config.rootLink + '/FrontEnd/ChangeActive', {
-                shop: config.shop,
-                shopID: shopID,
-                active: settingState.Active,
-                token: config.token,
 
             })
-                .then(function (response) {
-
-                    const result = response?.data;
-                    if (result.IsSuccess) {
-                        dispatch(actions.saveActiveCompleted(result));
-                    } else {
-                        dispatch(actions.saveActiveFailed(result));
-                    }
-
-                })
-                .catch(function (error) {
-                    const errorMsg = error.message;
-                    dispatch(actions.saveActiveFailed(errorMsg));
-                })
-        }
-
+            .catch(function (error) {
+                const errorMsg = error.message;
+                dispatch(actions.saveActiveFailed(errorMsg));
+            })
 
     }
 }
@@ -254,223 +177,81 @@ export const loadProductByCampaign = (id) => {
 
 export const synchronizeData = () => {
     return (dispatch, getState) => {
-        var shopID = getState().app.Shop?.ID;
-        if (shopID == undefined) {
-            axios.get(config.rootLink + '/FrontEnd/GetShopID', {
-                params: {
-                    shop: config.shop,
-                    token: config.token,
-                }
+        axios.get(config.rootLink + '/FrontEnd/SynchronizeData', {
+            params: {
+                shop: config.shop,
+                token: config.token,
+            }
+        })
+            .then(function (response) {
+                const result = response?.data;
+                dispatch(actions.synchronizeDataCompleted(result));
             })
-                .then(function (response) {
-                    const result = response?.data;
-                    axios.get(config.rootLink + '/FrontEnd/SynchronizeData', {
-                        params: {
-                            shopID: result.ShopID,
-                            shop: config.shop,
-                            token: config.token,
-                        }
-                    })
-                        .then(function (response) {
-                            const result = response?.data;
-                            dispatch(actions.synchronizeDataCompleted(result));
-                        })
-                        .catch(function (error) {
-                            const errorMsg = error.message;
-                            dispatch(actions.synchronizeDataFailed(errorMsg));
-                        })
-                })
-                .catch(function (error) {
-                    const errorMsg = error.message;
-                })
-        }
-        else {
-            axios.get(config.rootLink + '/FrontEnd/SynchronizeData', {
-                params: {
-                    shopID: shopID,
-                    shop: config.shop,
-                    token: config.token,
-                }
+            .catch(function (error) {
+                const errorMsg = error.message;
+                dispatch(actions.synchronizeDataFailed(errorMsg));
             })
-                .then(function (response) {
-                    const result = response?.data;
-                    dispatch(actions.synchronizeDataCompleted(result));
-                })
-                .catch(function (error) {
-                    const errorMsg = error.message;
-                    dispatch(actions.synchronizeDataFailed(errorMsg));
-                })
-        }
-
 
     };
 };
 
 export const getProcess = (type) => {
     return (dispatch, getState) => {
-        var shopID = getState().app.Shop?.ID;
-        if (shopID == undefined) {
-		 axios.get(config.rootLink + '/FrontEnd/GetShopID', {
-                params: {
-                    shop: config.shop,
-                    token: config.token,
-                }
+        axios.get(config.rootLink + '/FrontEnd/GetProcess', {
+            params: {
+                shop: config.shop,
+                type: type,
+                token: config.token,
+            }
+        })
+            .then(function (response) {
+                const result = response?.data;
+                dispatch(actions.getProcessCompleted(result));
             })
-                .then(function (response) {
-				const result = response?.data;
-				
-                axios.get(config.rootLink + '/FrontEnd/GetProcess', {
-                    params: {
-                        shopID: result.ShopID,
-                        shop: config.shop,
-                        type: type,
-                        token: config.token,
-                    }
-                })
-                    .then(function (response) {
-                        const result = response?.data;
-                        dispatch(actions.getProcessCompleted(result));
-                    })
-                    .catch(function (error) {
-                        const errorMsg = error.message;
-                        dispatch(actions.getProcessFailed(errorMsg));
-                    })
-                })
-                .catch(function (error) {
-                    const errorMsg = error.message;
-                })
-		}
-        else {
-            axios.get(config.rootLink + '/FrontEnd/GetProcess', {
-                params: {
-                    shopID: shopID,
-                    shop: config.shop,
-                    type: type,
-                    token: config.token,
-                }
+            .catch(function (error) {
+                const errorMsg = error.message;
+                dispatch(actions.getProcessFailed(errorMsg));
             })
-                .then(function (response) {
-                    const result = response?.data;
-                    dispatch(actions.getProcessCompleted(result));
-                })
-                .catch(function (error) {
-                    const errorMsg = error.message;
-                    dispatch(actions.getProcessFailed(errorMsg));
-                })
-		}
-       
 
     };
 };
 
 export const getProcessDiscountCode = (type) => {
     return (dispatch, getState) => {
-        var shopID = getState().app.Shop?.ID;
-        if (shopID == undefined) {
-		 axios.get(config.rootLink + '/FrontEnd/GetShopID', {
-                params: {
-                    shop: config.shop,
-                    token: config.token,
-                }
+        axios.get(config.rootLink + '/FrontEnd/GetProcess', {
+            params: {
+                shop: config.shop,
+                type: type,
+                token: config.token,
+            }
+        })
+            .then(function (response) {
+                const result = response?.data;
+                dispatch(actions.getProcessDiscountCodeCompleted(result));
             })
-                .then(function (response) {
-				const result = response?.data;
-				
-                axios.get(config.rootLink + '/FrontEnd/GetProcess', {
-                    params: {
-                        shopID: result.ShopID,
-                        shop: config.shop,
-                        type: type,
-                        token: config.token,
-                    }
-                })
-                    .then(function (response) {
-                        const result = response?.data;
-                        dispatch(actions.getProcessDiscountCodeCompleted(result));
-                    })
-                    .catch(function (error) {
-                        const errorMsg = error.message;
-                        dispatch(actions.getProcessDiscountCodeFailed(errorMsg));
-                    })
-                })
-                .catch(function (error) {
-                    const errorMsg = error.message;
-                })
-		}
-        else {
-            axios.get(config.rootLink + '/FrontEnd/GetProcess', {
-                params: {
-                    shopID: shopID,
-                    shop: config.shop,
-                    type: type,
-                    token: config.token,
-                }
+            .catch(function (error) {
+                const errorMsg = error.message;
+                dispatch(actions.getProcessDiscountCodeFailed(errorMsg));
             })
-                .then(function (response) {
-                    const result = response?.data;
-                    dispatch(actions.getProcessDiscountCodeCompleted(result));
-                })
-                .catch(function (error) {
-                    const errorMsg = error.message;
-                    dispatch(actions.getProcessDiscountCodeFailed(errorMsg));
-                })
-		}
-        
 
     };
 };
 export const synchronizeDiscountFromShopify = () => {
     return (dispatch, getState) => {
-        var shopID = getState().app.Shop?.ID;
-        if (shopID == undefined) {
-		 axios.get(config.rootLink + '/FrontEnd/GetShopID', {
-                params: {
-                    shop: config.shop,
-                    token: config.token,
-                }
+        axios.get(config.rootLink + '/FrontEnd/SynchronizeDiscountFromShopify', {
+            params: {
+                shop: config.shop,
+                token: config.token,
+            }
+        })
+            .then(function (response) {
+                const result = response?.data;
+                dispatch(actions.synchronizeDiscountShopifyCompleted(result));
             })
-                .then(function (response) {
-				const result = response?.data;
-				
-                axios.get(config.rootLink + '/FrontEnd/SynchronizeDiscountFromShopify', {
-                    params: {
-                        shopID: result.ShopID,
-                        shop: config.shop,
-                        token: config.token,
-                    }
-                })
-                    .then(function (response) {
-                        const result = response?.data;
-                        dispatch(actions.synchronizeDiscountShopifyCompleted(result));
-                    })
-                    .catch(function (error) {
-                        const errorMsg = error.message;
-                        dispatch(actions.synchronizeDiscountShopifyFailed(errorMsg));
-                    })
-                })
-                .catch(function (error) {
-                    const errorMsg = error.message;
-                })
-		}
-        else {
-            axios.get(config.rootLink + '/FrontEnd/SynchronizeDiscountFromShopify', {
-                params: {
-                    shopID: shopID,
-                    shop: config.shop,
-                    token: config.token,
-                }
+            .catch(function (error) {
+                const errorMsg = error.message;
+                dispatch(actions.synchronizeDiscountShopifyFailed(errorMsg));
             })
-                .then(function (response) {
-                    const result = response?.data;
-                    dispatch(actions.synchronizeDiscountShopifyCompleted(result));
-                })
-                .catch(function (error) {
-                    const errorMsg = error.message;
-                    dispatch(actions.synchronizeDiscountShopifyFailed(errorMsg));
-                })
-		}
-        
-
     };
 };
 export const enableAppEmbed = (isEnable) => {

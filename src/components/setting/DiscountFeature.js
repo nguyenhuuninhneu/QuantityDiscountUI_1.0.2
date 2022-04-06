@@ -34,7 +34,6 @@ function DiscountFeature() {
   const getDiscountCode = async () => {
     await axios.get(config.rootLink + '/FrontEnd/GetDiscountCode', {
       params: {
-        shopID: appState?.Shop?.ID,
         shop: config.shop,
         token: config.token,
       }
@@ -128,13 +127,14 @@ function DiscountFeature() {
                                 }}
                               />
                             </Stack>
-                            <div className="break-line"></div>
+                            {
+                              settingState.Setting.ShowDescription ? <>
+                              <div className="break-line"></div>
                             <div className='element-general-child'>
                               <p className='only-text'>For “Minimum cart quantity” condition</p>
                               <TextField
                                 id='TextMinimumCartQuantity'
                                 placeholder='This discount is applied to the total quantity of products in your cart'
-                                disabled={!settingState.Setting.ShowDescription}
                                 value={settingState.Setting2.TextMinimumCartQuantity}
                                 onChange={(e) => {
                                   dispatch(setSetting({
@@ -156,7 +156,6 @@ function DiscountFeature() {
                               <TextField
                                 id='TextMinimumSameProductQuantity'
                                 placeholder='This discount is applied to the total quantity of this product in your cart'
-                                disabled={!settingState.Setting.ShowDescription}
                                 value={settingState.Setting2.TextMinimumSameProductQuantity}
                                 onChange={(e) => {
                                   dispatch(setSetting({
@@ -179,7 +178,6 @@ function DiscountFeature() {
                               <TextField
                                 id='TextMinimumSameProductVariantQuantity'
                                 placeholder='This discount is applied to the total quantity of the same variant of this product in your cart'
-                                disabled={!settingState.Setting.ShowDescription}
                                 value={settingState.Setting2.TextMinimumSameProductVariantQuantity}
                                 onChange={(e) => {
                                   dispatch(setSetting({
@@ -195,6 +193,8 @@ function DiscountFeature() {
                                 multiline={2}
                               />
                             </div>
+                              </> : <></>
+                            }
 
                           </div>
 
@@ -1960,10 +1960,10 @@ function DiscountFeature() {
           <></>
       }
       {
-        settingState.IsOpenSaveResult ? <Toast content={settingState.MessageSaveResult} duration={4000} onDismiss={() => {
+        settingState.IsOpenSaveResult ? <Toast content={settingState.MessageSaveResult} duration={1600} onDismiss={() => {
           dispatch(setSetting({
             ...settingState,
-            IsOpenSaveResult: null
+            IsOpenSaveResult: false
           }))
         }} /> : null
       }

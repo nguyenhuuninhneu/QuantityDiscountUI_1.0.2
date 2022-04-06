@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCreateUpdateCampaign, setSetting } from '../../state/modules/campaign/actions';
 import { setIsNoCampaign, setIsCreatingCampaign, setMenu } from '../../state/modules/app/actions';
 import config from '../../config/config';
-import { saveCampaign, enableAppEmbed } from '../../state/modules/campaign/operations';
+import { saveCampaign, enableAppEmbed, sendSupportRequest } from '../../state/modules/campaign/operations';
 import moreAppConfig from '../../config/moreAppConfig';
 import TShirtYellow from '../../assets/images/t-shirt-yellow.svg';
 import TShirtGreen from '../../assets/images/t-shirt-green.svg';
@@ -42,30 +42,13 @@ const CreateUpdateCampaign = (props) => {
     const scrollToCampaignDetail = () => myRefCampaignDetail.current.scrollIntoView();
     const scrollToDate = () => myRefDate.current.scrollIntoView();
     const getOptions = async (input) => {
-        if (appState?.Shop?.ID == undefined || appState?.Shop?.ID == null) {
-            axios.get(config.rootLink + '/FrontEnd/GetShopID', {
-                params: {
-                    shop: config.shop,
-                    token: config.token,
-                }
-            })
-                .then(function (response) {
-                    const result = response?.data;
-                    SearchVariant(input, result.ShopID)
-                })
-                .catch(function (error) {
-                    const errorMsg = error.message;
-                })
-        } else {
-            SearchVariant(input, appState?.Shop.ID)
-        }
+        SearchVariant(input)
 
     };
-    const SearchVariant = async (input, shopID) => {
+    const SearchVariant = async (input) => {
         await axios.get(config.rootLink + '/FrontEnd/SearchProductPaginateVariant', {
             params: {
                 search: input,
-                shopID: shopID,
                 shop: config.shop,
                 page: 1,
                 pagezise: 100,
@@ -153,7 +136,7 @@ const CreateUpdateCampaign = (props) => {
 
 
                 }
-                getSettingOne(shopID);
+                getSettingOne();
 
 
             })
@@ -164,7 +147,6 @@ const CreateUpdateCampaign = (props) => {
     const getSettingOne = async (shopID) => {
         await axios.get(config.rootLink + '/FrontEnd/GetSettingOne', {
             params: {
-                shopID: shopID,
                 shop: config.shop,
                 token: config.token,
             }
@@ -186,7 +168,7 @@ const CreateUpdateCampaign = (props) => {
     const [IsOpenAdSpecificCollectionModal, setIsOpenAddSpecificCollectionModal] = useState(false);
     const [IsOpenAdSpecificProductModal, setIsOpenAddSpecificProductModal] = useState(false);
     const [IsHideNotification, setIsHideNotification] = useState(false);
-    
+
 
     const handleSelectChangeDiscountType = (value) => {
         dispatch(setCreateUpdateCampaign({
@@ -307,25 +289,36 @@ const CreateUpdateCampaign = (props) => {
     }
 
     function ValidFormSuportRequest() {
-
+        var isValidName = true;
+        var isValidEmail = true;
+        var isValidDescribe = true;
+        var strValidName = '';
+        var strValidEmail = '';
+        var strValidDescribe = '';
         if (campaignState.YourName.toString() == '' || campaignState.YourName.toString() === null) {
-            dispatch(setCreateUpdateCampaign({
-                ...campaignState,
-                YourNameValidation: 'Name is required'
-            }))
-            return false;
+            strValidName = 'Name is required';
+            isValidName = false;
         }
         if (campaignState.YourEmail.toString() == '' || campaignState.YourEmail.toString() === null) {
-            dispatch(setCreateUpdateCampaign({
-                ...campaignState,
-                YourEmailValidation: 'Email is required'
-            }))
-            return false;
+            strValidEmail = 'Email is required';
+            isValidEmail = false;
+        } else {
+            var regexMail = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(campaignState.YourEmail)
+            if (!regexMail) {
+                strValidEmail = 'Email is not valid';
+                isValidEmail = false;
+            } 
         }
         if (campaignState.DescribeYourProblem.toString() == '' || campaignState.DescribeYourProblem.toString() === null) {
+            strValidDescribe = 'Describe is required';
+            isValidDescribe = false;
+        }
+        if (!isValidName || !isValidEmail || !isValidDescribe) {
             dispatch(setCreateUpdateCampaign({
                 ...campaignState,
-                DescribeYourProblemValidation: 'Describe is required'
+                YourNameValidation: strValidName,
+                YourEmailValidation: strValidEmail,
+                DescribeYourProblemValidation: strValidDescribe
             }))
             return false;
         }
@@ -1714,9 +1707,9 @@ const CreateUpdateCampaign = (props) => {
                                                         }
                                                         <div className="cb"></div>
                                                         {campaignState.Setting.LayoutInProductPage == 3 && campaignState.Setting2.ShowDiscountedPriceEachCard ? <>
-                          <p style={{ marginTop: '10px' }}>{rowsPreview.length > 0 ? campaignState.Setting2.TextDiscountedPriceEachCard.replace('{total_amount}', '$' + (rowsPreview[0].Quantity * (100-rowsPreview[0].PercentOrPrice))).replace('{price_per_item}', '$' + (100 - rowsPreview[0].PercentOrPrice)) : campaignState.Setting2.TextDiscountedPriceEachCard}</p>
+                                                            <p style={{ marginTop: '10px' }}>{rowsPreview.length > 0 ? campaignState.Setting2.TextDiscountedPriceEachCard.replace('{total_amount}', '$' + (rowsPreview[0].Quantity * (100 - rowsPreview[0].PercentOrPrice))).replace('{price_per_item}', '$' + (100 - rowsPreview[0].PercentOrPrice)) : campaignState.Setting2.TextDiscountedPriceEachCard}</p>
 
-                        </> : <></>}
+                                                        </> : <></>}
                                                         {
                                                             campaignState.Setting.ShowDescription ? <>
                                                                 <p className='discount-applied'> {
@@ -1787,6 +1780,9 @@ const CreateUpdateCampaign = (props) => {
                                                         //save campaign
                                                         dispatch(setCreateUpdateCampaign({
                                                             ...campaignState,
+                                                            YourName: '',
+                                                            YourEmail: '',
+                                                            DescribeYourProblem: '',
                                                             IsShowSendSupport: true,
                                                         }))
                                                         // dispatch(saveCampaign(isFirstCampaign));
@@ -1876,7 +1872,7 @@ const CreateUpdateCampaign = (props) => {
                                             content: 'Send',
                                             onAction: () => {
                                                 if (ValidFormSuportRequest()) {
-                                                    dispatch(saveCampaign(isFirstCampaign, campaignState.IsEndDate))
+                                                    dispatch(sendSupportRequest(campaignState.YourName, campaignState.YourEmail, campaignState.DescribeYourProblem))
                                                 }
                                             },
                                         }}
@@ -1984,10 +1980,10 @@ const CreateUpdateCampaign = (props) => {
 
                     </>
             }
-            {campaignState.IsOpenSaveResult ? <Toast content={campaignState.MessageSaveResult} duration={4000} onDismiss={() => {
+            {campaignState.IsOpenSaveResult ? <Toast content={campaignState.MessageSaveResult} duration={1600} onDismiss={() => {
                 dispatch(setCreateUpdateCampaign({
                     ...campaignState,
-                    IsOpenSaveResult: null
+                    IsOpenSaveResult: false
                 }))
             }} /> : null}
         </>

@@ -6,56 +6,21 @@ import * as appAction from "../../modules/app/actions";
 export const fetchPlan = () => {
   return (dispatch, getState) => {
     dispatch(actions.setIsLoadingPage(true));
-    var shopID = getState().app.Shop?.ID;
-    if (shopID == undefined) {
-      axios.get(config.rootLink + '/FrontEnd/GetShopID', {
-        params: {
-          shop: config.shop,
-          token: config.token,
-        }
+    axios.get(config.rootLink + '/FrontEnd/GetPlan', {
+      params: {
+        shop: config.shop,
+        token: config.token,
+
+      }
+    })
+      .then(function (response) {
+        const result = response?.data;
+        dispatch(actions.fetchCompleted(result));
       })
-        .then(function (response) {
-          const result = response?.data;
-          axios.get(config.rootLink + '/FrontEnd/GetPlan', {
-            params: {
-              shop: config.shop,
-              shopID: result.ShopID,
-              token: config.token,
-
-            }
-          })
-            .then(function (response) {
-              const result = response?.data;
-              dispatch(actions.fetchCompleted(result));
-            })
-            .catch(function (error) {
-              const errorMsg = error.message;
-              dispatch(actions.fetchFailed(errorMsg));
-            })
-        })
-        .catch(function (error) {
-          const errorMsg = error.message;
-        })
-    }
-    else {
-      axios.get(config.rootLink + '/FrontEnd/GetPlan', {
-        params: {
-          shop: config.shop,
-          shopID: shopID,
-          token: config.token,
-
-        }
+      .catch(function (error) {
+        const errorMsg = error.message;
+        dispatch(actions.fetchFailed(errorMsg));
       })
-        .then(function (response) {
-          const result = response?.data;
-          dispatch(actions.fetchCompleted(result));
-        })
-        .catch(function (error) {
-          const errorMsg = error.message;
-          dispatch(actions.fetchFailed(errorMsg));
-        })
-    }
-
 
   };
 };
@@ -63,166 +28,69 @@ export const fetchPlan = () => {
 export const Upgrade = (upgrade) => {
   return (dispatch, getState) => {
     dispatch(actions.setIsLoadingPage(true));
-    var shopID = getState().app.Shop?.ID;
-    if (shopID == undefined) {
-      axios.get(config.rootLink + '/FrontEnd/GetShopID', {
-        params: {
-          shop: config.shop,
-          token: config.token,
-        }
-      })
-        .then(function (response) {
-          const result = response?.data;
-          axios.post(config.rootLink + '/FrontEnd/Upgrade', {
-            shopID: result.ShopID,
-            shop: config.shop,
-            upgrade: upgrade,
-            token: config.token,
-          })
-            .then(function (response) {
+    axios.post(config.rootLink + '/FrontEnd/Upgrade', {
+      shop: config.shop,
+      upgrade: upgrade,
+      token: config.token,
+    })
+      .then(function (response) {
 
-              const result = response?.data;
-              if (result.IsSuccess) {
-                if (result.ConfirmationUrl != '' && result.ConfirmationUrl != undefined) {
-                  window.open(result.ConfirmationUrl, "_blank");
-                }
-                if (upgrade) {
-                  dispatch(actions.setUpgradeCompleted(result));
-                }
-                //start free trial
-                else {
-                  dispatch(actions.setFreeTrialCompleted(result));
-
-                }
-                // dispatch(appAction.setPlanNumber(1))
-
-              } else {
-                if (upgrade) {
-                  dispatch(actions.setUpgradeFailed(result));
-                } else {
-                  dispatch(actions.setUpgradeFailed(result));
-                }
-              }
-
-            })
-            .catch(function (error) {
-              const errorMsg = error.message;
-              dispatch(actions.setFreeTrialFailed(errorMsg));
-            })
-        })
-        .catch(function (error) {
-          const errorMsg = error.message;
-        })
-    }
-    else {
-      axios.post(config.rootLink + '/FrontEnd/Upgrade', {
-        shopID: shopID,
-        shop: config.shop,
-        upgrade: upgrade,
-        token: config.token,
-      })
-        .then(function (response) {
-
-          const result = response?.data;
-          if (result.IsSuccess) {
-            if (result.ConfirmationUrl != '' && result.ConfirmationUrl != undefined) {
-              window.open(result.ConfirmationUrl, "_blank");
-            }
-            if (upgrade) {
-              dispatch(actions.setUpgradeCompleted(result));
-            }
-            //start free trial
-            else {
-              dispatch(actions.setFreeTrialCompleted(result));
-
-            }
-            // dispatch(appAction.setPlanNumber(1))
-
-          } else {
-            if (upgrade) {
-              dispatch(actions.setUpgradeFailed(result));
-            } else {
-              dispatch(actions.setUpgradeFailed(result));
-            }
+        const result = response?.data;
+        if (result.IsSuccess) {
+          if (result.ConfirmationUrl != '' && result.ConfirmationUrl != undefined) {
+            window.open(result.ConfirmationUrl, "_blank");
           }
+          if (upgrade) {
+            dispatch(actions.setUpgradeCompleted(result));
+          }
+          //start free trial
+          else {
+            dispatch(actions.setFreeTrialCompleted(result));
 
-        })
-        .catch(function (error) {
-          const errorMsg = error.message;
-          dispatch(actions.setFreeTrialFailed(errorMsg));
-        })
-    }
+          }
+          // dispatch(appAction.setPlanNumber(1))
 
+        } else {
+          if (upgrade) {
+            dispatch(actions.setUpgradeFailed(result));
+          } else {
+            dispatch(actions.setUpgradeFailed(result));
+          }
+        }
+
+      })
+      .catch(function (error) {
+        const errorMsg = error.message;
+        dispatch(actions.setFreeTrialFailed(errorMsg));
+      })
 
   }
 }
 export const Downgrade = () => {
   return (dispatch, getState) => {
     dispatch(actions.setIsLoadingPage(true));
-    var shopID = getState().app.Shop?.ID;
-    if (shopID == undefined) {
-      axios.get(config.rootLink + '/FrontEnd/GetShopID', {
-        params: {
-          shop: config.shop,
-          token: config.token,
-        }
-      })
-        .then(function (response) {
-          const result = response?.data;
-          axios.post(config.rootLink + '/FrontEnd/Downgrade', {
-            shopID: result.ShopID,
-            shop: config.shop,
-            token: config.token,
-          })
-            .then(function (response) {
+    axios.post(config.rootLink + '/FrontEnd/Downgrade', {
+      shop: config.shop,
+      token: config.token,
+    })
+      .then(function (response) {
 
-              const result = response?.data;
-              if (result.IsSuccess) {
-                if (result.ConfirmationUrl != '' && result.ConfirmationUrl != undefined) {
-                  window.open(result.ConfirmationUrl, "_blank");
-                }
-                dispatch(actions.setDowngradeCompleted(result));
-                // dispatch(appAction.setPlanNumber(0))
-              } else {
-                dispatch(actions.setDowngradeFailed(result));
-              }
-
-            })
-            .catch(function (error) {
-              const errorMsg = error.message;
-              dispatch(actions.setDowngradeFailed(errorMsg));
-            })
-        })
-        .catch(function (error) {
-          const errorMsg = error.message;
-        })
-    }
-    else {
-      axios.post(config.rootLink + '/FrontEnd/Downgrade', {
-        shopID: shopID,
-        shop: config.shop,
-        token: config.token,
-      })
-        .then(function (response) {
-
-          const result = response?.data;
-          if (result.IsSuccess) {
-            if (result.ConfirmationUrl != '' && result.ConfirmationUrl != undefined) {
-              window.open(result.ConfirmationUrl, "_blank");
-            }
-            dispatch(actions.setDowngradeCompleted(result));
-            // dispatch(appAction.setPlanNumber(0))
-          } else {
-            dispatch(actions.setDowngradeFailed(result));
+        const result = response?.data;
+        if (result.IsSuccess) {
+          if (result.ConfirmationUrl != '' && result.ConfirmationUrl != undefined) {
+            window.open(result.ConfirmationUrl, "_blank");
           }
+          dispatch(actions.setDowngradeCompleted(result));
+          // dispatch(appAction.setPlanNumber(0))
+        } else {
+          dispatch(actions.setDowngradeFailed(result));
+        }
 
-        })
-        .catch(function (error) {
-          const errorMsg = error.message;
-          dispatch(actions.setDowngradeFailed(errorMsg));
-        })
-    }
-
+      })
+      .catch(function (error) {
+        const errorMsg = error.message;
+        dispatch(actions.setDowngradeFailed(errorMsg));
+      })
 
   }
 }
